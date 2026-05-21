@@ -990,9 +990,9 @@
 
     <p class="section-title">Where would you like to go?</p>
     <div class="menu-grid" role="group" aria-label="Town locations">
-        <button class="menu-btn" onclick="enterDungeon()" aria-label="Enter the dungeon" id="town-dungeon-btn">
+        <button class="menu-btn" onclick="openDungeonSelect()" aria-label="Choose a dungeon" id="town-dungeon-btn">
             <span class="btn-icon" aria-hidden="true">🏚</span>
-            <span class="btn-label">Dungeon</span>
+            <span class="btn-label">Dungeons</span>
             <span class="btn-sub" id="dungeon-btn-sub">Enter the dark</span>
         </button>
         <button class="menu-btn" onclick="openShop()" aria-label="Visit the shop">
@@ -1128,6 +1128,26 @@
         <button class="begin-btn" id="inn-rest-btn" onclick="innRest()" aria-label="Rest at the inn for 10 gold, fully restores HP and MP" style="margin-bottom:10px">
             Rest (10 Gold) -- Full HP &amp; MP
         </button>
+
+        <div style="border-top:1px solid #2a2a44;margin:16px 0;padding-top:16px">
+            <div style="font-family:'Cinzel',serif;font-size:0.85em;color:var(--gold);margin-bottom:10px">🏦 Olivia's Vault</div>
+            <div style="display:flex;gap:8px;margin-bottom:8px;font-size:0.9em;color:var(--text-dim)">
+                <span>Banked Gold:</span>
+                <span id="inn-banked" style="color:var(--gold);font-family:'Cinzel',serif">0</span>
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:12px">
+                <input type="number" id="bank-amount" min="1" placeholder="Amount"
+                    style="flex:1;padding:10px;background:var(--bg-deep);border:1px solid #2a2a44;border-radius:8px;color:var(--text);font-family:'Crimson Text',serif;font-size:1em"
+                    aria-label="Enter gold amount to deposit or withdraw">
+                <button class="confirm-btn primary" onclick="bankDeposit()" style="margin:0;padding:10px 14px;flex-shrink:0" aria-label="Deposit gold">Deposit</button>
+                <button class="confirm-btn cancel" onclick="bankWithdraw()" style="margin:0;padding:10px 14px;flex-shrink:0" aria-label="Withdraw gold">Withdraw</button>
+            </div>
+            <div style="display:flex;gap:8px">
+                <button class="confirm-btn primary" onclick="bankDepositAll()" style="margin:0;padding:10px;flex:1;font-size:0.8em" aria-label="Deposit all gold">Deposit All</button>
+                <button class="confirm-btn cancel" onclick="bankWithdrawAll()" style="margin:0;padding:10px;flex:1;font-size:0.8em" aria-label="Withdraw all gold">Withdraw All</button>
+            </div>
+        </div>
+
         <button class="leave-shop-btn" onclick="goToScreen('town')" aria-label="Leave the inn">
             Leave Inn
         </button>
@@ -1291,11 +1311,17 @@
         <div class="equip-slot" id="slot-neck2"    onclick="slotClick('neck2')"    aria-label="Neck slot 2, empty" tabindex="0">
             <span class="slot-icon" aria-hidden="true">📿</span><span class="slot-label">Neck 2</span>
         </div>
+        <div class="equip-slot" id="slot-mantle"   onclick="slotClick('mantle')"   aria-label="Mantle slot, empty" tabindex="0">
+            <span class="slot-icon" aria-hidden="true">🧣</span><span class="slot-label">Mantle</span>
+        </div>
         <div class="equip-slot" id="slot-wrists1"  onclick="slotClick('wrists1')"  aria-label="Wrists slot 1, empty" tabindex="0">
             <span class="slot-icon" aria-hidden="true">⌚</span><span class="slot-label">Wrists</span>
         </div>
         <div class="equip-slot" id="slot-wrists2"  onclick="slotClick('wrists2')"  aria-label="Wrists slot 2, empty" tabindex="0">
             <span class="slot-icon" aria-hidden="true">⌚</span><span class="slot-label">Wrists 2</span>
+        </div>
+        <div class="equip-slot" id="slot-arms"     onclick="slotClick('arms')"     aria-label="Arms slot, empty" tabindex="0">
+            <span class="slot-icon" aria-hidden="true">💪</span><span class="slot-label">Arms</span>
         </div>
         <div class="equip-slot" id="slot-hands"    onclick="slotClick('hands')"    aria-label="Hands slot, empty" tabindex="0">
             <span class="slot-icon" aria-hidden="true">🧤</span><span class="slot-label">Hands</span>
@@ -1308,6 +1334,9 @@
         </div>
         <div class="equip-slot" id="slot-chest"    onclick="slotClick('chest')"    aria-label="Chest slot, empty" tabindex="0">
             <span class="slot-icon" aria-hidden="true">👕</span><span class="slot-label">Chest</span>
+        </div>
+        <div class="equip-slot" id="slot-waist"    onclick="slotClick('waist')"    aria-label="Waist slot, empty" tabindex="0">
+            <span class="slot-icon" aria-hidden="true">👔</span><span class="slot-label">Waist</span>
         </div>
         <div class="equip-slot" id="slot-legs"     onclick="slotClick('legs')"     aria-label="Legs slot, empty" tabindex="0">
             <span class="slot-icon" aria-hidden="true">👖</span><span class="slot-label">Legs</span>
@@ -1324,9 +1353,23 @@
     </div>
 
     <!-- Inventory bag -->
-    <p class="sheet-section-label" style="margin-top:16px">Bag</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px">
+        <p class="sheet-section-label" style="margin:0">Bag</p>
+        <button class="rename-btn" onclick="openInventoryFilter()" aria-label="Filter and sort your bag">Filter / Sort</button>
+    </div>
     <div id="inv-bag" aria-label="Items in your bag">
         <div class="inv-empty" id="inv-empty">Your bag is empty. Visit the shop to buy gear and items.</div>
+    </div>
+</div>
+
+<!-- -- ACTION SHEET OVERLAY -- -->
+<div class="confirm-overlay" id="action-sheet-overlay" role="dialog" aria-modal="true" aria-labelledby="action-sheet-title" style="align-items:flex-end;padding:0">
+    <div style="background:var(--bg-card);border-radius:16px 16px 0 0;padding:20px;width:100%;max-width:500px">
+        <div class="confirm-title" id="action-sheet-title" style="margin-bottom:16px;font-size:1em">Filter & Sort</div>
+        <div id="action-sheet-options" style="display:flex;flex-direction:column;gap:8px"></div>
+        <button class="reset-stats-btn" onclick="closeActionSheet()" aria-label="Cancel" style="margin-top:12px;color:var(--text-dim);border-color:#2a2a44">
+            Cancel
+        </button>
     </div>
 </div>
 
@@ -1396,6 +1439,10 @@
         <button class="shop-tab" id="tab-armor" role="tab" aria-selected="false" aria-controls="shop-armor" onclick="switchTab('armor')">🛡 Armor</button>
         <button class="shop-tab" id="tab-items" role="tab" aria-selected="false" aria-controls="shop-items" onclick="switchTab('items')">🧪 Items</button>
         <button class="shop-tab" id="tab-sell" role="tab" aria-selected="false" aria-controls="shop-sell" onclick="switchTab('sell')">💰 Sell</button>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+        <button class="rename-btn" id="shop-filter-btn" onclick="openShopFilter()" aria-label="Filter and sort shop items">Filter / Sort</button>
     </div>
 
     <!-- Weapons -->
@@ -1499,6 +1546,32 @@
                 Begin Your Adventure
             </button>
         </div>
+    </div>
+</div>
+
+<!-- -- UNEQUIPPED WARNING -- -->
+<div class="confirm-overlay" id="unequipped-overlay" role="dialog" aria-modal="true" aria-labelledby="unequipped-title">
+    <div class="confirm-card">
+        <div class="confirm-title" id="unequipped-title">No Weapon Equipped</div>
+        <div class="confirm-body">You have no weapon equipped. Fighting barehanded is dangerous. Are you sure you want to enter?</div>
+        <div class="confirm-buttons">
+            <button class="confirm-btn danger" onclick="confirmEnterUnequipped()" aria-label="Enter anyway">Enter Anyway</button>
+            <button class="confirm-btn cancel" onclick="closeUnequippedWarning()" aria-label="Go equip first">Equip First</button>
+        </div>
+    </div>
+</div>
+
+<!-- -- DUNGEON SELECT OVERLAY -- -->
+<div class="combat-result" id="dungeon-select-overlay" role="dialog" aria-modal="true" aria-labelledby="dungeon-select-title" style="background:rgba(0,0,0,0.95);padding:30px 20px;justify-content:flex-start;padding-top:60px">
+    <div style="width:100%;max-width:420px">
+        <div style="font-family:'Cinzel',serif;font-size:1.6em;font-weight:700;color:var(--gold);margin-bottom:4px;text-align:center" id="dungeon-select-title">Choose Your Dungeon</div>
+        <div style="font-style:italic;color:var(--text-dim);font-size:0.85em;margin-bottom:24px;text-align:center">Four dungeons await beyond Greatwolf City.</div>
+
+        <div id="dungeon-card-list" style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px"></div>
+
+        <button class="leave-shop-btn" onclick="document.getElementById('dungeon-select-overlay').classList.remove('show')" aria-label="Back to town">
+            Back to Town
+        </button>
     </div>
 </div>
 
@@ -1678,6 +1751,7 @@ const ENEMIES_BY_TIER = {
         { name:'Goblin Scout',      icon:'👺', level:1, hp:30,  atk:6,  xp:15, gold:[3,8],   floors:[1,5]  },
         { name:'Cave Rat',          icon:'🐀', level:1, hp:20,  atk:4,  xp:10, gold:[1,5],   floors:[1,5]  },
         { name:'Skeleton',          icon:'💀', level:1, hp:35,  atk:7,  xp:18, gold:[4,10],  floors:[1,7]  },
+        { name:'Halfling Thief',    icon:'🧑', level:1, hp:25,  atk:6,  xp:14, gold:[4,10],  floors:[1,7]  },
         { name:'Dark Slime',        icon:'🟢', level:1, hp:25,  atk:5,  xp:12, gold:[2,6],   floors:[1,8]  },
     ],
     // Floors 6-15: Darkness deepens
@@ -1685,24 +1759,27 @@ const ENEMIES_BY_TIER = {
         { name:'Varg Cultist',      icon:'🧟', level:2, hp:45,  atk:9,  xp:25, gold:[6,14],  floors:[6,20] },
         { name:'Stone Golem',       icon:'🗿', level:2, hp:60,  atk:8,  xp:30, gold:[8,18],  floors:[6,25] },
         { name:'Werewolf Scout',    icon:'🐺', level:2, hp:50,  atk:11, xp:28, gold:[7,15],  floors:[7,18] },
+        { name:'Orc Grunt',         icon:'👹', level:2, hp:55,  atk:10, xp:27, gold:[7,14],  floors:[6,20] },
         { name:'Shadow Wraith',     icon:'👻', level:2, hp:40,  atk:13, xp:32, gold:[5,12],  floors:[8,20] },
         { name:'Corrupted Knight',  icon:'🛡', level:3, hp:70,  atk:10, xp:40, gold:[10,20], floors:[10,22] },
     ],
     // Floors 16-30: Mid dungeon
     tier3: [
-        { name:'Blood Priest',      icon:'🩸', level:3, hp:65,  atk:14, xp:50, gold:[12,25], floors:[16,30] },
-        { name:'Ancient Golem',     icon:'⛏', level:3, hp:90,  atk:12, xp:55, gold:[15,28], floors:[18,35] },
+        { name:'Varg Shaman',       icon:'🔮', level:3, hp:65,  atk:14, xp:50, gold:[12,25], floors:[16,30] },
+        { name:'Ancient Golem',     icon:'⛏',  level:3, hp:90,  atk:12, xp:55, gold:[15,28], floors:[18,35] },
         { name:'Varg Berserker',    icon:'😈', level:3, hp:75,  atk:16, xp:52, gold:[13,26], floors:[20,35] },
-        { name:'Giant Cave Rat',    icon:'🐁', level:3, hp:80,  atk:13, xp:48, gold:[10,22], floors:[22,35] }, // Cave Rat returns
-        { name:'Bone Colossus',     icon:'💀', level:4, hp:100, atk:15, xp:60, gold:[18,32], floors:[25,40] }, // Skeleton evolved
+        { name:'Giant Cave Rat',    icon:'🐁', level:3, hp:80,  atk:13, xp:48, gold:[10,22], floors:[22,35] },
+        { name:'Stone Colossus',    icon:'🗿', level:4, hp:100, atk:15, xp:60, gold:[18,32], floors:[25,40] },
+        { name:'Orc Warlord',       icon:'👹', level:3, hp:85,  atk:15, xp:55, gold:[14,28], floors:[20,35] },
+        { name:'Corrupted Druid',   icon:'🌿', level:3, hp:70,  atk:13, xp:50, gold:[12,24], floors:[16,32] },
     ],
-    // Floors 31+: The abyss
+    // Floors 31+: The deeper dungeon
     tier4: [
         { name:'Dragon Spawn',      icon:'🐉', level:4, hp:120, atk:20, xp:80, gold:[25,45], floors:[31,99] },
         { name:"Varg's Chosen",     icon:'🔴', level:5, hp:150, atk:22, xp:95, gold:[30,55], floors:[35,99] },
-        { name:'Demon Soldier',     icon:'👿', level:4, hp:110, atk:18, xp:75, gold:[22,40], floors:[31,99] },
-        { name:'Void Slime',        icon:'⚫', level:4, hp:95,  atk:17, xp:70, gold:[20,38], floors:[33,99] }, // Dark Slime evolved
-        { name:'Abyssal Wraith',    icon:'🌑', level:5, hp:130, atk:24, xp:100,gold:[35,60], floors:[38,99] },
+        { name:'Corrupted Warrior', icon:'⚔',  level:4, hp:110, atk:18, xp:75, gold:[22,40], floors:[31,99] },
+        { name:'Void Slime',        icon:'⚫', level:4, hp:95,  atk:17, xp:70, gold:[20,38], floors:[33,99] },
+        { name:'Void Wraith',       icon:'🌑', level:5, hp:130, atk:24, xp:100,gold:[35,60], floors:[38,99] },
     ]
 };
 
@@ -1723,7 +1800,7 @@ const FLOOR_BOSSES = {
 const BOSS_POOL = Object.values(FLOOR_BOSSES);
 
 // -- STATE ------------------------------------------------
-const cStats = { str:5, int:5, dex:5, res:5, per:1, cha:1 };
+const cStats = { str:5, int:5, dex:5, res:5, per:5, cha:5 };
 const POOL = 20, BASE = 20;
 let character = null;
 let combat = null;
@@ -1793,7 +1870,7 @@ function announce(msg) {
 // so BASE accounts for that: 4 primary x 5 = 20, 2 secondary x 1 = 2, total = 22
 function pointsLeft() {
     const totalUsed = cStats.str + cStats.int + cStats.dex + cStats.res + cStats.per + cStats.cha;
-    const totalBase = 20 + 1 + 1; // primaries start at 5 each, secondaries at 1 each
+    const totalBase = 30; // all 6 stats start at 5 each = 30
     return POOL - (totalUsed - totalBase);
 }
 
@@ -1808,7 +1885,7 @@ function inc(s, label) {
 }
 
 function dec(s, label) {
-    if (cStats[s] > 1) { cStats[s]--; refreshCreate(); announce(`${label} decreased to ${cStats[s]}. ${pointsLeft()} points remaining.`); }
+    if (cStats[s] > 5) { cStats[s]--; refreshCreate(); announce(`${label} decreased to ${cStats[s]}. ${pointsLeft()} points remaining.`); }
 }
 
 function refreshCreate() {
@@ -1824,7 +1901,7 @@ function refreshCreate() {
         allBtns.forEach(btn => {
             const oc = btn.getAttribute('onclick') || '';
             if (oc.startsWith('inc') && oc.includes("'" + s + "'")) btn.disabled = left <= 0;
-            if (oc.startsWith('dec') && oc.includes("'" + s + "'")) btn.disabled = cStats[s] <= 1;
+            if (oc.startsWith('dec') && oc.includes("'" + s + "'")) btn.disabled = cStats[s] <= 5;
         });
     });
 }
@@ -1845,7 +1922,7 @@ function createCharacter() {
         inventory: [],
         clearedFloors: {},
         firstVisit: true, // triggers Luminous welcome message
-        equipment: { head:null, neck1:null, neck2:null, chest:null, wrists1:null, wrists2:null, hands:null, legs:null, feet:null, ring1:null, ring2:null, mainHand:null, offHand:null }
+        equipment: { head:null, neck1:null, neck2:null, mantle:null, chest:null, waist:null, arms:null, wrists1:null, wrists2:null, hands:null, legs:null, feet:null, ring1:null, ring2:null, mainHand:null, offHand:null }
     };
 
     saveGame();
@@ -2052,13 +2129,14 @@ function selectFloorCustom() {
 function startDungeonAtFloor(floor) {
     try {
         if (!character.clearedFloors) character.clearedFloors = {};
+        if (!character.dungeonHighest) character.dungeonHighest = {};
 
         initDungeonState(floor);
 
-        // Ensure highestFloor is tracked
-        if (!character.highestFloor || floor > character.highestFloor) {
-            character.highestFloor = floor;
-        }
+        // Track highest floor per dungeon
+        const current = character.dungeonHighest[currentDungeonId] || 1;
+        if (floor > current) character.dungeonHighest[currentDungeonId] = floor;
+        character.highestFloor = character.dungeonHighest[currentDungeonId];
 
         startNextEncounter();
     } catch(e) {
@@ -2078,13 +2156,13 @@ function startNextEncounter() {
 
     // Random chance of treasure chest instead of enemy (15% per encounter after first)
     // No chests on boss floors
-    const isBossFloor = dungeonState.floor % 10 === 0 && FLOOR_BOSSES[dungeonState.floor];
+    const isBossFloor = dungeonState.floor % 10 === 0 && (DUNGEONS[currentDungeonId]?.bosses || FLOOR_BOSSES)[dungeonState.floor];
     if (!isBossFloor && dungeonState.encountersDone > 0 && Math.random() < 0.15) {
         openTreasureChest();
         return;
     }
 
-    const enemy = pickEnemy();
+    const enemy = pickEnemyForDungeon();
 
     combat = {
         enemy,
@@ -2290,19 +2368,50 @@ function useCombatItem(itemId) {
 
 function roll(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
 
+// Calculate total stat bonuses from equipped gear
+function getEquipBonuses() {
+    const bonuses = { str:0, int:0, dex:0, res:0, arm:0, mp:0 };
+    if (!character || !character.equipment) return bonuses;
+    Object.values(character.equipment).forEach(itemId => {
+        if (!itemId) return;
+        const allItems = [
+            ...(SHOP_INVENTORY ? SHOP_INVENTORY.weapons || [] : []),
+            ...(SHOP_INVENTORY ? SHOP_INVENTORY.armor || [] : []),
+            ...(LOOT_POOL || [])
+        ];
+        const item = allItems.find(i => i.id === itemId);
+        if (!item || !item.stat) return;
+        const stat = item.stat;
+        if (stat.includes('STR +')) bonuses.str += parseInt(stat.match(/STR \+(\d+)/)[1]);
+        if (stat.includes('INT +')) bonuses.int += parseInt(stat.match(/INT \+(\d+)/)[1]);
+        if (stat.includes('DEX +')) bonuses.dex += parseInt(stat.match(/DEX \+(\d+)/)[1]);
+        if (stat.includes('ARM +')) bonuses.arm += parseInt(stat.match(/ARM \+(\d+)/)[1]);
+        if (stat.includes('MP +'))  bonuses.mp  += parseInt(stat.match(/MP \+(\d+)/)[1]);
+    });
+    return bonuses;
+}
+
 function calcPlayerDamage() {
-    const str = character.stats.str;
+    const equip = getEquipBonuses();
+    const str = character.stats.str + equip.str;
+    const dex = character.stats.dex + equip.dex;
     const base = roll(str * 2, str * 4);
-    const critChance = character.stats.dex * 3;
+    const critChance = dex * 3;
     const isCrit = Math.random() * 100 < critChance;
     return { damage: isCrit ? Math.floor(base * 1.5) : base, crit: isCrit };
 }
 
 function calcEnemyDamage() {
+    const equip = getEquipBonuses();
+    const dex = character.stats.dex + equip.dex;
+    const arm = equip.arm + Math.floor(character.stats.res / 2); // RES gives small passive armor
     const base = roll(Math.floor(combat.enemy.atk * 0.8), Math.floor(combat.enemy.atk * 1.3));
-    const dodgeChance = character.stats.dex * 2;
+    const dodgeChance = dex * 2;
     const dodged = Math.random() * 100 < dodgeChance;
-    const reduced = combat.defending ? Math.floor(base * 0.5) : base;
+    const afterArmor = Math.max(1, base - arm);
+    const afterWeaken = combat.enemyWeakened ? Math.floor(afterArmor * 0.6) : afterArmor;
+    combat.enemyWeakened = false;
+    const reduced = combat.defending ? Math.floor(afterWeaken * 0.5) : afterWeaken;
     return { damage: dodged ? 0 : reduced, dodged };
 }
 
@@ -2361,6 +2470,16 @@ function enemyTurn() {
         Object.keys(combat.cooldowns).forEach(id => {
             if (combat.cooldowns[id] > 0) combat.cooldowns[id]--;
         });
+    }
+
+    // Apply acid corrosion bonus damage
+    if (combat.enemyAcid) {
+        const acidDmg = combat.enemyAcid;
+        combat.enemy.hp -= acidDmg;
+        combat.enemyAcid = 0;
+        addLog(`Acid corrosion deals ${acidDmg} additional damage to the ${combat.enemy.name}!`, 'player');
+        setEnemyBar(combat.enemy.hp, combat.enemy.maxHp);
+        if (combat.enemy.hp <= 0) { setTimeout(victory, 600); return; }
     }
 
     // Frost bolt freeze -- enemy skips their turn
@@ -2434,7 +2553,7 @@ function victory() {
         character.level++;
         character.xpNext = xpToNextLevel(character.level);
         character.unspentPoints = (character.unspentPoints || 0) + 4;
-        character.maxHp += 20;
+        character.maxHp += 10;
         character.maxMp += 5;
         levelsGained++;
     }
@@ -2575,7 +2694,7 @@ function showFloorClearOverlay() {
             character.level++;
             character.xpNext = xpToNextLevel(character.level);
             character.unspentPoints = (character.unspentPoints || 0) + 4;
-            character.maxHp += 20;
+            character.maxHp += 10;
             character.maxMp += 5;
             bonusLevels++;
         }
@@ -2635,8 +2754,11 @@ function floorDescend() {
     dungeonState.encountersDone = 0;
     dungeonState.wandering = false;
     dungeonState.bossDefeated = false;
-    // Track highest floor reached
-    if (!character.highestFloor || dungeonState.floor > character.highestFloor) {
+    // Track highest floor per dungeon
+    if (!character.dungeonHighest) character.dungeonHighest = {};
+    const current = character.dungeonHighest[currentDungeonId] || 1;
+    if (dungeonState.floor > current) {
+        character.dungeonHighest[currentDungeonId] = dungeonState.floor;
         character.highestFloor = dungeonState.floor;
     }
     character.dungeonState = { ...dungeonState };
@@ -2718,7 +2840,8 @@ const LOOT_POOL = [
     { id:'bone_club',         icon:'🦴', name:'Bone Club',             desc:'Fashioned from monster bone.',                          stat:'STR +2',  slot:'mainHand', tags:['One-Handed','Club'],         stackable:false },
     { id:'cracked_bow',       icon:'🏹', name:'Cracked Bow',           desc:'Damaged but still functional.',                         stat:'DEX +1',  slot:'mainHand', tags:['Two-Handed','Bow'],          stackable:false },
     // Dungeon-only weapons
-    { id:'crossbow',          icon:'🏹', name:'Crossbow',              desc:'A powerful mechanical bow. Hits hard from range.',       stat:'DEX +4',  slot:'mainHand', tags:['Two-Handed','Crossbow'],     stackable:false },
+    { id:'battle_axe',        icon:'🪓', name:'Battle Axe',            desc:'A massive two-handed axe. Devastating in the right hands.',  stat:'STR +5',  slot:'mainHand', tags:['Two-Handed','Axe'],          stackable:false },
+    { id:'throwing_axe',      icon:'🪓', name:'Throwing Axe',          desc:'Perfectly weighted for throwing. Deadly at any range.',      stat:'DEX +4',  slot:'mainHand', tags:['One-Handed','Axe'],          stackable:false },
     { id:'great_maul',        icon:'🔨', name:'Great Maul',            desc:'A massive two-handed war hammer. Devastating power.',    stat:'STR +6',  slot:'mainHand', tags:['Two-Handed','Maul'],         stackable:false },
     { id:'flintlock_rifle',   icon:'🔫', name:'Flintlock Rifle',       desc:'A longer, deadlier gun. Favored by sharpshooters.',      stat:'DEX +5',  slot:'mainHand', tags:['Two-Handed','Gun'],          stackable:false },
     { id:'wand_of_sparks',    icon:'🪄', name:'Wand of Sparks',        desc:'Crackles with arcane energy. Amplifies spells.',         stat:'INT +4',  slot:'offHand',  tags:['Off-Hand','Wand'],           stackable:false },
@@ -2734,7 +2857,19 @@ const LOOT_POOL = [
     { id:'wolf_hide_vest',    icon:'🐺', name:'Wolf Hide Vest',        desc:'Tanned from a dungeon wolf. Tough and flexible.',        stat:'ARM +4',  slot:'chest',    tags:['Medium','Chest'],            stackable:false, type:'medium' },
     { id:'cultist_robes',     icon:'🧟', name:'Varg Cultist Robes',    desc:'Dark robes torn from a cultist. Stinks of corruption.',  stat:'INT +3',  slot:'chest',    tags:['Light','Chest'],             stackable:false, type:'light'  },
     { id:'stone_plate',       icon:'🗿', name:'Stone Plate',           desc:'Armor forged from golem stone. Heavy as the earth.',     stat:'ARM +7',  slot:'chest',    tags:['Heavy','Chest'],             stackable:false, type:'heavy'  },
-    { id:'shadow_hood',       icon:'👤', name:'Shadow Wraith Hood',    desc:'Woven from shadow. Makes you harder to hit.',            stat:'DEX +3',  slot:'head',     tags:['Light','Head'],              stackable:false, type:'light'  },
+    { id:'tower_shield',      icon:'🛡', name:'Tower Shield',          desc:'A massive shield covering most of your body.',           stat:'ARM +8',  slot:'offHand',  tags:['Shield','Off-Hand'],        stackable:false, type:'heavy'  },
+    { id:'void_shield',       icon:'🌑', name:'Void Shield',           desc:'A shield crackling with void energy.',                   stat:'ARM +6',  slot:'offHand',  tags:['Shield','Off-Hand'],        stackable:false, type:'medium' },
+    { id:'wolf_fang_pendant', icon:'🐺', name:'Wolf Fang Pendant',     desc:'A pendant made from a dungeon wolf fang.',               stat:'STR +3',  slot:'neck1',    tags:['Neck'],                     stackable:false },
+    { id:'dark_crystal_pendant',icon:'💎',name:'Dark Crystal Pendant', desc:'A pendant set with a pulsing dark crystal.',             stat:'INT +3',  slot:'neck1',    tags:['Neck'],                     stackable:false },
+    { id:'void_ring',         icon:'💍', name:'Void Ring',             desc:'A ring infused with void energy.',                       stat:'INT +4',  slot:'ring1',    tags:['Ring'],                     stackable:false },
+    { id:'shadow_ring',       icon:'💍', name:'Shadow Ring',           desc:'A ring that makes you harder to see.',                   stat:'DEX +4',  slot:'ring1',    tags:['Ring'],                     stackable:false },
+    { id:'varg_ring',         icon:'💍', name:"Varg's Signet",         desc:'A ring bearing the mark of Varg. Radiates dark power.',  stat:'STR +4',  slot:'ring1',    tags:['Ring'],                     stackable:false },
+    { id:'shadow_wraps',      icon:'👤', name:'Shadow Wraps',          desc:'Wraps woven from shadow cloth.',                         stat:'DEX +3',  slot:'wrists1',  tags:['Light','Wrists'],           stackable:false, type:'light'  },
+    { id:'varg_pauldrons',   icon:'😈', name:"Varg's Pauldrons",     desc:'Cursed shoulder armor bearing the mark of Varg.',        stat:'ARM +6',  slot:'mantle',   tags:['Heavy','Mantle'],   stackable:false, type:'heavy'  },
+    { id:'bone_armguards',   icon:'🦴', name:'Bone Armguards',       desc:'Armguards carved from monster bone.',                    stat:'ARM +3',  slot:'arms',     tags:['Medium','Arms'],    stackable:false, type:'medium' },
+    { id:'void_bracers',     icon:'⚫', name:'Void Bracers',         desc:'Bracers crackling with void energy.',                    stat:'ARM +5',  slot:'arms',     tags:['Heavy','Arms'],     stackable:false, type:'heavy'  },
+    { id:'wolf_hide_belt',   icon:'🐺', name:'Wolf Hide Belt',       desc:'A belt cut from dungeon wolf hide.',                     stat:'ARM +3',  slot:'waist',    tags:['Medium','Waist'],   stackable:false, type:'medium' },
+    { id:'cultist_sash',     icon:'🧟', name:'Cultist Sash',         desc:'A dark sash worn by Varg cultists.',                     stat:'MP +6',   slot:'waist',    tags:['Light','Waist'],    stackable:false, type:'light'  },
     { id:'dragon_scale_helm', icon:'🐉', name:'Dragon Scale Helm',     desc:'Scales of a dragon spawn. Resistant to all damage.',     stat:'ARM +6',  slot:'head',     tags:['Heavy','Head'],              stackable:false, type:'heavy'  },
     { id:'wraith_wraps',      icon:'👻', name:'Wraith Wraps',          desc:'Ghostly wrappings from a shadow wraith.',                stat:'MP +8',   slot:'wrists1',  tags:['Light','Wrists'],            stackable:false, type:'light'  },
     // -- CONSUMABLES --
@@ -2756,16 +2891,16 @@ const ENEMY_LOOT = {
     'Dark Slime':        [{ id:'dark_crystal', chance:45 }, { id:'mana_potion', chance:20 }],
     'Varg Cultist':      [{ id:'dark_crystal', chance:40 }, { id:'cultist_robes', chance:15 }, { id:'health_potion', chance:25 }],
     'Stone Golem':       [{ id:'iron_shard', chance:40 }, { id:'stone_plate', chance:10 }, { id:'iron_scrap', chance:55 }],
-    'Werewolf Scout':    [{ id:'wolf_fang', chance:60 }, { id:'wolf_hide_vest', chance:15 }, { id:'hide_scraps', chance:30 }],
-    'Shadow Wraith':     [{ id:'dark_crystal', chance:55 }, { id:'shadow_hood', chance:12 }, { id:'wraith_wraps', chance:10 }],
-    'Corrupted Knight':  [{ id:'varg_blade', chance:15 }, { id:'iron_shard', chance:45 }, { id:'health_potion', chance:20 }],
+    'Werewolf Scout':    [{ id:'wolf_fang', chance:60 }, { id:'throwing_axe', chance:12 }, { id:'hide_scraps', chance:30 }],
+    'Shadow Wraith':     [{ id:'dark_crystal', chance:55 }, { id:'shadow_ring', chance:12 }, { id:'shadow_wraps', chance:10 }],
+    'Corrupted Knight':  [{ id:'varg_ring', chance:10 }, { id:'iron_shard', chance:45 }, { id:'health_potion', chance:20 }],
     'Blood Priest':      [{ id:'dark_crystal', chance:50 }, { id:'wand_of_sparks', chance:10 }, { id:'mana_potion', chance:35 }],
     'Ancient Golem':     [{ id:'stone_plate', chance:15 }, { id:'iron_shard', chance:55 }, { id:'iron_scrap', chance:50 }],
-    'Varg Berserker':    [{ id:'wolf_fang', chance:45 }, { id:'great_maul', chance:10 }, { id:'iron_scrap', chance:40 }],
+    'Varg Berserker':    [{ id:'wolf_fang', chance:45 }, { id:'battle_axe', chance:12 }, { id:'iron_scrap', chance:40 }],
     'Giant Cave Rat':    [{ id:'wolf_fang', chance:65 }, { id:'wolf_hide_vest', chance:20 }, { id:'hide_scraps', chance:40 }],
     'Bone Colossus':     [{ id:'bone_club', chance:45 }, { id:'bone_dagger', chance:30 }, { id:'iron_shard', chance:45 }],
-    'Dragon Spawn':      [{ id:'dragon_scale', chance:60 }, { id:'dragon_scale_helm', chance:12 }, { id:'dark_crystal', chance:40 }],
-    "Varg's Chosen":     [{ id:'dark_crystal', chance:70 }, { id:'void_essence', chance:35 }, { id:'varg_blade', chance:20 }],
+    'Dragon Spawn':      [{ id:'dragon_scale', chance:60 }, { id:'tower_shield', chance:10 }, { id:'dark_crystal', chance:40 }],
+    "Varg's Chosen":     [{ id:'dark_crystal', chance:70 }, { id:'void_essence', chance:35 }, { id:'varg_ring', chance:15 }],
     'Demon Soldier':     [{ id:'iron_shard', chance:60 }, { id:'void_essence', chance:25 }, { id:'dark_crystal', chance:45 }],
     'Void Slime':        [{ id:'void_essence', chance:55 }, { id:'dark_crystal', chance:60 }, { id:'mana_potion', chance:30 }],
     'Abyssal Wraith':    [{ id:'void_essence', chance:65 }, { id:'shadow_staff', chance:12 }, { id:'wraith_wraps', chance:15 }],
@@ -2835,6 +2970,79 @@ const SLOT_MAP = {
 let detailItem = null;
 let detailInvIndex = null;
 
+// -- ACTION SHEET / FILTER SYSTEM ------------------------
+
+let invFilter = 'all';
+let invSort = 'default';
+let shopArmorFilter = 'all';
+let shopSort = 'default';
+
+function openActionSheet(title, options) {
+    document.getElementById('action-sheet-title').textContent = title;
+    const container = document.getElementById('action-sheet-options');
+    container.innerHTML = '';
+    options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'begin-btn';
+        btn.style.cssText = 'margin:0;padding:14px;font-size:0.9em;' + (opt.active ? 'border-color:var(--gold);color:var(--gold)' : 'background:var(--bg-mid);color:var(--text)');
+        btn.textContent = (opt.active ? '✓ ' : '') + opt.label;
+        btn.setAttribute('aria-label', opt.label + (opt.active ? ', currently selected' : ''));
+        btn.onclick = () => { opt.action(); closeActionSheet(); };
+        container.appendChild(btn);
+    });
+    document.getElementById('action-sheet-overlay').classList.add('show');
+    announce(title + '. Choose an option.');
+}
+
+function closeActionSheet() {
+    document.getElementById('action-sheet-overlay').classList.remove('show');
+}
+
+function openInventoryFilter() {
+    openActionSheet('Filter & Sort Bag', [
+        { label:'All Items',      active: invFilter==='all',       action:()=>{ invFilter='all'; renderBag(); } },
+        { label:'Weapons',        active: invFilter==='weapon',    action:()=>{ invFilter='weapon'; renderBag(); } },
+        { label:'Light Armor',    active: invFilter==='light',     action:()=>{ invFilter='light'; renderBag(); } },
+        { label:'Medium Armor',   active: invFilter==='medium',    action:()=>{ invFilter='medium'; renderBag(); } },
+        { label:'Heavy Armor',    active: invFilter==='heavy',     action:()=>{ invFilter='heavy'; renderBag(); } },
+        { label:'Consumables',    active: invFilter==='consumable',action:()=>{ invFilter='consumable'; renderBag(); } },
+        { label:'Materials',      active: invFilter==='material',  action:()=>{ invFilter='material'; renderBag(); } },
+        { label:'Sort: A to Z',   active: invSort==='az',          action:()=>{ invSort='az'; renderBag(); } },
+        { label:'Sort: Default',  active: invSort==='default',     action:()=>{ invSort='default'; renderBag(); } },
+    ]);
+}
+
+function openShopFilter() {
+    const activeTab = document.querySelector('#screen-shop .shop-tab.active');
+    const isArmor = activeTab && activeTab.id === 'tab-armor';
+
+    const options = [
+        { label:'Sort: Default',         active: shopSort==='default',   action:()=>{ shopSort='default'; reshopCurrentTab(); } },
+        { label:'Sort: Price Low-High',  active: shopSort==='price_asc', action:()=>{ shopSort='price_asc'; reshopCurrentTab(); } },
+        { label:'Sort: Price High-Low',  active: shopSort==='price_desc',action:()=>{ shopSort='price_desc'; reshopCurrentTab(); } },
+        { label:'Sort: Name A-Z',        active: shopSort==='az',        action:()=>{ shopSort='az'; reshopCurrentTab(); } },
+    ];
+
+    if (isArmor) {
+        options.push(
+            { label:'Filter: All Armor',   active: shopArmorFilter==='all',   action:()=>{ shopArmorFilter='all'; reshopCurrentTab(); } },
+            { label:'Filter: Light Only',  active: shopArmorFilter==='light', action:()=>{ shopArmorFilter='light'; reshopCurrentTab(); } },
+            { label:'Filter: Medium Only', active: shopArmorFilter==='medium',action:()=>{ shopArmorFilter='medium'; reshopCurrentTab(); } },
+            { label:'Filter: Heavy Only',  active: shopArmorFilter==='heavy', action:()=>{ shopArmorFilter='heavy'; reshopCurrentTab(); } },
+        );
+    }
+
+    openActionSheet('Filter & Sort Shop', options);
+}
+
+function reshopCurrentTab() {
+    const activeTab = document.querySelector('#screen-shop .shop-tab.active');
+    if (!activeTab) return;
+    renderShopTab(activeTab.id.replace('tab-', ''));
+}
+
+// -- INVENTORY --------------------------------------------
+
 function openInventory() {
     renderEquipSlots();
     renderBag();
@@ -2873,16 +3081,31 @@ function renderBag() {
     const bag = document.getElementById('inv-bag');
 
     // Only show items NOT currently equipped
-    const items = character.inventory.filter(item => !isItemEquipped(item.id));
+    let items = character.inventory.filter(item => !isItemEquipped(item.id));
+
+    // Apply filter
+    if (invFilter !== 'all') {
+        items = items.filter(item => {
+            if (invFilter === 'weapon') return item.slot === 'mainHand' || item.slot === 'offHand';
+            if (invFilter === 'light') return item.type === 'light';
+            if (invFilter === 'medium') return item.type === 'medium';
+            if (invFilter === 'heavy') return item.type === 'heavy';
+            if (invFilter === 'consumable') return item.stackable && item.tags && item.tags.includes('Consumable');
+            if (invFilter === 'material') return item.stackable && item.tags && item.tags.includes('Material');
+            return true;
+        });
+    }
+
+    // Apply sort
+    if (invSort === 'az') items = [...items].sort((a,b) => a.name.localeCompare(b.name));
 
     if (items.length === 0) {
-        bag.innerHTML = '<div class="inv-empty">Your bag is empty. Visit the shop to buy gear and items.</div>';
+        bag.innerHTML = '<div class="inv-empty">' + (invFilter !== 'all' ? 'No items match this filter.' : 'Your bag is empty. Visit the shop to buy gear and items.') + '</div>';
         return;
     }
 
     bag.innerHTML = '';
     items.forEach((item) => {
-        // Get real index in full inventory array for detail lookup
         const realIndex = character.inventory.findIndex(i => i.id === item.id);
         const qtyBadge = item.stackable && item.quantity > 1
             ? `<span class="inv-item-badge qty-badge">x${item.quantity}</span>` : '';
@@ -3074,10 +3297,10 @@ const OLIVIA_RETURN = [
 ];
 
 const OLIVIA_FULL_HEALTH = [
-    "You look fine to me. Come back when you need me.",
-    "You're in good shape, traveler. Save your gold for the dungeon.",
-    "Nothing to fix here. You're at full strength.",
-    "I'd be taking your gold for nothing. Come back when you're hurt."
+    "You look fine to me. No wounds to speak of. But if you need to manage your gold, the vault is open.",
+    "You're in good shape, traveler. Save your gold for the dungeon. The vault's here if you need it though.",
+    "Nothing to fix here. You're at full strength. Feel free to use the vault while you're here.",
+    "I'd be taking your gold for nothing. Come back when you're hurt. Vault's open anytime though.",
 ];
 
 function openInn() {
@@ -3090,6 +3313,7 @@ function openInn() {
     document.getElementById('inn-gold').textContent = character.gold;
     document.getElementById('inn-hp').textContent = `${character.hp} / ${character.maxHp}`;
     document.getElementById('inn-mp').textContent = `${character.mp} / ${character.maxMp}`;
+    updateBankDisplay();
 
     // Pick dialogue
     let quote;
@@ -3143,7 +3367,125 @@ function innRest() {
     announce(`You rest at the inn. HP and MP fully restored. Olivia says: There you go. Good as new. May Fennyx keep you safe out there.`);
 }
 
-// -- TRAINING GROUNDS -------------------------------------
+// -- UNEQUIPPED WARNING -----------------------------------
+let pendingDungeonId = null;
+
+function openDungeonSelect() {
+    if (!character) return;
+
+    // Check if player has a weapon equipped
+    if (!character.equipment.mainHand) {
+        document.getElementById('unequipped-overlay').classList.add('show');
+        announce('Warning. You have no weapon equipped. Enter anyway or equip first.');
+        return;
+    }
+
+    showDungeonSelectScreen();
+}
+
+function closeUnequippedWarning() {
+    document.getElementById('unequipped-overlay').classList.remove('show');
+    announce('Returning to town. Visit your inventory to equip a weapon.');
+}
+
+function confirmEnterUnequipped() {
+    document.getElementById('unequipped-overlay').classList.remove('show');
+    showDungeonSelectScreen();
+}
+
+function showDungeonSelectScreen() {
+    const list = document.getElementById('dungeon-card-list');
+    list.innerHTML = '';
+
+    Object.values(DUNGEONS).forEach(dungeon => {
+        const highest = (character.dungeonHighest || {})[dungeon.id] || 1;
+        const card = document.createElement('div');
+        card.style.cssText = 'background:var(--bg-card);border:1px solid #2a2a44;border-radius:12px;padding:16px;cursor:pointer;transition:all 0.15s;';
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', `${dungeon.name}. ${dungeon.desc}. Highest floor: ${highest}.`);
+        card.innerHTML = `
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                <span style="font-size:2em" aria-hidden="true">${dungeon.icon}</span>
+                <div>
+                    <div style="font-family:'Cinzel',serif;font-size:1em;font-weight:700;color:${dungeon.color}">${dungeon.name}</div>
+                    <div style="font-size:0.75em;color:var(--text-dim);font-style:italic">${dungeon.flavor}</div>
+                </div>
+                <div style="margin-left:auto;font-family:'Cinzel',serif;font-size:0.7em;color:var(--text-dim)">Floor ${highest}</div>
+            </div>
+            <div style="font-size:0.9em;color:var(--text-dim);line-height:1.6">${dungeon.desc}</div>
+        `;
+        card.onclick = () => selectDungeon(dungeon.id);
+        card.onkeydown = (e) => { if (e.key === 'Enter') selectDungeon(dungeon.id); };
+        card.onmouseenter = () => card.style.borderColor = dungeon.color;
+        card.onmouseleave = () => card.style.borderColor = '#2a2a44';
+        list.appendChild(card);
+    });
+
+    document.getElementById('dungeon-select-overlay').classList.add('show');
+    announce('Dungeon select. Four dungeons available. Choose one to enter.');
+}
+
+// -- BANK -------------------------------------------------
+
+function bankDeposit() {
+    const input = document.getElementById('bank-amount');
+    const amount = parseInt(input.value);
+    if (!amount || amount < 1) { showToast('Enter a valid amount.'); return; }
+    if (amount > character.gold) { showToast('Not enough gold on hand.'); return; }
+
+    character.gold -= amount;
+    character.bankedGold = (character.bankedGold || 0) + amount;
+    saveGame(); populateUI();
+    updateBankDisplay();
+    input.value = '';
+    showToast(`Deposited ${amount} gold.`);
+    announce(`Deposited ${amount} gold. Banked total: ${character.bankedGold}.`);
+}
+
+function bankWithdraw() {
+    const input = document.getElementById('bank-amount');
+    const amount = parseInt(input.value);
+    if (!amount || amount < 1) { showToast('Enter a valid amount.'); return; }
+    if (amount > (character.bankedGold || 0)) { showToast('Not enough gold in vault.'); return; }
+
+    character.bankedGold -= amount;
+    character.gold += amount;
+    saveGame(); populateUI();
+    updateBankDisplay();
+    input.value = '';
+    showToast(`Withdrew ${amount} gold.`);
+    announce(`Withdrew ${amount} gold. Banked total: ${character.bankedGold}.`);
+}
+
+function bankDepositAll() {
+    if (!character || character.gold <= 0) { showToast('No gold to deposit.'); return; }
+    const amount = character.gold;
+    character.bankedGold = (character.bankedGold || 0) + amount;
+    character.gold = 0;
+    saveGame(); populateUI();
+    updateBankDisplay();
+    showToast(`Deposited all ${amount} gold.`);
+    announce(`Deposited all ${amount} gold. Vault total: ${character.bankedGold}.`);
+}
+
+function bankWithdrawAll() {
+    if (!character || (character.bankedGold || 0) <= 0) { showToast('No gold in vault.'); return; }
+    const amount = character.bankedGold;
+    character.gold += amount;
+    character.bankedGold = 0;
+    saveGame(); populateUI();
+    updateBankDisplay();
+    showToast(`Withdrew all ${amount} gold.`);
+    announce(`Withdrew all ${amount} gold from vault.`);
+}
+
+function updateBankDisplay() {
+    const el = document.getElementById('inn-banked');
+    if (el) el.textContent = character.bankedGold || 0;
+    const goldEl = document.getElementById('inn-gold');
+    if (goldEl) goldEl.textContent = character.gold;
+}
 
 const SKILLS_DATA = [
     {
@@ -3187,6 +3529,28 @@ const SKILLS_DATA = [
             return { damage:0, log:`You brace yourself. The next hit will deal 75% less damage!`, type:'defend', noEnemyDamage:true };
         }
     },
+    {
+        id:'overpower', icon:'💪', name:'Overpower', type:'skill',
+        desc:'Force the enemy back with overwhelming strength -- 160% damage and weakens their next attack.',
+        stat:'STR x 1.6 + Weaken', price:50, cooldown:1, mpCost:0,
+        tags:['Skill','Physical'],
+        use:(c,enemy) => {
+            const dmg = Math.floor(roll(c.stats.str*2, c.stats.str*4) * 1.6);
+            combat.enemyWeakened = true;
+            return { damage:dmg, log:`Overpower! You force the ${enemy.name} back for ${dmg} damage! Their next attack is weakened!`, type:'player' };
+        }
+    },
+    {
+        id:'shield_bash', icon:'🛡', name:'Shield Bash', type:'skill',
+        desc:'Slam into the enemy with brute force -- deals damage and stuns them, skipping their next turn.',
+        stat:'STR x 1.0 + Stun', price:50, cooldown:1, mpCost:0,
+        tags:['Skill','Physical'],
+        use:(c,enemy) => {
+            const dmg = roll(c.stats.str*2, c.stats.str*3);
+            combat.enemyFrozen = true;
+            return { damage:dmg, log:`Shield Bash! You stun the ${enemy.name} for ${dmg} damage! They lose their next turn!`, type:'player' };
+        }
+    },
 ];
 
 const SPELLS_DATA = [
@@ -3196,7 +3560,8 @@ const SPELLS_DATA = [
         stat:'INT x 3-5', price:50, cooldown:1, mpCost:15,
         tags:['Spell','Fire'],
         use:(c,enemy) => {
-            const dmg = roll(c.stats.int*3, c.stats.int*5);
+            const int = c.stats.int + getEquipBonuses().int;
+            const dmg = roll(int*3, int*5);
             return { damage:dmg, log:`Fireball! You scorch the ${enemy.name} for ${dmg} magic damage!`, type:'player' };
         }
     },
@@ -3206,7 +3571,8 @@ const SPELLS_DATA = [
         stat:'INT x 2-3 + Freeze', price:50, cooldown:1, mpCost:20,
         tags:['Spell','Ice'],
         use:(c,enemy) => {
-            const dmg = roll(c.stats.int*2, c.stats.int*3);
+            const int = c.stats.int + getEquipBonuses().int;
+            const dmg = roll(int*2, int*3);
             combat.enemyFrozen = true;
             return { damage:dmg, log:`Frost Bolt! The ${enemy.name} takes ${dmg} damage and is frozen -- they lose their next turn!`, type:'player' };
         }
@@ -3217,10 +3583,45 @@ const SPELLS_DATA = [
         stat:'INT x 8 HP restored', price:50, cooldown:1, mpCost:18,
         tags:['Spell','Healing'],
         use:(c,enemy) => {
-            const restore = c.stats.int * 8;
+            const int = c.stats.int + getEquipBonuses().int;
+            const restore = int * 8;
             combat.playerHp = Math.min(c.maxHp, combat.playerHp + restore);
             c.hp = combat.playerHp;
             return { damage:0, log:`Healing Light! Fennyx's grace restores ${restore} HP!`, type:'defend', noEnemyDamage:true };
+        }
+    },
+    {
+        id:'acid_dart', icon:'🧪', name:'Acid Dart', type:'spell',
+        desc:'Launch a dart of acid that deals damage now and corrodes the enemy for bonus damage next turn.',
+        stat:'INT x 2 + Corrode', price:50, cooldown:1, mpCost:16,
+        tags:['Spell','Poison'],
+        use:(c,enemy) => {
+            const int = c.stats.int + getEquipBonuses().int;
+            const dmg = roll(int*2, int*3);
+            combat.enemyAcid = Math.floor(int * 1.5); // bonus damage next turn
+            return { damage:dmg, log:`Acid Dart! The ${enemy.name} takes ${dmg} damage and is corroded! They will take more damage next turn!`, type:'player' };
+        }
+    },
+    {
+        id:'lightning_bolt', icon:'⚡', name:'Lightning Bolt', type:'spell',
+        desc:'Call down a bolt of lightning dealing heavy magic damage.',
+        stat:'INT x 4-6', price:50, cooldown:1, mpCost:22,
+        tags:['Spell','Lightning'],
+        use:(c,enemy) => {
+            const int = c.stats.int + getEquipBonuses().int;
+            const dmg = roll(int*4, int*6);
+            return { damage:dmg, log:`Lightning Bolt! A bolt of lightning strikes the ${enemy.name} for ${dmg} damage!`, type:'player' };
+        }
+    },
+    {
+        id:'solar_beam', icon:'☀', name:'Solar Beam', type:'spell',
+        desc:'Channel the power of the sun into a devastating beam. The most powerful spell available.',
+        stat:'INT x 6-9', price:50, cooldown:1, mpCost:35,
+        tags:['Spell','Light'],
+        use:(c,enemy) => {
+            const int = c.stats.int + getEquipBonuses().int;
+            const dmg = roll(int*6, int*9);
+            return { damage:dmg, log:`SOLAR BEAM! Blinding light obliterates the ${enemy.name} for ${dmg} massive magic damage!`, type:'player' };
         }
     },
 ];
@@ -3549,6 +3950,7 @@ const SHOP_INVENTORY = {
     weapons: [
         { id:'iron_sword',    icon:'⚔',  name:'Iron Sword',       desc:'A reliable one-handed blade. Steady and true.',         price:40,  tags:['One-Handed','Sword'],   stat:'STR +2',  slot:'mainHand' },
         { id:'war_hammer',    icon:'🔨',  name:'War Hammer',        desc:'Heavy and brutal. Shatters armor with ease.',           price:55,  tags:['One-Handed','Hammer'],  stat:'STR +3',  slot:'mainHand' },
+        { id:'hand_axe',      icon:'🪓',  name:'Hand Axe',          desc:'A balanced one-handed axe. Fast and effective.',        price:45,  tags:['One-Handed','Axe'],     stat:'STR +3',  slot:'mainHand' },
         { id:'dagger',        icon:'🗡',  name:'Dagger',            desc:'Fast and precise. Favored by those who strike first.',  price:25,  tags:['One-Handed','Dagger'],  stat:'DEX +2',  slot:'mainHand' },
         { id:'hunting_bow',   icon:'🏹',  name:'Hunting Bow',       desc:'A sturdy bow carved from ash wood.',                   price:45,  tags:['Two-Handed','Bow'],     stat:'DEX +2',  slot:'mainHand' },
         { id:'flintlock',     icon:'🔫',  name:'Flintlock Pistol',  desc:'A surprising find. Loud, deadly, effective.',          price:70,  tags:['One-Handed','Gun'],     stat:'DEX +3',  slot:'mainHand' },
@@ -3571,10 +3973,36 @@ const SHOP_INVENTORY = {
         { id:'leather_leggings',icon:'👖', name:'Leather Leggings',     desc:'Sturdy leggings cut from thick hide.',                price:35,  tags:['Medium','Legs'],    stat:'ARM +2',  type:'medium', slot:'legs'   },
         { id:'iron_greaves',    icon:'🦾', name:'Iron Greaves',         desc:'Solid iron leg guards. Heavy but worth it.',          price:55,  tags:['Heavy','Legs'],     stat:'ARM +5',  type:'heavy',  slot:'legs'   },
         { id:'cloth_trousers',  icon:'👘', name:'Cloth Trousers',       desc:'Flowing fabric trousers. Light and comfortable.',     price:18,  tags:['Light','Legs'],     stat:'MP +6',   type:'light',  slot:'legs'   },
-        // Feet
-        { id:'leather_boots',   icon:'👢', name:'Leather Boots',        desc:'Well-worn boots. A traveler\'s best friend.',         price:28,  tags:['Medium','Feet'],    stat:'DEX +1',  type:'medium', slot:'feet'   },
+        // Mantle
+        { id:'wool_mantle',     icon:'🧣', name:'Wool Mantle',          desc:'A thick wool mantle draped over the shoulders.',         price:22,  tags:['Light','Mantle'],    stat:'ARM +2',  type:'light',  slot:'mantle' },
+        { id:'leather_mantle',  icon:'🧥', name:'Leather Mantle',       desc:'Cured leather draped across the shoulders and back.',    price:35,  tags:['Medium','Mantle'],   stat:'ARM +3',  type:'medium', slot:'mantle' },
+        { id:'iron_pauldrons',  icon:'⚔',  name:'Iron Pauldrons',       desc:'Heavy iron shoulder guards. Built for war.',             price:55,  tags:['Heavy','Mantle'],    stat:'ARM +5',  type:'heavy',  slot:'mantle' },
+        // Arms
+        { id:'cloth_sleeves',   icon:'👘', name:'Cloth Sleeves',         desc:'Loose cloth sleeves. Light and flexible.',               price:16,  tags:['Light','Arms'],      stat:'MP +4',   type:'light',  slot:'arms'   },
+        { id:'leather_bracers', icon:'🥋', name:'Leather Bracers',       desc:'Hardened leather guards protecting the forearms.',       price:28,  tags:['Medium','Arms'],     stat:'ARM +2',  type:'medium', slot:'arms'   },
+        { id:'iron_armguards',  icon:'🦾', name:'Iron Armguards',        desc:'Solid iron guards strapped to the forearms.',            price:45,  tags:['Heavy','Arms'],      stat:'ARM +4',  type:'heavy',  slot:'arms'   },
+        // Waist
+        { id:'cloth_sash',      icon:'🎀', name:'Cloth Sash',            desc:'A simple cloth sash tied at the waist.',                 price:14,  tags:['Light','Waist'],     stat:'MP +5',   type:'light',  slot:'waist'  },
+        { id:'leather_belt',    icon:'👔', name:'Leather Belt',          desc:'A sturdy belt of thick leather.',                        price:24,  tags:['Medium','Waist'],    stat:'ARM +2',  type:'medium', slot:'waist'  },
+        { id:'iron_girdle',     icon:'⚙',  name:'Iron Girdle',           desc:'A reinforced iron waistguard. Solid protection.',        price:42,  tags:['Heavy','Waist'],     stat:'ARM +3',  type:'heavy',  slot:'waist'  },
         { id:'iron_boots',      icon:'🥾', name:'Iron Boots',           desc:'Heavy iron boots. Slow but protective.',              price:48,  tags:['Heavy','Feet'],     stat:'ARM +3',  type:'heavy',  slot:'feet'   },
         { id:'cloth_slippers',  icon:'🩴', name:'Cloth Slippers',       desc:'Soft slippers. Silent as shadow.',                    price:16,  tags:['Light','Feet'],     stat:'MP +4',   type:'light',  slot:'feet'   },
+        // Off Hand -- Shields
+        { id:'wooden_shield',   icon:'🛡', name:'Wooden Shield',         desc:'A round wooden shield. Light and reliable.',          price:30,  tags:['Shield','Off-Hand'], stat:'ARM +3',  type:'light',  slot:'offHand' },
+        { id:'iron_shield',     icon:'🛡', name:'Iron Shield',           desc:'A solid iron shield. Good protection.',               price:55,  tags:['Shield','Off-Hand'], stat:'ARM +5',  type:'medium', slot:'offHand' },
+        // Off Hand -- Spell Focus
+        { id:'arcane_orb',      icon:'🔮', name:'Arcane Orb',            desc:'A pulsing orb that amplifies magical energy.',        price:50,  tags:['Focus','Off-Hand'],  stat:'INT +3',  type:'light',  slot:'offHand' },
+        // Neck
+        { id:'simple_pendant',  icon:'📿', name:'Simple Pendant',        desc:'A small pendant on a leather cord.',                  price:20,  tags:['Neck'],              stat:'ARM +1',  slot:'neck1'   },
+        { id:'mage_pendant',    icon:'💎', name:'Mage Pendant',           desc:'A pendant etched with arcane symbols.',               price:35,  tags:['Neck'],              stat:'INT +2',  slot:'neck1'   },
+        { id:'warrior_pendant', icon:'⚔', name:'Warrior Pendant',        desc:'A pendant bearing the crest of a warrior.',          price:35,  tags:['Neck'],              stat:'STR +2',  slot:'neck1'   },
+        // Wrists
+        { id:'cloth_wraps_shop',icon:'🤲', name:'Cloth Hand Wraps',      desc:'Simple wraps. Light and flexible.',                   price:15,  tags:['Light','Wrists'],    stat:'MP +4',   type:'light',  slot:'wrists1' },
+        { id:'leather_wristguard',icon:'🥋',name:'Leather Wristguard',   desc:'A leather band protecting the wrist.',               price:25,  tags:['Medium','Wrists'],   stat:'ARM +2',  type:'medium', slot:'wrists1' },
+        // Rings
+        { id:'iron_ring',       icon:'💍', name:'Iron Ring',             desc:'A plain iron ring. Simple but sturdy.',               price:20,  tags:['Ring'],              stat:'ARM +1',  slot:'ring1'   },
+        { id:'mage_ring',       icon:'💍', name:'Mage Ring',             desc:'A ring set with a small blue gem.',                   price:35,  tags:['Ring'],              stat:'INT +2',  slot:'ring1'   },
+        { id:'swift_ring',      icon:'💍', name:'Swift Ring',            desc:'A ring that feels light on your hand.',               price:35,  tags:['Ring'],              stat:'DEX +2',  slot:'ring1'   },
     ],
     items: [
         { id:'health_potion', icon:'🧪',  name:'Health Potion',     desc:'Restores 40% of your maximum HP.',                    price:20,  tags:['Consumable'],           stat:'HP +40%', slot:'item',    stackable: true },
@@ -3619,31 +4047,54 @@ function getDiscountedPrice(price) {
 
 function renderShop() {
     ['weapons', 'armor', 'items'].forEach(category => {
-        const panel = document.getElementById('shop-' + category);
-        panel.innerHTML = '';
-        SHOP_INVENTORY[category].forEach(item => {
-            const finalPrice = getDiscountedPrice(item.price);
-            const canAfford = character.gold >= finalPrice;
-            const tagHTML = item.tags.map(t => {
-                const cls = t === 'Light' ? 'type-light' : t === 'Medium' ? 'type-medium' : t === 'Heavy' ? 'type-heavy' : '';
-                return `<span class="shop-tag ${cls}">${t}</span>`;
-            }).join('');
-            const originalPrice = item.price !== finalPrice ? `<span style="text-decoration:line-through;color:#555;font-size:0.8em">${item.price}g</span> ` : '';
+        renderShopTab(category);
+    });
+}
 
-            panel.innerHTML += `
-                <div class="shop-item" aria-label="${item.name}, ${item.desc}, costs ${finalPrice} gold">
-                    <span class="shop-item-icon" aria-hidden="true">${item.icon}</span>
-                    <div class="shop-item-info">
-                        <div class="shop-item-name">${item.name}</div>
-                        <div class="shop-item-desc">${item.desc}</div>
-                        <div class="shop-item-tags">${tagHTML}<span class="shop-tag">${item.stat}</span></div>
-                    </div>
-                    <div class="shop-item-buy">
-                        <div class="shop-item-price ${canAfford ? '' : 'cant-afford'}">${originalPrice}${finalPrice}g</div>
-                        <button class="buy-btn" ${canAfford ? '' : 'disabled'} onclick="buyItem('${item.id}')" aria-label="Buy ${item.name} for ${finalPrice} gold">Buy</button>
-                    </div>
-                </div>`;
-        });
+function renderShopTab(category) {
+    const panel = document.getElementById('shop-' + category);
+    if (!panel) return;
+    panel.innerHTML = '';
+
+    let items = [...SHOP_INVENTORY[category]];
+
+    // Apply armor filter
+    if (category === 'armor' && shopArmorFilter !== 'all') {
+        items = items.filter(i => i.type === shopArmorFilter);
+    }
+
+    // Apply sort
+    if (shopSort === 'price_asc') items.sort((a,b) => a.price - b.price);
+    else if (shopSort === 'price_desc') items.sort((a,b) => b.price - a.price);
+    else if (shopSort === 'az') items.sort((a,b) => a.name.localeCompare(b.name));
+
+    if (items.length === 0) {
+        panel.innerHTML = '<div class="inv-empty">No items match this filter.</div>';
+        return;
+    }
+
+    items.forEach(item => {
+        const finalPrice = getDiscountedPrice(item.price);
+        const canAfford = character.gold >= finalPrice;
+        const tagHTML = item.tags.map(t => {
+            const cls = t === 'Light' ? 'type-light' : t === 'Medium' ? 'type-medium' : t === 'Heavy' ? 'type-heavy' : '';
+            return `<span class="shop-tag ${cls}">${t}</span>`;
+        }).join('');
+        const originalPrice = item.price !== finalPrice ? `<span style="text-decoration:line-through;color:#555;font-size:0.8em">${item.price}g</span> ` : '';
+
+        panel.innerHTML += `
+            <div class="shop-item" aria-label="${item.name}, ${item.desc}, costs ${finalPrice} gold">
+                <span class="shop-item-icon" aria-hidden="true">${item.icon}</span>
+                <div class="shop-item-info">
+                    <div class="shop-item-name">${item.name}</div>
+                    <div class="shop-item-desc">${item.desc}</div>
+                    <div class="shop-item-tags">${tagHTML}<span class="shop-tag">${item.stat}</span></div>
+                </div>
+                <div class="shop-item-buy">
+                    <div class="shop-item-price ${canAfford ? '' : 'cant-afford'}">${originalPrice}${finalPrice}g</div>
+                    <button class="buy-btn" ${canAfford ? '' : 'disabled'} onclick="buyItem('${item.id}')" aria-label="Buy ${item.name} for ${finalPrice} gold">Buy</button>
+                </div>
+            </div>`;
     });
 }
 
@@ -3830,7 +4281,194 @@ function continueDungeonAfterLevelUp() {
     }
 }
 
-// -- MULTIPLE CHARACTERS ----------------------------------
+// -- DUNGEON DEFINITIONS ----------------------------------
+
+const DUNGEONS = {
+    wolfspire: {
+        id: 'wolfspire',
+        name: 'The Wolfspire',
+        icon: '🏚',
+        desc: 'An infinite dungeon beneath Greatwolf City. Varg\'s corruption grows the deeper you go.',
+        flavor: 'Darkness and corruption',
+        color: '#c9a84c',
+        enemies: null, // uses existing ENEMIES_BY_TIER
+        bosses: null,  // uses existing FLOOR_BOSSES
+    },
+    verdant: {
+        id: 'verdant',
+        name: 'The Verdant Wilds',
+        icon: '🌿',
+        desc: 'A vast wilderness of forests and grasslands beyond the city walls. Rogue creatures roam freely.',
+        flavor: 'Nature and wilderness',
+        color: '#4caf50',
+        enemies: [
+            { name:'Woodland Sprite',   icon:'🧚', level:1, hp:25,  atk:5,  xp:12, gold:[2,7],   floors:[1,5]   },
+            { name:'Giant Boar',        icon:'🐗', level:1, hp:40,  atk:8,  xp:18, gold:[4,10],  floors:[1,8]   },
+            { name:'Rogue Elf Archer',  icon:'🧝', level:2, hp:45,  atk:10, xp:25, gold:[6,14],  floors:[4,18]  },
+            { name:'Dire Wolf',         icon:'🐺', level:2, hp:55,  atk:12, xp:30, gold:[8,16],  floors:[5,20]  },
+            { name:'Orc Warrior',       icon:'👹', level:2, hp:60,  atk:11, xp:28, gold:[7,15],  floors:[6,22]  },
+            { name:'Forest Troll',      icon:'🧌', level:3, hp:85,  atk:14, xp:45, gold:[12,24], floors:[10,30] },
+            { name:'Ogre Brute',        icon:'👾', level:3, hp:100, atk:16, xp:55, gold:[15,28], floors:[15,35] },
+            { name:'Elder Dire Wolf',   icon:'🐺', level:4, hp:120, atk:20, xp:75, gold:[22,40], floors:[25,99] },
+            { name:'Orc Warchief',      icon:'👹', level:4, hp:130, atk:22, xp:80, gold:[25,45], floors:[30,99] },
+            { name:'Wild Druid',        icon:'🌿', level:2, hp:50,  atk:10, xp:26, gold:[6,14],  floors:[8,25]  },
+        ],
+        bosses: {
+            10: { name:'Greyback the Dire',      icon:'🐺', level:4, hp:220, atk:20, xp:160, gold:[45,75],   desc:'An ancient dire wolf, scarred and enormous' },
+            20: { name:'Thornax the Forest Troll',icon:'🧌', level:5, hp:380, atk:25, xp:300, gold:[85,140],  desc:'A massive troll who has claimed the forest as his own' },
+            30: { name:'The Orc King',            icon:'👹', level:6, hp:550, atk:30, xp:480, gold:[160,240], desc:'A ruthless orc king who commands the wilds' },
+            40: { name:'The Ancient Grove',       icon:'🌳', level:7, hp:800, atk:38, xp:750, gold:[260,370], desc:'A sentient ancient tree awakened by dark magic' },
+        },
+        loot: [
+            { id:'elf_bow',        icon:'🏹', name:'Elven Bow',        desc:'A bow carved by rogue elves. Incredibly accurate.',    stat:'DEX +5', slot:'mainHand', tags:['Two-Handed','Bow'],   stackable:false },
+            { id:'orc_axe',        icon:'🪓', name:'Orc Waraxe',       desc:'A brutal axe taken from an orc warrior.',              stat:'STR +5', slot:'mainHand', tags:['One-Handed','Axe'],   stackable:false },
+            { id:'wolf_pelt',      icon:'🐺', name:'Dire Wolf Pelt',   desc:'Thick fur from a dire wolf. Warm and protective.',      stat:'ARM +5', slot:'chest',    tags:['Medium','Chest'],     stackable:false, type:'medium' },
+            { id:'troll_hide',     icon:'🧌', name:'Troll Hide Vest',  desc:'Incredibly tough hide from a forest troll.',           stat:'ARM +6', slot:'chest',    tags:['Heavy','Chest'],      stackable:false, type:'heavy'  },
+            { id:'sprite_dust',    icon:'🧚', name:'Sprite Dust',      desc:'Shimmering dust from a woodland sprite.',              stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
+            { id:'dire_fang',      icon:'🐺', name:'Dire Wolf Fang',   desc:'A massive fang from a dire wolf.',                     stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
+        ],
+    },
+    frostpeak: {
+        id: 'frostpeak',
+        name: 'The Frostpeak Mountains',
+        icon: '🏔',
+        desc: 'Frozen peaks beyond the northern border. Ancient and unforgiving.',
+        flavor: 'Ice and ancient power',
+        color: '#80c0ff',
+        enemies: [
+            { name:'Arctic Wolf',      icon:'🐺', level:1, hp:30,  atk:6,  xp:14, gold:[3,8],   floors:[1,6]   },
+            { name:'Frost Pixie',      icon:'🧚', level:1, hp:20,  atk:8,  xp:16, gold:[2,7],   floors:[1,8]   },
+            { name:'Snow Viking',      icon:'🪖', level:2, hp:55,  atk:11, xp:28, gold:[7,15],  floors:[4,20]  },
+            { name:'Ice Elemental',    icon:'❄',  level:2, hp:50,  atk:13, xp:30, gold:[5,12],  floors:[6,22]  },
+            { name:'Yeti',             icon:'🦣', level:3, hp:90,  atk:15, xp:48, gold:[14,26], floors:[8,30]  },
+            { name:'Glacier Golem',    icon:'🗿', level:3, hp:110, atk:14, xp:55, gold:[16,30], floors:[15,35] },
+            { name:'Frost Viking Jarl',icon:'🪖', level:4, hp:125, atk:20, xp:78, gold:[24,42], floors:[25,99] },
+            { name:'Ancient Yeti',     icon:'🦣', level:4, hp:140, atk:22, xp:85, gold:[28,48], floors:[30,99] },
+            { name:'Frost Druid',      icon:'🌿', level:2, hp:45,  atk:11, xp:27, gold:[6,13],  floors:[8,25]  },
+        ],
+        bosses: {
+            10: { name:'Frostmaw the Yeti',      icon:'🦣', level:4, hp:210, atk:19, xp:155, gold:[42,72],   desc:'A massive yeti who rules the frozen peaks' },
+            20: { name:'The Ice Queen',          icon:'❄',  level:5, hp:360, atk:24, xp:290, gold:[82,135],  desc:'An ancient frost pixie grown powerful and cruel' },
+            30: { name:'Bjorn Iceheart',         icon:'🪖', level:6, hp:520, atk:29, xp:460, gold:[155,230], desc:'A legendary frost Viking who conquered the mountains' },
+            40: { name:'The Glacier Titan',      icon:'🗿', level:7, hp:780, atk:36, xp:720, gold:[255,360], desc:'An enormous golem of pure glacial ice' },
+        },
+        loot: [
+            { id:'frost_axe',      icon:'🪓', name:'Frost Axe',        desc:'A Viking axe edged with enchanted ice.',               stat:'STR +5', slot:'mainHand', tags:['One-Handed','Axe'],   stackable:false },
+            { id:'ice_staff',      icon:'🪄', name:'Ice Staff',         desc:'A staff carved from glacial ice. Amplifies frost magic.',stat:'INT +5', slot:'mainHand', tags:['One-Handed','Staff'], stackable:false },
+            { id:'yeti_fur',       icon:'🦣', name:'Yeti Fur Cloak',   desc:'Incredibly warm fur from a yeti.',                     stat:'ARM +5', slot:'mantle',   tags:['Heavy','Mantle'],     stackable:false, type:'heavy'  },
+            { id:'viking_shield',  icon:'🛡', name:'Viking Shield',    desc:'A round shield bearing Norse markings.',               stat:'ARM +6', slot:'offHand',  tags:['Shield','Off-Hand'],  stackable:false },
+            { id:'frost_ring',     icon:'💍', name:'Frost Ring',       desc:'A ring that crackles with cold energy.',               stat:'INT +4', slot:'ring1',    tags:['Ring'],               stackable:false },
+            { id:'ice_crystal',    icon:'❄',  name:'Ice Crystal',      desc:'A perfectly formed crystal of magical ice.',           stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
+        ],
+    },
+    sunken_sands: {
+        id: 'sunken_sands',
+        name: 'The Sunken Sands',
+        icon: '🏜',
+        desc: 'Ancient ruins buried beneath endless desert. Whatever sleeps here does not welcome visitors.',
+        flavor: 'Ancient ruins and desert mystery',
+        color: '#d4a44c',
+        enemies: [
+            { name:'Desert Scorpion',  icon:'🦂', level:1, hp:28,  atk:7,  xp:14, gold:[3,8],   floors:[1,6]   },
+            { name:'Sand Snake',       icon:'🐍', level:1, hp:22,  atk:9,  xp:16, gold:[2,6],   floors:[1,8]   },
+            { name:'Dune Bandit',      icon:'🗡',  level:2, hp:50,  atk:10, xp:25, gold:[8,16],  floors:[4,18]  },
+            { name:'Sand Wraith',      icon:'👻', level:2, hp:42,  atk:13, xp:28, gold:[5,12],  floors:[5,20]  },
+            { name:'Mummy Warrior',    icon:'🧟', level:3, hp:75,  atk:13, xp:42, gold:[12,22], floors:[8,28]  },
+            { name:'Tomb Guardian',    icon:'⚱',  level:3, hp:95,  atk:15, xp:52, gold:[15,28], floors:[12,32] },
+            { name:'Ancient Construct',icon:'🗿', level:4, hp:120, atk:18, xp:72, gold:[22,40], floors:[20,99] },
+            { name:'Sand Colossus',    icon:'🏜', level:4, hp:140, atk:21, xp:82, gold:[26,46], floors:[30,99] },
+            { name:'Sand Druid',       icon:'🌿', level:2, hp:48,  atk:10, xp:26, gold:[6,13],  floors:[8,25]  },
+        ],
+        bosses: {
+            10: { name:'The Scorpion Queen',     icon:'🦂', level:4, hp:200, atk:18, xp:150, gold:[40,70],   desc:'A massive scorpion queen, ancient as the desert itself' },
+            20: { name:'Pharaoh Akmesh',         icon:'🧟', level:5, hp:360, atk:23, xp:285, gold:[80,132],  desc:'A mummified pharaoh risen from his tomb' },
+            30: { name:'The Sand Titan',         icon:'🏜', level:6, hp:510, atk:28, xp:455, gold:[152,225], desc:'A colossal construct built to guard the ruins' },
+            40: { name:'The Eternal Sphinx',     icon:'🦁', level:7, hp:760,  atk:34, xp:710,  gold:[252,355], desc:'An ancient sphinx who has guarded these sands for millennia' },
+            50: { name:'The Great Worm',          icon:'🐛', level:8, hp:1000, atk:40, xp:980,  gold:[340,490], desc:'A colossal worm that tunnels beneath the desert, ancient as the sand itself' },
+        },
+        loot: [
+            { id:'sand_blade',     icon:'🗡',  name:'Sand Blade',       desc:'A curved blade forged in the ancient desert kingdoms.',  stat:'DEX +5', slot:'mainHand', tags:['One-Handed','Sword'], stackable:false },
+            { id:'tomb_staff',     icon:'🪄', name:'Tomb Staff',        desc:'A staff topped with an ancient relic. Hums with power.',  stat:'INT +5', slot:'mainHand', tags:['One-Handed','Staff'], stackable:false },
+            { id:'desert_robes',   icon:'👘', name:'Desert Robes',      desc:'Light robes that keep the heat at bay.',                  stat:'MP +8',  slot:'chest',    tags:['Light','Chest'],      stackable:false, type:'light'  },
+            { id:'scarab_shield',  icon:'🛡', name:'Scarab Shield',     desc:'A shield decorated with ancient scarab markings.',        stat:'ARM +6', slot:'offHand',  tags:['Shield','Off-Hand'],  stackable:false },
+            { id:'pharaoh_ring',   icon:'💍', name:"Pharaoh's Ring",    desc:'A golden ring bearing the seal of an ancient pharaoh.',   stat:'STR +4', slot:'ring1',    tags:['Ring'],               stackable:false },
+            { id:'desert_sand',    icon:'🏜', name:'Ancient Sand',      desc:'Sand infused with ancient magical energy.',               stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
+            { id:'scarab_gem',     icon:'🦂', name:'Scarab Gem',        desc:'A gem shaped like a scarab beetle. Rare and valuable.',   stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
+        ],
+    },
+};
+
+let currentDungeonId = 'wolfspire';
+
+
+function selectDungeon(dungeonId) {
+    currentDungeonId = dungeonId;
+    document.getElementById('dungeon-select-overlay').classList.remove('show');
+
+    if (!character.dungeonHighest) character.dungeonHighest = {};
+    const highest = character.dungeonHighest[dungeonId] || 1;
+    character.highestFloor = highest;
+
+    const dungeon = DUNGEONS[dungeonId];
+    document.getElementById('floor-select-title').textContent = `Enter ${dungeon.name}`;
+    document.getElementById('floor-btn-highest').textContent =
+        highest > 1 ? `Resume Floor ${highest}` : 'Start from Floor 1';
+    document.getElementById('floor-select-body').textContent =
+        highest > 1
+            ? `Your highest floor in ${dungeon.name} is ${highest}.`
+            : `Choose a floor to enter.`;
+
+    document.getElementById('floor-input').value = '';
+    document.getElementById('floor-select-overlay').classList.add('show');
+    announce(`${dungeon.name} selected. Floor select open.`);
+}
+
+// -- DUNGEON ENEMY ROUTING --------------------------------
+function pickEnemyForDungeon() {
+    const floor = dungeonState ? dungeonState.floor : 1;
+    const dungeon = DUNGEONS[currentDungeonId];
+
+    // Boss check
+    const isBossFloor = floor % 10 === 0;
+    const bossAlreadyDefeated = dungeonState && dungeonState.bossDefeated;
+
+    if (isBossFloor && !bossAlreadyDefeated) {
+        const bossPool = (dungeon && dungeon.bosses) ? dungeon.bosses : FLOOR_BOSSES;
+        let bossTemplate;
+        if (bossPool[floor]) {
+            bossTemplate = JSON.parse(JSON.stringify(bossPool[floor]));
+        } else {
+            const pool = Object.values(bossPool);
+            bossTemplate = JSON.parse(JSON.stringify(pool[Math.floor(Math.random() * pool.length)]));
+            const deepScale = 1 + ((floor - 40) * 0.15);
+            bossTemplate.hp = Math.floor(bossTemplate.hp * deepScale);
+            bossTemplate.atk = Math.floor(bossTemplate.atk * deepScale);
+            bossTemplate.xp = Math.floor(bossTemplate.xp * deepScale);
+            bossTemplate.name = bossTemplate.name + ' (Empowered)';
+        }
+        bossTemplate.maxHp = bossTemplate.hp;
+        bossTemplate.isBoss = true;
+        return bossTemplate;
+    }
+
+    // Use dungeon-specific enemies
+    if (dungeon && dungeon.enemies) {
+        const pool = dungeon.enemies.filter(e => floor >= e.floors[0] && floor <= e.floors[1]);
+        const source = pool.length > 0 ? pool : dungeon.enemies;
+        const enemy = JSON.parse(JSON.stringify(source[Math.floor(Math.random() * source.length)]));
+        if (floor > 1) {
+            const scale = 1 + ((floor - 1) * 0.12);
+            enemy.hp = Math.floor(enemy.hp * scale);
+            enemy.atk = Math.floor(enemy.atk * scale);
+            enemy.xp = Math.floor(enemy.xp * scale);
+        }
+        enemy.maxHp = enemy.hp;
+        return enemy;
+    }
+
+    // Wolfspire uses original pickEnemy
+    return pickEnemy();
+}
 
 const MAX_CHARS = 10;
 
@@ -3872,6 +4510,13 @@ function loadCharacterFromSlot(slot) {
         if (!character.skills) character.skills = [];
         if (character.innVisited === undefined) character.innVisited = false;
         if (!character.highestFloor) character.highestFloor = 1;
+        if (!character.dungeonHighest) character.dungeonHighest = {};
+        if (!character.bankedGold) character.bankedGold = 0;
+        // Add new equipment slots to old saves
+        if (!character.equipment) character.equipment = {};
+        if (character.equipment.mantle === undefined) character.equipment.mantle = null;
+        if (character.equipment.waist === undefined) character.equipment.waist = null;
+        if (character.equipment.arms === undefined) character.equipment.arms = null;
         if (character.dungeonState && character.dungeonState.encountersDone >= character.dungeonState.encountersTotal) {
             character.dungeonState = null;
         }
@@ -4027,14 +4672,14 @@ function confirmResetStats() {
     if (!character) return;
 
     // Calculate total points spent
-    const minStats = { str:5, int:5, dex:5, res:5, per:1, cha:1 };
+    const minStats = { str:5, int:5, dex:5, res:5, per:5, cha:5 };
     let pointsToRefund = 0;
     Object.keys(minStats).forEach(s => {
         pointsToRefund += Math.max(0, (character.stats[s] || minStats[s]) - minStats[s]);
     });
 
     // Reset stats to minimums
-    character.stats = { str:5, int:5, dex:5, res:5, per:1, cha:1 };
+    character.stats = { str:5, int:5, dex:5, res:5, per:5, cha:5 };
     character.unspentPoints = (character.unspentPoints || 0) + pointsToRefund;
 
     // Recalculate HP/MP from base + level bonuses only
@@ -4084,7 +4729,7 @@ function confirmNewGame() {
 function startNewGame() {
     character = null;
     // Reset stat inputs
-    Object.assign(cStats, { str:5, int:5, dex:5, res:5, per:1, cha:1 });
+    Object.assign(cStats, { str:5, int:5, dex:5, res:5, per:5, cha:5 });
     document.getElementById('charName').value = '';
     document.getElementById('formError').textContent = '';
     refreshCreate();
