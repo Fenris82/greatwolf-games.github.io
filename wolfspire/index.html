@@ -1024,6 +1024,21 @@
 </div>
 
 <!-- -- COMBAT -- -->
+<!-- -- JOURNAL -- -->
+<div id="screen-journal" class="screen" role="main" aria-label="Journal">
+    <p class="screen-header">Your</p>
+    <h2 class="screen-title">Journal</h2>
+
+    <div id="journal-empty" style="text-align:center;padding:48px 24px;color:var(--text-dim);font-style:italic;line-height:1.8">
+        <div style="font-size:2.5em;margin-bottom:16px" aria-hidden="true">📖</div>
+        <div style="font-family:'Cinzel',serif;font-size:0.9em;color:var(--gold);margin-bottom:12px">No entries yet.</div>
+        <div style="font-size:0.95em">Explore the world and uncover its secrets.<br>Lore fragments found in dungeons will appear here.</div>
+    </div>
+
+    <div id="journal-entries" style="display:none;display:flex;flex-direction:column;gap:16px;margin-top:8px"></div>
+</div>
+
+<!-- -- COMBAT -- -->
 <div id="screen-combat" class="screen" role="main" aria-label="Combat">
     <p class="combat-header" id="combat-floor-label">⚔ Floor 1  -  Encounter</p>
 
@@ -2057,17 +2072,17 @@
 
 <!-- -- BOTTOM NAV -- -->
 <nav class="bottom-nav" id="bottomNav" role="navigation" aria-label="Main navigation">
-    <button class="nav-btn active" id="nav-town" onclick="goToScreen('town')" aria-label="Town" aria-current="page">
+    <button class="nav-btn active" id="nav-town" onclick="goToScreen('town');setActiveNav('nav-town')" aria-label="Town" aria-current="page">
         <span class="nav-icon" aria-hidden="true">🏘</span><span class="nav-label">Town</span>
     </button>
-    <button class="nav-btn" id="nav-combat" onclick="enterDungeon()" aria-label="Dungeon">
-        <span class="nav-icon" aria-hidden="true">⚔</span><span class="nav-label">Dungeon</span>
-    </button>
-    <button class="nav-btn" id="nav-character" onclick="goToScreen('character')" aria-label="Character">
+    <button class="nav-btn" id="nav-character" onclick="goToScreen('character');setActiveNav('nav-character')" aria-label="Character">
         <span class="nav-icon" aria-hidden="true">🧙</span><span class="nav-label">Character</span>
     </button>
-    <button class="nav-btn" id="nav-inventory" onclick="openInventory()" aria-label="Inventory">
+    <button class="nav-btn" id="nav-inventory" onclick="openInventory();setActiveNav('nav-inventory')" aria-label="Inventory">
         <span class="nav-icon" aria-hidden="true">🎒</span><span class="nav-label">Inventory</span>
+    </button>
+    <button class="nav-btn" id="nav-journal" onclick="openJournal()" aria-label="Journal">
+        <span class="nav-icon" aria-hidden="true">📖</span><span class="nav-label">Journal</span>
     </button>
 </nav>
 
@@ -5469,6 +5484,7 @@ function loadCharacterFromSlot(slot) {
         if (!character.bankedGold) character.bankedGold = 0;
         if (character.ironholdVisited === undefined) character.ironholdVisited = false;
         if (character.sunportVisited === undefined) character.sunportVisited = false;
+        if (!character.journal) character.journal = [];
         // Add new equipment slots to old saves
         if (!character.equipment) character.equipment = {};
         if (character.equipment.mantle === undefined) character.equipment.mantle = null;
@@ -5978,6 +5994,74 @@ function enterAshwood() {
     document.getElementById('floor-input').value = '';
     document.getElementById('floor-select-overlay').classList.add('show');
     announce('The Ashwood. Floor select open.');
+}
+
+// -- JOURNAL ----------------------------------------------
+function openJournal() {
+    if (!character) return;
+    if (!character.journal) character.journal = [];
+    renderJournal();
+    goToScreen('journal');
+    setActiveNav('nav-journal');
+    announce('Journal. ' + (character.journal.length === 0
+        ? 'No entries yet. Explore the world to find lore fragments.'
+        : character.journal.length + ' entries found.'));
+}
+
+function renderJournal() {
+    if (!character) return;
+    const entries = character.journal || [];
+    const empty = document.getElementById('journal-empty');
+    const list = document.getElementById('journal-entries');
+    if (!empty || !list) return;
+
+    if (entries.length === 0) {
+        empty.style.display = 'block';
+        list.style.display = 'none';
+        return;
+    }
+
+    empty.style.display = 'none';
+    list.style.display = 'flex';
+    list.innerHTML = '';
+
+    entries.forEach((entry, i) => {
+        const div = document.createElement('div');
+        div.style.cssText = 'background:var(--bg-card);border:1px solid #2a2a44;border-radius:12px;padding:20px 18px';
+        div.setAttribute('aria-label', `Journal entry ${i+1}. ${entry.title}. ${entry.body}`);
+        div.innerHTML = `
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+                <span style="font-size:1.4em" aria-hidden="true">${entry.icon || '📜'}</span>
+                <div>
+                    <div style="font-family:'Cinzel',serif;font-size:0.9em;font-weight:700;color:var(--gold)">${entry.title}</div>
+                    <div style="font-size:0.72em;color:var(--text-dim);font-family:'Cinzel',serif;letter-spacing:0.08em">${entry.source || ''}</div>
+                </div>
+            </div>
+            <div style="font-size:0.95em;color:var(--text-dim);line-height:1.75;font-style:italic">"${entry.body}"</div>
+        `;
+        list.appendChild(div);
+    });
+}
+
+function addJournalEntry(entry) {
+    // entry = { title, body, icon, source }
+    if (!character) return;
+    if (!character.journal) character.journal = [];
+    // Don't add duplicates
+    if (character.journal.some(e => e.title === entry.title)) return;
+    character.journal.push(entry);
+    saveGame();
+    showToast('📖 Journal updated!');
+    announce('New journal entry added: ' + entry.title);
+}
+
+function setActiveNav(navId) {
+    document.querySelectorAll('.nav-btn').forEach(b => {
+        b.classList.remove('active');
+        b.removeAttribute('aria-current');
+    });
+    const btn = document.getElementById(navId);
+    if (btn) { btn.classList.add('active'); btn.setAttribute('aria-current', 'page'); }
 }
 
 // -- SUNPORT SHOP DATA ------------------------------------
