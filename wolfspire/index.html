@@ -995,6 +995,11 @@
             <span class="btn-label">Dungeons</span>
             <span class="btn-sub" id="dungeon-btn-sub">Enter the dark</span>
         </button>
+        <button class="menu-btn" onclick="openTravelMenu()" aria-label="Travel to another town">
+            <span class="btn-icon" aria-hidden="true">🗺</span>
+            <span class="btn-label">Travel</span>
+            <span class="btn-sub">Visit other towns</span>
+        </button>
         <button class="menu-btn" onclick="openShop()" aria-label="Visit the shop">
             <span class="btn-icon" aria-hidden="true">🛒</span>
             <span class="btn-label">Shop</span>
@@ -1154,6 +1159,247 @@
     </div>
 </div>
 
+<!-- -- IRONHOLD -- -->
+<div id="screen-ironhold" class="screen" role="main" aria-label="Ironhold">
+    <p class="screen-header">Welcome to</p>
+    <h2 class="screen-title">Ironhold</h2>
+
+    <div class="shopkeeper-banner" aria-label="Brundar's greeting">
+        <span class="shopkeeper-icon" aria-hidden="true">⚒</span>
+        <div>
+            <div class="shopkeeper-name">Brundar Ironhand</div>
+            <div class="shopkeeper-quote" id="brundar-quote">"Aye, what do ye need?"</div>
+        </div>
+    </div>
+
+    <div class="town-vitals" aria-label="Your vitals">
+        <div class="vital-pill" aria-label="Hit points">
+            <span aria-hidden="true">❤</span>
+            <span id="ironhold-hp">100</span>
+        </div>
+        <div class="vital-pill" aria-label="Magic points">
+            <span aria-hidden="true">💙</span>
+            <span id="ironhold-mp">50</span>
+        </div>
+        <div class="vital-pill" aria-label="Gold">
+            <span aria-hidden="true">💰</span>
+            <span id="ironhold-gold">200</span>
+        </div>
+    </div>
+
+    <div class="town-menu" role="group" aria-label="Ironhold locations">
+        <button class="menu-btn" onclick="openIronholdShop()" aria-label="Visit Brundar's Forge">
+            <span class="btn-icon" aria-hidden="true">⚒</span>
+            <span class="btn-label">Forge Shop</span>
+            <span class="btn-sub">Brundar's Goods</span>
+        </button>
+        <button class="menu-btn" onclick="enterIronDepths()" aria-label="Enter the Iron Depths dungeon">
+            <span class="btn-icon" aria-hidden="true">⛏</span>
+            <span class="btn-label">Iron Depths</span>
+            <span class="btn-sub" id="iron-depths-sub">Enter the mine</span>
+        </button>
+        <button class="menu-btn" onclick="travelTo('town')" aria-label="Return to Greatwolf City">
+            <span class="btn-icon" aria-hidden="true">🏰</span>
+            <span class="btn-label">Return Home</span>
+            <span class="btn-sub">Back to Greatwolf City</span>
+        </button>
+    </div>
+</div>
+
+<!-- -- IRONHOLD SHOP -- -->
+<div id="screen-ironhold-shop" class="screen" role="main" aria-label="Brundar's Forge Shop">
+    <p class="screen-header">Welcome to</p>
+    <h2 class="screen-title">Brundar's Forge</h2>
+
+    <div class="shopkeeper-banner" aria-label="Brundar's greeting">
+        <span class="shopkeeper-icon" aria-hidden="true">⚒</span>
+        <div>
+            <div class="shopkeeper-name">Brundar Ironhand</div>
+            <div class="shopkeeper-quote" id="brundar-shop-quote">"Finest dwarven craft in the north."</div>
+        </div>
+    </div>
+
+    <div class="shop-gold-bar" aria-live="polite">
+        <span aria-hidden="true">💰</span> Your Gold: <span id="ironhold-shop-gold">200</span>
+    </div>
+
+    <div class="shop-tabs" role="tablist" aria-label="Shop categories">
+        <button class="shop-tab active" id="itab-weapons" role="tab" aria-selected="true" onclick="switchIronholdTab('weapons')">⚒ Weapons</button>
+        <button class="shop-tab" id="itab-armor" role="tab" aria-selected="false" onclick="switchIronholdTab('armor')">🛡 Armor</button>
+        <button class="shop-tab" id="itab-sell" role="tab" aria-selected="false" onclick="switchIronholdTab('sell')">💰 Sell</button>
+    </div>
+
+    <div class="shop-panel active" id="ironhold-weapons" role="tabpanel"></div>
+    <div class="shop-panel" id="ironhold-armor" role="tabpanel"></div>
+    <div class="shop-panel" id="ironhold-sell" role="tabpanel"></div>
+
+    <button class="leave-shop-btn" onclick="goToScreen('ironhold')" aria-label="Leave the forge shop">
+        Leave Shop
+    </button>
+</div>
+
+<!-- -- SUNPORT -- -->
+<div id="screen-sunport" class="screen" role="main" aria-label="Sunport">
+    <p class="screen-header">Welcome to</p>
+    <h2 class="screen-title">Sunport</h2>
+
+    <div class="shopkeeper-banner" aria-label="Captain Maren's greeting">
+        <span class="shopkeeper-icon" aria-hidden="true">⚓</span>
+        <div>
+            <div class="shopkeeper-name">Captain Maren Voss</div>
+            <div class="shopkeeper-quote" id="maren-town-quote">"You look like someone who's survived a thing or two."</div>
+        </div>
+    </div>
+
+    <div class="town-vitals" aria-label="Your vitals">
+        <div class="vital-pill" aria-label="Hit points">
+            <span aria-hidden="true">❤</span>
+            <span id="sunport-hp">100</span>
+        </div>
+        <div class="vital-pill" aria-label="Magic points">
+            <span aria-hidden="true">💙</span>
+            <span id="sunport-mp">50</span>
+        </div>
+        <div class="vital-pill" aria-label="Gold">
+            <span aria-hidden="true">💰</span>
+            <span id="sunport-gold">200</span>
+        </div>
+    </div>
+
+    <div class="town-menu" role="group" aria-label="Sunport locations">
+        <button class="menu-btn" onclick="openSunportShop()" aria-label="Visit the Dockside Market">
+            <span class="btn-icon" aria-hidden="true">🏪</span>
+            <span class="btn-label">Dockside Market</span>
+            <span class="btn-sub">Maren's exotic wares</span>
+        </button>
+        <button class="menu-btn" onclick="enterShipwreck()" aria-label="Enter the Sunken Mariner dungeon">
+            <span class="btn-icon" aria-hidden="true">🚢</span>
+            <span class="btn-label">The Wreck</span>
+            <span class="btn-sub" id="shipwreck-sub">The Sunken Mariner</span>
+        </button>
+        <button class="menu-btn" onclick="travelTo('town')" aria-label="Return to Greatwolf City">
+            <span class="btn-icon" aria-hidden="true">🏰</span>
+            <span class="btn-label">Return Home</span>
+            <span class="btn-sub">Back to Greatwolf City</span>
+        </button>
+    </div>
+</div>
+
+<!-- -- SUNPORT SHOP -- -->
+<div id="screen-sunport-shop" class="screen" role="main" aria-label="Maren's Dockside Market">
+    <p class="screen-header">Welcome to</p>
+    <h2 class="screen-title">Dockside Market</h2>
+
+    <div class="shopkeeper-banner" aria-label="Maren's greeting">
+        <span class="shopkeeper-icon" aria-hidden="true">⚓</span>
+        <div>
+            <div class="shopkeeper-name">Captain Maren Voss</div>
+            <div class="shopkeeper-quote" id="maren-shop-quote">"Everything here has a story. Most of them involve the sea."</div>
+        </div>
+    </div>
+
+    <div class="shop-gold-bar" aria-live="polite">
+        <span aria-hidden="true">💰</span> Your Gold: <span id="sunport-shop-gold">200</span>
+    </div>
+
+    <div class="shop-tabs" role="tablist" aria-label="Shop categories">
+        <button class="shop-tab active" id="stab-weapons" role="tab" aria-selected="true" onclick="switchSunportTab('weapons')">⚔ Weapons</button>
+        <button class="shop-tab" id="stab-accessories" role="tab" aria-selected="false" onclick="switchSunportTab('accessories')">💍 Accessories</button>
+        <button class="shop-tab" id="stab-consumables" role="tab" aria-selected="false" onclick="switchSunportTab('consumables')">🧪 Supplies</button>
+        <button class="shop-tab" id="stab-sell" role="tab" aria-selected="false" onclick="switchSunportTab('sell')">💰 Sell</button>
+    </div>
+
+    <div class="shop-panel active" id="sunport-weapons" role="tabpanel"></div>
+    <div class="shop-panel" id="sunport-accessories" role="tabpanel"></div>
+    <div class="shop-panel" id="sunport-consumables" role="tabpanel"></div>
+    <div class="shop-panel" id="sunport-sell" role="tabpanel"></div>
+
+    <button class="leave-shop-btn" onclick="goToScreen('sunport')" aria-label="Leave the Dockside Market">
+        Leave Market
+    </button>
+</div>
+
+<!-- -- WOLFHAVEN -- -->
+<div id="screen-wolfhaven" class="screen" role="main" aria-label="Wolfhaven">
+    <p class="screen-header">Welcome to</p>
+    <h2 class="screen-title">Wolfhaven</h2>
+
+    <div class="shopkeeper-banner" aria-label="Sister Aelindra's greeting">
+        <span class="shopkeeper-icon" aria-hidden="true">🌿</span>
+        <div>
+            <div class="shopkeeper-name">Sister Aelindra</div>
+            <div class="shopkeeper-quote" id="aelindra-town-quote">"Fennyx's light reaches even here, at the forest's edge."</div>
+        </div>
+    </div>
+
+    <div class="town-vitals" aria-label="Your vitals">
+        <div class="vital-pill" aria-label="Hit points">
+            <span aria-hidden="true">❤</span>
+            <span id="wolfhaven-hp">100</span>
+        </div>
+        <div class="vital-pill" aria-label="Magic points">
+            <span aria-hidden="true">💙</span>
+            <span id="wolfhaven-mp">50</span>
+        </div>
+        <div class="vital-pill" aria-label="Gold">
+            <span aria-hidden="true">💰</span>
+            <span id="wolfhaven-gold">200</span>
+        </div>
+    </div>
+
+    <div class="town-menu" role="group" aria-label="Wolfhaven locations">
+        <button class="menu-btn" onclick="openWolfhavenShop()" aria-label="Visit the Grove Sanctum shop">
+            <span class="btn-icon" aria-hidden="true">🌿</span>
+            <span class="btn-label">Grove Sanctum</span>
+            <span class="btn-sub">Aelindra's wares</span>
+        </button>
+        <button class="menu-btn" onclick="enterAshwood()" aria-label="Enter the Ashwood dungeon">
+            <span class="btn-icon" aria-hidden="true">🌑</span>
+            <span class="btn-label">The Ashwood</span>
+            <span class="btn-sub" id="ashwood-sub">Corrupted ancient forest</span>
+        </button>
+        <button class="menu-btn" onclick="travelTo('town')" aria-label="Return to Greatwolf City">
+            <span class="btn-icon" aria-hidden="true">🏰</span>
+            <span class="btn-label">Return Home</span>
+            <span class="btn-sub">Back to Greatwolf City</span>
+        </button>
+    </div>
+</div>
+
+<!-- -- WOLFHAVEN SHOP -- -->
+<div id="screen-wolfhaven-shop" class="screen" role="main" aria-label="Aelindra's Grove Sanctum">
+    <p class="screen-header">Welcome to</p>
+    <h2 class="screen-title">Grove Sanctum</h2>
+
+    <div class="shopkeeper-banner" aria-label="Aelindra's greeting">
+        <span class="shopkeeper-icon" aria-hidden="true">🌿</span>
+        <div>
+            <div class="shopkeeper-name">Sister Aelindra</div>
+            <div class="shopkeeper-quote" id="aelindra-shop-quote">"May what you find here serve both blade and spirit."</div>
+        </div>
+    </div>
+
+    <div class="shop-gold-bar" aria-live="polite">
+        <span aria-hidden="true">💰</span> Your Gold: <span id="wolfhaven-shop-gold">200</span>
+    </div>
+
+    <div class="shop-tabs" role="tablist" aria-label="Shop categories">
+        <button class="shop-tab active" id="wtab-weapons" role="tab" aria-selected="true" onclick="switchWolfhavenTab('weapons')">⚔ Weapons</button>
+        <button class="shop-tab" id="wtab-armor" role="tab" aria-selected="false" onclick="switchWolfhavenTab('armor')">🧥 Gear</button>
+        <button class="shop-tab" id="wtab-consumables" role="tab" aria-selected="false" onclick="switchWolfhavenTab('consumables')">🌿 Supplies</button>
+        <button class="shop-tab" id="wtab-sell" role="tab" aria-selected="false" onclick="switchWolfhavenTab('sell')">💰 Sell</button>
+    </div>
+
+    <div class="shop-panel active" id="wolfhaven-weapons" role="tabpanel"></div>
+    <div class="shop-panel" id="wolfhaven-armor" role="tabpanel"></div>
+    <div class="shop-panel" id="wolfhaven-consumables" role="tabpanel"></div>
+    <div class="shop-panel" id="wolfhaven-sell" role="tabpanel"></div>
+
+    <button class="leave-shop-btn" onclick="goToScreen('wolfhaven')" aria-label="Leave the Grove Sanctum">
+        Leave Sanctum
+    </button>
+</div>
+
 <!-- -- TRAINING GROUNDS -- -->
 <div id="screen-training" class="screen" role="main" aria-label="Fennyx's Training Grounds">
     <p class="screen-header">Welcome to</p>
@@ -1294,6 +1540,13 @@
     <button class="reset-stats-btn" onclick="openRoster()" aria-label="Switch to a different character" style="border-color:#2a4a6a;color:#80c0ff;margin-top:8px">
         Switch Character
     </button>
+
+    <!-- Abilities -->
+    <div style="margin-top:24px">
+        <div style="font-family:'Cinzel',serif;font-size:0.75em;letter-spacing:0.15em;color:var(--text-dim);text-transform:uppercase;margin-bottom:12px">Known Abilities</div>
+        <div id="cs-abilities-list" style="display:flex;flex-direction:column;gap:8px"></div>
+        <div id="cs-abilities-empty" style="display:none;font-size:0.95em;color:var(--text-dim);font-style:italic;padding:12px 0">No abilities learned yet. Visit Fennyx's Training Grounds.</div>
+    </div>
 </div>
 <div id="screen-inventory" class="screen" role="main" aria-label="Inventory and Equipment">
     <p class="screen-header">Viewing</p>
@@ -1549,6 +1802,72 @@
     </div>
 </div>
 
+<!-- -- TRAVEL MENU -- -->
+<div class="combat-result" id="travel-overlay" role="dialog" aria-modal="true" aria-labelledby="travel-title" style="background:rgba(0,0,0,0.95);padding:30px 20px;justify-content:flex-start;padding-top:60px">
+    <div style="width:100%;max-width:420px">
+        <div style="font-family:'Cinzel',serif;font-size:1.6em;font-weight:700;color:var(--gold);margin-bottom:4px;text-align:center" id="travel-title">Where to?</div>
+        <div style="font-style:italic;color:var(--text-dim);font-size:0.85em;margin-bottom:24px;text-align:center">The road awaits beyond Greatwolf City.</div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px">
+
+            <div style="background:var(--bg-card);border:1px solid #2a2a44;border-radius:12px;padding:16px;cursor:pointer;transition:all 0.15s"
+                role="button" tabindex="0"
+                aria-label="Travel to Ironhold, a dwarven mining town to the north."
+                onclick="travelTo('ironhold')"
+                onkeydown="if(event.key==='Enter')travelTo('ironhold')"
+                onmouseenter="this.style.borderColor='#c9a84c'" onmouseleave="this.style.borderColor='#2a2a44'">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                    <span style="font-size:2em" aria-hidden="true">⚒</span>
+                    <div>
+                        <div style="font-family:'Cinzel',serif;font-size:1em;font-weight:700;color:var(--gold)">Ironhold</div>
+                        <div style="font-size:0.75em;color:var(--text-dim);font-style:italic">Dwarven mining town — North</div>
+                    </div>
+                </div>
+                <div style="font-size:0.9em;color:var(--text-dim);line-height:1.6">A dwarven mining settlement carved into the northern mountains. Home to master smiths and the entrance to the Iron Depths.</div>
+            </div>
+
+            <div style="background:var(--bg-card);border:1px solid #2a2a44;border-radius:12px;padding:16px;cursor:pointer;transition:all 0.15s"
+                 onclick="travelTo('sunport')"
+                 onmouseenter="this.style.borderColor='#4a8abd'"
+                 onmouseleave="this.style.borderColor='#2a2a44'"
+                 role="button" tabindex="0"
+                 onkeydown="if(event.key==='Enter')travelTo('sunport')"
+                 aria-label="Travel to Sunport, coastal trading city to the east">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                    <span style="font-size:2em" aria-hidden="true">⚓</span>
+                    <div>
+                        <div style="font-family:'Cinzel',serif;font-size:1em;font-weight:700;color:#4a8abd">Sunport</div>
+                        <div style="font-size:0.75em;color:var(--text-dim);font-style:italic">Coastal trading city — East</div>
+                    </div>
+                </div>
+                <div style="font-size:0.9em;color:var(--text-dim);line-height:1.6">A prosperous port city on the eastern coast. Exotic goods, weathered sailors, and the wreck-strewn sea await.</div>
+            </div>
+
+            <div style="background:var(--bg-card);border:1px solid #2a2a44;border-radius:12px;padding:16px;cursor:pointer;transition:all 0.15s"
+                 onclick="travelTo('wolfhaven')"
+                 onmouseenter="this.style.borderColor='#4a8a5a'"
+                 onmouseleave="this.style.borderColor='#2a2a44'"
+                 role="button" tabindex="0"
+                 onkeydown="if(event.key==='Enter')travelTo('wolfhaven')"
+                 aria-label="Travel to Wolfhaven, druidic settlement to the north">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                    <span style="font-size:2em" aria-hidden="true">🌿</span>
+                    <div>
+                        <div style="font-family:'Cinzel',serif;font-size:1em;font-weight:700;color:#4a8a5a">Wolfhaven</div>
+                        <div style="font-size:0.75em;color:var(--text-dim);font-style:italic">Druidic settlement — North</div>
+                    </div>
+                </div>
+                <div style="font-size:0.9em;color:var(--text-dim);line-height:1.6">A sacred settlement of druids and mages. Ancient wisdom, nature magic, and the shadow of the Ashwood beyond.</div>
+            </div>
+
+        </div>
+
+        <button class="leave-shop-btn" onclick="document.getElementById('travel-overlay').classList.remove('show')" aria-label="Stay in Greatwolf City">
+            Stay in Greatwolf City
+        </button>
+    </div>
+</div>
+
 <!-- -- UNEQUIPPED WARNING -- -->
 <div class="confirm-overlay" id="unequipped-overlay" role="dialog" aria-modal="true" aria-labelledby="unequipped-title">
     <div class="confirm-card">
@@ -1639,6 +1958,18 @@
         <div class="confirm-buttons">
             <button class="confirm-btn danger" onclick="confirmDeleteChar()" aria-label="Confirm delete character">Yes, Delete</button>
             <button class="confirm-btn cancel" onclick="closeDeleteChar()" aria-label="Cancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- -- FORGET ABILITY OVERLAY -- -->
+<div class="confirm-overlay" id="forget-ability-overlay" role="dialog" aria-modal="true" aria-labelledby="forget-ability-title">
+    <div class="confirm-card">
+        <div class="confirm-title" id="forget-ability-title">Forget Ability?</div>
+        <div class="confirm-body" id="forget-ability-body">You will lose this skill and receive 30 gold. You can relearn it later at full price.</div>
+        <div class="confirm-buttons">
+            <button class="confirm-btn danger" onclick="confirmForgetAbility()" aria-label="Confirm forget ability">Forget (+30g)</button>
+            <button class="confirm-btn cancel" onclick="closeForgetAbility()" aria-label="Cancel">Keep It</button>
         </div>
     </div>
 </div>
@@ -2027,6 +2358,49 @@ function populateUI() {
         const btns = document.getElementById('scb-' + s);
         if (btns) btns.style.display = hasPoints ? 'flex' : 'none';
     });
+
+    renderCharAbilities();
+}
+
+function renderCharAbilities() {
+    const list = document.getElementById('cs-abilities-list');
+    const empty = document.getElementById('cs-abilities-empty');
+    if (!list || !empty) return;
+
+    const known = (character.skills || []);
+    if (known.length === 0) {
+        list.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+    }
+
+    list.style.display = 'flex';
+    empty.style.display = 'none';
+    list.innerHTML = '';
+
+    const allAbilities = [...SKILLS_DATA, ...SPELLS_DATA];
+    known.forEach(id => {
+        const ability = allAbilities.find(a => a.id === id);
+        if (!ability) return;
+        const typeColor = ability.type === 'spell' ? '#80c0ff' : '#c0f080';
+        const typeLabel = ability.type === 'spell' ? 'Spell' : 'Skill';
+        const mpLabel = ability.mpCost > 0 ? `${ability.mpCost} MP` : 'Free';
+        const div = document.createElement('div');
+        div.style.cssText = 'display:flex;align-items:center;gap:12px;background:var(--bg-deep);border:1px solid #2a2a44;border-radius:8px;padding:10px 14px';
+        div.setAttribute('aria-label', `${ability.name}. ${typeLabel}. ${ability.desc}`);
+        div.innerHTML = `
+            <span style="font-size:1.4em" aria-hidden="true">${ability.icon}</span>
+            <div style="flex:1;min-width:0">
+                <div style="font-family:'Cinzel',serif;font-size:0.9em;font-weight:700;color:var(--gold)">${ability.name}</div>
+                <div style="font-size:0.85em;color:var(--text-dim);line-height:1.5">${ability.desc}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0">
+                <span style="font-family:'Cinzel',serif;font-size:0.65em;color:${typeColor};border:1px solid ${typeColor}33;border-radius:4px;padding:2px 6px">${typeLabel}</span>
+                <span style="font-family:'Cinzel',serif;font-size:0.65em;color:var(--text-dim)">${mpLabel}</span>
+            </div>
+        `;
+        list.appendChild(div);
+    });
 }
 
 function setBar(fillId, wrapId, labelId, current, max) {
@@ -2267,7 +2641,7 @@ function setActionsEnabled(enabled) {
     document.getElementById('btn-attack').disabled = !enabled;
     document.getElementById('btn-defend').disabled = !enabled;
     document.getElementById('btn-retreat').disabled = !enabled;
-    const USABLE_IN_COMBAT = ['health_potion', 'mana_potion', 'smoke_bomb', 'iron_grenade'];
+    const USABLE_IN_COMBAT = ['health_potion', 'mana_potion', 'smoke_bomb', 'iron_grenade', 'brine_tonic', 'surge_draught', 'smoke_flare', 'salted_rations', 'nettle_poison', 'healing_herb', 'mana_bloom', 'thornpoison', 'bark_shield', 'fennyx_blessing'];
     const hasItems = character && character.inventory.some(i => i.stackable && i.quantity > 0 && USABLE_IN_COMBAT.includes(i.id));
     document.getElementById('btn-items').disabled = !enabled || !hasItems;
     const hasSkills = character && (character.skills||[]).some(id => SKILLS_DATA.find(s=>s.id===id));
@@ -2280,7 +2654,7 @@ function openCombatItems() {
     if (!combat || combat.over) return;
     const list = document.getElementById('combat-items-list');
     // Only show items that have a combat use -- potions, grenades, smoke bombs
-    const USABLE_IN_COMBAT = ['health_potion', 'mana_potion', 'smoke_bomb', 'iron_grenade'];
+    const USABLE_IN_COMBAT = ['health_potion', 'mana_potion', 'smoke_bomb', 'iron_grenade', 'brine_tonic', 'surge_draught', 'smoke_flare', 'salted_rations', 'nettle_poison', 'healing_herb', 'mana_bloom', 'thornpoison', 'bark_shield', 'fennyx_blessing'];
     const consumables = character.inventory.filter(i => i.stackable && i.quantity > 0 && USABLE_IN_COMBAT.includes(i.id));
 
     if (consumables.length === 0) {
@@ -2290,7 +2664,7 @@ function openCombatItems() {
         consumables.forEach(item => {
             const btn = document.createElement('button');
             btn.className = 'combat-use-item';
-            btn.setAttribute('aria-label', `Use ${item.name}. ${item.desc}. Quantity: ${item.quantity}.`);
+            btn.setAttribute('aria-label', `Use ${item.name}. Quantity: ${item.quantity}.`);
             btn.innerHTML = `
                 <span class="combat-use-icon" aria-hidden="true">${item.icon}</span>
                 <div class="combat-use-info">
@@ -2346,6 +2720,68 @@ function useCombatItem(itemId) {
         logMsg = `You hurl an Iron Grenade at the ${combat.enemy.name} for ${dmg} damage!`;
         announceMsg = `Grenade deals ${dmg} damage! Enemy has ${Math.max(0, combat.enemy.hp)} HP left.`;
         setEnemyBar(combat.enemy.hp, combat.enemy.maxHp);
+    } else if (itemId === 'brine_tonic') {
+        const restore = Math.floor(character.maxHp * 0.5);
+        combat.playerHp = Math.min(character.maxHp, combat.playerHp + restore);
+        character.hp = combat.playerHp;
+        logMsg = `You drink a Brine Tonic and restore ${restore} HP.`;
+        announceMsg = `Brine Tonic restores ${restore} HP. You now have ${combat.playerHp} HP.`;
+        setCombatPlayerBars();
+    } else if (itemId === 'surge_draught') {
+        const restore = Math.floor(character.maxMp * 0.5);
+        combat.playerMp = Math.min(character.maxMp, combat.playerMp + restore);
+        character.mp = combat.playerMp;
+        logMsg = `You drink a Surge Draught and restore ${restore} MP.`;
+        announceMsg = `Surge Draught restores ${restore} MP. You now have ${combat.playerMp} MP.`;
+        setCombatPlayerBars();
+    } else if (itemId === 'smoke_flare') {
+        const dmg = roll(30, 50);
+        combat.enemy.hp -= dmg;
+        logMsg = `You fire a Smoke Flare at the ${combat.enemy.name} for ${dmg} fire damage!`;
+        announceMsg = `Smoke Flare deals ${dmg} damage! Enemy has ${Math.max(0, combat.enemy.hp)} HP left.`;
+        setEnemyBar(combat.enemy.hp, combat.enemy.maxHp);
+    } else if (itemId === 'salted_rations') {
+        const restore = Math.floor(character.maxHp * 0.2);
+        combat.playerHp = Math.min(character.maxHp, combat.playerHp + restore);
+        character.hp = combat.playerHp;
+        logMsg = `You eat some Salted Rations and restore ${restore} HP.`;
+        announceMsg = `Salted Rations restore ${restore} HP. You now have ${combat.playerHp} HP.`;
+        setCombatPlayerBars();
+    } else if (itemId === 'nettle_poison') {
+        combat.enemyPoisoned = 3; // 3 turns of 20 damage
+        logMsg = `You apply Nettle Poison! The ${combat.enemy.name} will take 20 damage each turn for 3 turns!`;
+        announceMsg = `Nettle Poison applied. Enemy will take 20 damage per turn for 3 turns.`;
+    } else if (itemId === 'healing_herb') {
+        const restore = Math.floor(character.maxHp * 0.4);
+        combat.playerHp = Math.min(character.maxHp, combat.playerHp + restore);
+        character.hp = combat.playerHp;
+        logMsg = `You consume a Healing Herb and restore ${restore} HP.`;
+        announceMsg = `Healing Herb restores ${restore} HP. You now have ${combat.playerHp} HP.`;
+        setCombatPlayerBars();
+    } else if (itemId === 'mana_bloom') {
+        const restore = Math.floor(character.maxMp * 0.4);
+        combat.playerMp = Math.min(character.maxMp, combat.playerMp + restore);
+        character.mp = combat.playerMp;
+        logMsg = `You consume a Mana Bloom and restore ${restore} MP.`;
+        announceMsg = `Mana Bloom restores ${restore} MP. You now have ${combat.playerMp} MP.`;
+        setCombatPlayerBars();
+    } else if (itemId === 'thornpoison') {
+        combat.enemyPoisoned = 3;
+        combat.poisonDmg = 25;
+        logMsg = `You apply Thorn Poison! The ${combat.enemy.name} will take 25 damage each turn for 3 turns!`;
+        announceMsg = `Thorn Poison applied. Enemy will take 25 damage per turn for 3 turns.`;
+    } else if (itemId === 'bark_shield') {
+        combat.barkShieldActive = true;
+        logMsg = `You apply Bark Shield Salve. Your next hit will deal 50% less damage!`;
+        announceMsg = `Bark Shield ready. Next enemy hit reduced by 50%.`;
+    } else if (itemId === 'fennyx_blessing') {
+        combat.playerHp = character.maxHp;
+        combat.playerMp = character.maxMp;
+        character.hp = character.maxHp;
+        character.mp = character.maxMp;
+        logMsg = `Fennyx's Blessing! Golden light fills you — HP and MP fully restored!`;
+        announceMsg = `Fennyx's Blessing fully restores HP and MP.`;
+        setCombatPlayerBars();
     }
 
     // Consume item
@@ -2356,8 +2792,8 @@ function useCombatItem(itemId) {
     addLog(logMsg, 'player');
     announce(announceMsg);
 
-    // Check if grenade killed enemy
-    if (itemId === 'iron_grenade' && combat.enemy.hp <= 0) {
+    // Check if damaging item killed enemy
+    if (['iron_grenade','smoke_flare'].includes(itemId) && combat.enemy.hp <= 0) {
         setTimeout(victory, 600);
         return;
     }
@@ -2377,7 +2813,10 @@ function getEquipBonuses() {
         const allItems = [
             ...(SHOP_INVENTORY ? SHOP_INVENTORY.weapons || [] : []),
             ...(SHOP_INVENTORY ? SHOP_INVENTORY.armor || [] : []),
-            ...(LOOT_POOL || [])
+            ...(typeof IRONHOLD_INVENTORY !== 'undefined' ? [...(IRONHOLD_INVENTORY.weapons||[]), ...(IRONHOLD_INVENTORY.armor||[])] : []),
+            ...(typeof SUNPORT_INVENTORY !== 'undefined' ? [...(SUNPORT_INVENTORY.weapons||[]), ...(SUNPORT_INVENTORY.accessories||[])] : []),
+            ...(LOOT_POOL || []),
+            ...Object.values(DUNGEONS).flatMap(d => d.loot || [])
         ];
         const item = allItems.find(i => i.id === itemId);
         if (!item || !item.stat) return;
@@ -2404,9 +2843,12 @@ function calcPlayerDamage() {
 function calcEnemyDamage() {
     const equip = getEquipBonuses();
     const dex = character.stats.dex + equip.dex;
-    const arm = equip.arm + Math.floor(character.stats.res / 2); // RES gives small passive armor
+    const arm = equip.arm + Math.floor(character.stats.res / 2);
     const base = roll(Math.floor(combat.enemy.atk * 0.8), Math.floor(combat.enemy.atk * 1.3));
-    const dodgeChance = dex * 2;
+    // Vanish gives a flat +40% dodge bonus this turn
+    const vanishBonus = combat.vanishDodge ? 40 : 0;
+    if (combat.vanishDodge) combat.vanishDodge = false;
+    const dodgeChance = (dex * 2) + vanishBonus;
     const dodged = Math.random() * 100 < dodgeChance;
     const afterArmor = Math.max(1, base - arm);
     const afterWeaken = combat.enemyWeakened ? Math.floor(afterArmor * 0.6) : afterArmor;
@@ -2482,6 +2924,18 @@ function enemyTurn() {
         if (combat.enemy.hp <= 0) { setTimeout(victory, 600); return; }
     }
 
+    // Apply nettle/thorn poison tick
+    if (combat.enemyPoisoned > 0) {
+        const poisonDmg = combat.poisonDmg || 20;
+        combat.enemy.hp -= poisonDmg;
+        combat.enemyPoisoned--;
+        if (combat.enemyPoisoned <= 0) combat.poisonDmg = 0;
+        const turns = combat.enemyPoisoned;
+        addLog(`Poison deals ${poisonDmg} damage to the ${combat.enemy.name}! (${turns} turn${turns !== 1 ? 's' : ''} remaining)`, 'player');
+        setEnemyBar(combat.enemy.hp, combat.enemy.maxHp);
+        if (combat.enemy.hp <= 0) { setTimeout(victory, 600); return; }
+    }
+
     // Frost bolt freeze -- enemy skips their turn
     if (combat.enemyFrozen) {
         combat.enemyFrozen = false;
@@ -2497,6 +2951,12 @@ function enemyTurn() {
     if (dodged) {
         addLog(`The ${combat.enemy.name} attacks but you dodge!`, 'system');
         announce(`You dodge the ${combat.enemy.name}'s attack!`);
+    } else if (combat.barkShieldActive) {
+        const reducedDmg = Math.floor(damage * 0.5);
+        combat.playerHp -= reducedDmg;
+        combat.barkShieldActive = false;
+        addLog(`The Bark Shield absorbs half the blow! Only ${reducedDmg} damage gets through!`, 'defend');
+        announce(`Bark Shield blocks half the hit. ${reducedDmg} damage gets through.`);
     } else if (combat.braceActive) {
         const bracedDmg = Math.floor(damage * 0.25);
         combat.playerHp -= bracedDmg;
@@ -2671,8 +3131,21 @@ function returnToTown() {
         saveGame();
     }
     document.getElementById('bottomNav').classList.add('visible');
-    goToScreen('town');
-    announce('You return to Greatwolf City.');
+
+    // Route back to the dungeon's home town, not always Greatwolf City
+    if (currentDungeonId === 'iron_depths') {
+        openIronhold();
+        announce('You return to Ironhold.');
+    } else if (currentDungeonId === 'sunken_mariner') {
+        travelToSunport();
+        announce('You return to Sunport.');
+    } else if (currentDungeonId === 'ashwood') {
+        travelToWolfhaven();
+        announce('You return to Wolfhaven.');
+    } else {
+        goToScreen('town');
+        announce('You return to Greatwolf City.');
+    }
 }
 
 // -- FLOOR CLEAR OVERLAY ----------------------------------
@@ -2721,6 +3194,14 @@ function showFloorClearOverlay() {
         document.getElementById('floor-clear-sub').textContent =
             `You defeated all ${dungeonState.encountersTotal} enemies on this floor.`;
     }
+
+    // Update return button label to reflect the right home town
+    const townName = currentDungeonId === 'iron_depths' ? 'Ironhold'
+                   : currentDungeonId === 'sunken_mariner' ? 'Sunport'
+                   : currentDungeonId === 'ashwood' ? 'Wolfhaven'
+                   : 'Greatwolf City';
+    const returnBtns = document.querySelectorAll('[onclick="returnToTown()"]');
+    returnBtns.forEach(b => { b.setAttribute('aria-label', `Return to ${townName}`); });
 
     document.getElementById('floor-clear-overlay').classList.add('show');
     document.getElementById('bottomNav').classList.add('visible');
@@ -2970,6 +3451,193 @@ const SLOT_MAP = {
 let detailItem = null;
 let detailInvIndex = null;
 
+// -- IRONHOLD ---------------------------------------------
+
+const IRONHOLD_INVENTORY = {
+    weapons: [
+        { id:'dwarven_hand_axe',  icon:'⚒', name:'Dwarven Hand Axe',   desc:'A compact dwarven axe. Better balanced than anything from Aldric.',  price:80,  tags:['One-Handed','Axe'],    stat:'STR +4', slot:'mainHand' },
+        { id:'dwarven_hammer',    icon:'🔨', name:'Dwarven War Hammer', desc:'Heavier and better crafted than a standard war hammer.',              price:95,  tags:['One-Handed','Hammer'], stat:'STR +5', slot:'mainHand' },
+        { id:'dwarven_greataxe',  icon:'⚒', name:'Dwarven Greataxe',   desc:'A two-handed axe of exceptional dwarven craft.',                      price:130, tags:['Two-Handed','Axe'],    stat:'STR +7', slot:'mainHand' },
+        { id:'iron_pick',         icon:'⛏', name:'Iron Pickaxe',       desc:'A sturdy mining pick repurposed as a weapon.',                        price:65,  tags:['One-Handed','Pick'],   stat:'STR +3', slot:'mainHand' },
+    ],
+    armor: [
+        { id:'dwarven_helm',      icon:'⛑',  name:'Dwarven Helm',       desc:'A masterwork dwarven helmet. Solid iron construction.',               price:75,  tags:['Heavy','Head'],     stat:'ARM +5', type:'heavy', slot:'head'    },
+        { id:'dwarven_chest',     icon:'🧥', name:'Dwarven Plate',      desc:'Heavy dwarven plate armor. Better than anything in the south.',       price:120, tags:['Heavy','Chest'],    stat:'ARM +7', type:'heavy', slot:'chest'   },
+        { id:'dwarven_boots',     icon:'🥾', name:'Dwarven Boots',      desc:'Iron-tipped boots built to last a lifetime in the mines.',            price:70,  tags:['Heavy','Feet'],     stat:'ARM +4', type:'heavy', slot:'feet'    },
+        { id:'dwarven_gauntlets', icon:'🧤', name:'Dwarven Gauntlets',  desc:'Iron gauntlets that protect the hands completely.',                   price:65,  tags:['Heavy','Hands'],    stat:'ARM +4', type:'heavy', slot:'hands'   },
+        { id:'dwarven_shield',    icon:'🛡', name:'Dwarven Shield',     desc:'A round shield bearing the Ironhold crest. Excellent protection.',    price:90,  tags:['Shield','Off-Hand'], stat:'ARM +6', slot:'offHand' },
+        { id:'stone_pauldrons',   icon:'🧣', name:'Stone Pauldrons',    desc:'Shoulder guards carved from deep stone.',                             price:80,  tags:['Heavy','Mantle'],   stat:'ARM +5', type:'heavy', slot:'mantle'  },
+    ],
+};
+
+const BRUNDAR_FIRST_VISIT = [
+    "A traveler from the south. Greatwolf City folk always look surprised by the cold. Welcome to Ironhold. Name's Brundar. I make the finest weapons and armor north of the mountains. Take a look — nothing from Aldric's shop compares to dwarven craft.",
+];
+
+const BRUNDAR_RETURN = [
+    "Back again. Good. Smart adventurers keep their gear sharp.",
+    "The depths are dangerous. Make sure ye're properly equipped before going down.",
+    "Dwarven steel lasts a lifetime. Worth every coin.",
+    "Aye, what do ye need? I've got work to do but I've always got time for a paying customer.",
+    "You look like you've been through it. Gear holding up?",
+];
+
+function openTravelMenu() {
+    document.getElementById('travel-overlay').classList.add('show');
+    announce('Travel menu. Three destinations available. Ironhold, Sunport, and Wolfhaven.');
+}
+
+function travelTo(destination) {
+    document.getElementById('travel-overlay').classList.remove('show');
+    if (destination === 'ironhold') {
+        openIronhold();
+    } else if (destination === 'sunport') {
+        travelToSunport();
+    } else if (destination === 'wolfhaven') {
+        travelToWolfhaven();
+    } else if (destination === 'town') {
+        goToScreen('town');
+        announce('You return to Greatwolf City.');
+    }
+}
+
+function openIronhold() {
+    if (!character) return;
+    if (!character.ironholdVisited) character.ironholdVisited = false;
+    const quote = !character.ironholdVisited
+        ? BRUNDAR_FIRST_VISIT[0]
+        : BRUNDAR_RETURN[Math.floor(Math.random() * BRUNDAR_RETURN.length)];
+    character.ironholdVisited = true;
+    document.getElementById('brundar-quote').textContent = `"${quote}"`;
+    document.getElementById('ironhold-hp').textContent = `${character.hp} / ${character.maxHp}`;
+    document.getElementById('ironhold-mp').textContent = `${character.mp} / ${character.maxMp}`;
+    document.getElementById('ironhold-gold').textContent = character.gold;
+    const highest = (character.dungeonHighest || {})['iron_depths'] || 1;
+    document.getElementById('iron-depths-sub').textContent = highest > 1 ? `Highest: Floor ${highest}` : 'Enter the mine';
+    saveGame();
+    goToScreen('ironhold');
+    announce(`Ironhold. ${quote}`);
+}
+
+function openIronholdShop() {
+    if (!character) return;
+    const quote = BRUNDAR_RETURN[Math.floor(Math.random() * BRUNDAR_RETURN.length)];
+    document.getElementById('brundar-shop-quote').textContent = `"${quote}"`;
+    document.getElementById('ironhold-shop-gold').textContent = character.gold;
+    renderIronholdShop();
+    goToScreen('ironhold-shop');
+    announce(`Brundar's Forge. ${quote}`);
+}
+
+function switchIronholdTab(tab) {
+    document.querySelectorAll('#screen-ironhold-shop .shop-tab').forEach(t => {
+        t.classList.remove('active');
+        t.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('#screen-ironhold-shop .shop-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('itab-' + tab).classList.add('active');
+    document.getElementById('itab-' + tab).setAttribute('aria-selected', 'true');
+    document.getElementById('ironhold-' + tab).classList.add('active');
+}
+
+function renderIronholdShop() {
+    ['weapons', 'armor'].forEach(category => {
+        const panel = document.getElementById('ironhold-' + category);
+        panel.innerHTML = '';
+        IRONHOLD_INVENTORY[category].forEach(item => {
+            const canAfford = character.gold >= item.price;
+            const tagHTML = item.tags.map(t => {
+                const cls = t === 'Heavy' ? 'type-heavy' : t === 'Medium' ? 'type-medium' : t === 'Light' ? 'type-light' : '';
+                return `<span class="shop-tag ${cls}">${t}</span>`;
+            }).join('');
+            panel.innerHTML += `
+                <div class="shop-item" aria-label="${item.name}, ${item.desc}, costs ${item.price} gold">
+                    <span class="shop-item-icon" aria-hidden="true">${item.icon}</span>
+                    <div class="shop-item-info">
+                        <div class="shop-item-name">${item.name}</div>
+                        <div class="shop-item-desc">${item.desc}</div>
+                        <div class="shop-item-tags">${tagHTML}<span class="shop-tag">${item.stat}</span></div>
+                    </div>
+                    <div class="shop-item-buy">
+                        <div class="shop-item-price ${canAfford ? '' : 'cant-afford'}">${item.price}g</div>
+                        <button class="buy-btn" ${canAfford ? '' : 'disabled'} onclick="buyIronholdItem('${item.id}')" aria-label="Buy ${item.name} for ${item.price} gold">Buy</button>
+                    </div>
+                </div>`;
+        });
+    });
+
+    const sellPanel = document.getElementById('ironhold-sell');
+    sellPanel.innerHTML = '';
+    const sellable = character.inventory.filter((i, idx) => !isItemEquipped(i.id, idx));
+    if (sellable.length === 0) {
+        sellPanel.innerHTML = '<div class="inv-empty">Nothing to sell.</div>';
+        return;
+    }
+    sellable.forEach((item, idx) => {
+        const sellPrice = Math.floor((item.price || 10) * 0.4);
+        sellPanel.innerHTML += `
+            <div class="shop-item" aria-label="${item.name}, sell for ${sellPrice} gold">
+                <span class="shop-item-icon" aria-hidden="true">${item.icon}</span>
+                <div class="shop-item-info">
+                    <div class="shop-item-name">${item.name}</div>
+                    <div class="shop-item-desc">${item.desc}</div>
+                </div>
+                <div class="shop-item-buy">
+                    <div class="shop-item-price">${sellPrice}g</div>
+                    <button class="buy-btn" onclick="sellItemFromIronhold(${idx})" aria-label="Sell ${item.name} for ${sellPrice} gold">Sell</button>
+                </div>
+            </div>`;
+    });
+}
+
+function buyIronholdItem(itemId) {
+    const allItems = [...IRONHOLD_INVENTORY.weapons, ...IRONHOLD_INVENTORY.armor];
+    const item = allItems.find(i => i.id === itemId);
+    if (!item || character.gold < item.price) return;
+    character.gold -= item.price;
+    character.inventory.push({ ...item, quantity: 1 });
+    document.getElementById('ironhold-shop-gold').textContent = character.gold;
+    saveGame(); populateUI();
+    renderIronholdShop();
+    showToast(`Bought ${item.name}!`);
+    announce(`Purchased ${item.name} for ${item.price} gold.`);
+}
+
+function sellItemFromIronhold(idx) {
+    const sellable = character.inventory.filter((i, idx) => !isItemEquipped(i.id, idx));
+    const item = sellable[idx];
+    if (!item) return;
+    const sellPrice = Math.floor((item.price || 10) * 0.4);
+    const realIdx = character.inventory.findIndex(i => i.id === item.id);
+    if (realIdx === -1) return;
+    character.inventory.splice(realIdx, 1);
+    character.gold += sellPrice;
+    document.getElementById('ironhold-shop-gold').textContent = character.gold;
+    saveGame(); populateUI();
+    renderIronholdShop();
+    showToast(`Sold ${item.name} for ${sellPrice}g!`);
+    announce(`Sold ${item.name} for ${sellPrice} gold.`);
+}
+
+function enterIronDepths() {
+    if (!character.equipment || !character.equipment.mainHand) {
+        document.getElementById('unequipped-overlay').classList.add('show');
+        return;
+    }
+    currentDungeonId = 'iron_depths';
+    if (!character.dungeonHighest) character.dungeonHighest = {};
+    const highest = character.dungeonHighest['iron_depths'] || 1;
+    character.highestFloor = highest;
+    document.getElementById('floor-select-title').textContent = 'Enter The Iron Depths';
+    document.getElementById('floor-btn-highest').textContent =
+        highest > 1 ? `Resume Floor ${highest}` : 'Start from Floor 1';
+    document.getElementById('floor-select-body').textContent =
+        highest > 1 ? `Your highest floor in The Iron Depths is ${highest}.` : 'The mine shafts descend into darkness.';
+    document.getElementById('floor-input').value = '';
+    document.getElementById('floor-select-overlay').classList.add('show');
+    announce('The Iron Depths. Floor select open.');
+}
+
 // -- ACTION SHEET / FILTER SYSTEM ------------------------
 
 let invFilter = 'all';
@@ -3080,12 +3748,13 @@ function renderBag() {
     if (!character) return;
     const bag = document.getElementById('inv-bag');
 
-    // Only show items NOT currently equipped
-    let items = character.inventory.filter(item => !isItemEquipped(item.id));
+    // Build indexed list, filter out equipped items by their actual inventory index
+    let indexed = character.inventory.map((item, idx) => ({ item, idx }));
+    indexed = indexed.filter(({ item, idx }) => !isItemEquipped(item.id, idx));
 
     // Apply filter
     if (invFilter !== 'all') {
-        items = items.filter(item => {
+        indexed = indexed.filter(({ item }) => {
             if (invFilter === 'weapon') return item.slot === 'mainHand' || item.slot === 'offHand';
             if (invFilter === 'light') return item.type === 'light';
             if (invFilter === 'medium') return item.type === 'medium';
@@ -3097,16 +3766,15 @@ function renderBag() {
     }
 
     // Apply sort
-    if (invSort === 'az') items = [...items].sort((a,b) => a.name.localeCompare(b.name));
+    if (invSort === 'az') indexed = [...indexed].sort((a,b) => a.item.name.localeCompare(b.item.name));
 
-    if (items.length === 0) {
+    if (indexed.length === 0) {
         bag.innerHTML = '<div class="inv-empty">' + (invFilter !== 'all' ? 'No items match this filter.' : 'Your bag is empty. Visit the shop to buy gear and items.') + '</div>';
         return;
     }
 
     bag.innerHTML = '';
-    items.forEach((item) => {
-        const realIndex = character.inventory.findIndex(i => i.id === item.id);
+    indexed.forEach(({ item, idx }) => {
         const qtyBadge = item.stackable && item.quantity > 1
             ? `<span class="inv-item-badge qty-badge">x${item.quantity}</span>` : '';
 
@@ -3119,27 +3787,35 @@ function renderBag() {
             <span class="inv-item-icon" aria-hidden="true">${item.icon}</span>
             <div class="inv-item-info">
                 <div class="inv-item-name">${item.name}</div>
-                <div class="inv-item-sub">${item.stat}</div>
+                <div class="inv-item-sub">${item.stat || ''}</div>
             </div>
             ${qtyBadge}
         `;
-        div.onclick = () => openDetail(realIndex);
-        div.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') openDetail(realIndex); };
+        div.onclick = () => openDetail(idx);
+        div.onkeydown = (e) => { if (e.key === 'Enter' || e.key === ' ') openDetail(idx); };
         bag.appendChild(div);
     });
 }
 
-function isItemEquipped(itemId) {
+function isItemEquipped(itemId, invIndex) {
     if (!character) return false;
-    return Object.values(character.equipment).some(e => e && e.id === itemId);
+    return Object.values(character.equipment).some(e => {
+        if (!e) return false;
+        // If we have a specific inventory index, match by that
+        if (invIndex !== undefined && e.invIndex !== undefined) return e.invIndex === invIndex;
+        // Otherwise fall back to id match (for legacy saves and stackables)
+        return e.id === itemId;
+    });
 }
 
 function slotClick(slotId) {
     if (!character) return;
-    const item = character.equipment[slotId];
-    if (!item) return;
-    // Find in inventory and open detail showing unequip option
-    const invIndex = character.inventory.findIndex(i => i.id === item.id);
+    const equipped = character.equipment[slotId];
+    if (!equipped) return;
+    // Use the stored invIndex if available, otherwise fall back to findIndex
+    const invIndex = equipped.invIndex !== undefined
+        ? equipped.invIndex
+        : character.inventory.findIndex(i => i.id === equipped.id);
     if (invIndex !== -1) openDetail(invIndex);
 }
 
@@ -3162,7 +3838,7 @@ function openDetail(invIndex, equippedSlot) {
     const unequipBtn = document.getElementById('detail-unequip-btn');
     const useBtn = document.getElementById('detail-use-btn');
 
-    const isEquipped = isItemEquipped(item.id);
+    const isEquipped = isItemEquipped(item.id, invIndex);
 
     if (item.stackable) {
         // Consumable -- show Use button
@@ -3193,18 +3869,24 @@ function closeDetail() {
 function equipFromDetail() {
     if (!detailItem) return;
     const item = detailItem;
+    const invIndex = detailInvIndex;
 
-    // Find the right slot
-    const slotType = item.slot;
-    const possibleSlots = SLOT_MAP[slotType] || [slotType];
+    // Normalize slot type — strip trailing digits so 'ring1'/'ring2' both map to 'ring'
+    const rawSlot = item.slot;
+    const slotType = rawSlot ? rawSlot.replace(/[0-9]+$/, '') : rawSlot;
+    const possibleSlots = SLOT_MAP[slotType] || [rawSlot];
 
     // Find an empty slot first, otherwise use the first slot
     let targetSlot = possibleSlots.find(s => !character.equipment[s]);
     if (!targetSlot) targetSlot = possibleSlots[0];
 
-    // If replacing, put old item back in bag (it's already there, just clear slot)
+    // If replacing an item in the target slot, clear its invIndex reference
+    // (the old item stays in inventory, just no longer marked equipped)
+
+    // Equip into the resolved slot — store invIndex so identical items can be told apart
     character.equipment[targetSlot] = {
         id: item.id,
+        invIndex: invIndex,
         name: item.name,
         icon: item.icon,
         desc: item.desc,
@@ -3218,16 +3900,22 @@ function equipFromDetail() {
     renderBag();
     closeDetail();
     showToast(`${item.name} equipped!`);
-    announce(`${item.name} equipped to ${targetSlot.replace(/[0-9]/g,'')} slot.`);
+    announce(`${item.name} equipped to ${slotType} slot.`);
 }
 
 function unequipFromDetail() {
     if (!detailItem) return;
     const item = detailItem;
+    const invIndex = detailInvIndex;
 
-    // Find which slot it's in and clear it
+    // Find which slot it's in — match by invIndex if available, otherwise by id
     for (const slotId of Object.keys(character.equipment)) {
-        if (character.equipment[slotId] && character.equipment[slotId].id === item.id) {
+        const e = character.equipment[slotId];
+        if (!e) continue;
+        const matches = (e.invIndex !== undefined && invIndex !== undefined)
+            ? e.invIndex === invIndex
+            : e.id === item.id;
+        if (matches) {
             character.equipment[slotId] = null;
             break;
         }
@@ -3263,6 +3951,34 @@ function useFromDetail() {
         resultMsg = 'Save this for combat! (Use from Items in battle)';
         closeDetail();
         return;
+    } else if (item.id === 'brine_tonic') {
+        const restore = Math.floor(character.maxHp * 0.5);
+        character.hp = Math.min(character.maxHp, character.hp + restore);
+        resultMsg = `Restored ${restore} HP!`;
+    } else if (item.id === 'surge_draught') {
+        const restore = Math.floor(character.maxMp * 0.5);
+        character.mp = Math.min(character.maxMp, character.mp + restore);
+        resultMsg = `Restored ${restore} MP!`;
+    } else if (item.id === 'salted_rations') {
+        const restore = Math.floor(character.maxHp * 0.2);
+        character.hp = Math.min(character.maxHp, character.hp + restore);
+        resultMsg = `Restored ${restore} HP!`;
+    } else if (item.id === 'smoke_flare' || item.id === 'nettle_poison' || item.id === 'thornpoison' || item.id === 'bark_shield') {
+        resultMsg = 'Save this for combat! (Use from Items in battle)';
+        closeDetail();
+        return;
+    } else if (item.id === 'healing_herb') {
+        const restore = Math.floor(character.maxHp * 0.4);
+        character.hp = Math.min(character.maxHp, character.hp + restore);
+        resultMsg = `Restored ${restore} HP!`;
+    } else if (item.id === 'mana_bloom') {
+        const restore = Math.floor(character.maxMp * 0.4);
+        character.mp = Math.min(character.maxMp, character.mp + restore);
+        resultMsg = `Restored ${restore} MP!`;
+    } else if (item.id === 'fennyx_blessing') {
+        character.hp = character.maxHp;
+        character.mp = character.maxMp;
+        resultMsg = `Fennyx's Blessing fully restored your HP and MP!`;
     }
 
     // Consume one
@@ -3551,6 +4267,41 @@ const SKILLS_DATA = [
             return { damage:dmg, log:`Shield Bash! You stun the ${enemy.name} for ${dmg} damage! They lose their next turn!`, type:'player' };
         }
     },
+    {
+        id:'double_shot', icon:'🏹', name:'Double Shot', type:'skill',
+        desc:'Fire two projectiles in rapid succession. Each shot deals full DEX damage -- best with bows, crossbows, or firearms.',
+        stat:'DEX x 2-4 (x2)', price:50, cooldown:1, mpCost:0,
+        tags:['Skill','Ranged'],
+        use:(c,enemy) => {
+            const dex = c.stats.dex + getEquipBonuses().dex;
+            const s1 = roll(dex*2, dex*4);
+            const s2 = roll(dex*2, dex*4);
+            return { damage:s1+s2, log:`Double Shot! Two projectiles find their mark -- ${s1} + ${s2} = ${s1+s2} damage!`, type:'player' };
+        }
+    },
+    {
+        id:'crippling_shot', icon:'🎯', name:'Crippling Shot', type:'skill',
+        desc:'A precise strike that wounds the enemy -- deals DEX damage and weakens their next attack.',
+        stat:'DEX x 2-3 + Weaken', price:50, cooldown:1, mpCost:0,
+        tags:['Skill','Ranged'],
+        use:(c,enemy) => {
+            const dex = c.stats.dex + getEquipBonuses().dex;
+            const dmg = roll(dex*2, dex*3);
+            combat.enemyWeakened = true;
+            return { damage:dmg, log:`Crippling Shot! You wound the ${enemy.name} for ${dmg} damage! Their next attack is weakened!`, type:'player' };
+        }
+    },
+    {
+        id:'vanish', icon:'💨', name:'Vanish', type:'skill',
+        desc:'Disappear from sight -- guarantees your next retreat attempt succeeds and boosts dodge chance this turn.',
+        stat:'Guaranteed Flee + Dodge', price:50, cooldown:1, mpCost:0,
+        tags:['Skill','Evasion'],
+        use:(c,enemy) => {
+            combat.smokeBombActive = true;
+            combat.vanishDodge = true;
+            return { damage:0, log:`Vanish! You melt into the shadows. Your next retreat is guaranteed and you feel harder to hit!`, type:'defend', noEnemyDamage:true };
+        }
+    },
 ];
 
 const SPELLS_DATA = [
@@ -3624,6 +4375,48 @@ const SPELLS_DATA = [
             return { damage:dmg, log:`SOLAR BEAM! Blinding light obliterates the ${enemy.name} for ${dmg} massive magic damage!`, type:'player' };
         }
     },
+    {
+        id:'tempest', icon:'🌪', name:'Tempest', type:'spell',
+        desc:'Summon a violent storm of wind and lightning -- deals heavy damage and knocks the enemy back, skipping their next turn.',
+        stat:'INT x 4-7 + Skip', price:50, cooldown:1, mpCost:28,
+        tags:['Spell','Lightning','Wind'],
+        use:(c,enemy) => {
+            const int = c.stats.int + getEquipBonuses().int;
+            const dmg = roll(int*4, int*7);
+            combat.enemyFrozen = true;
+            return { damage:dmg, log:`TEMPEST! A roaring storm of wind and lightning blasts the ${enemy.name} for ${dmg} damage -- they are knocked back and lose their next turn!`, type:'player' };
+        }
+    },
+    {
+        id:'void_pulse', icon:'🌑', name:'Void Pulse', type:'spell',
+        desc:'Release a pulse of dark energy that drains the enemy -- deals damage and restores MP equal to half the damage dealt.',
+        stat:'INT x 3-5 + MP Drain', price:50, cooldown:1, mpCost:20,
+        tags:['Spell','Dark'],
+        use:(c,enemy) => {
+            const int = c.stats.int + getEquipBonuses().int;
+            const dmg = roll(int*3, int*5);
+            const mpRestore = Math.floor(dmg * 0.5);
+            combat.playerMp = Math.min(c.maxMp, combat.playerMp + mpRestore);
+            c.mp = combat.playerMp;
+            return { damage:dmg, log:`Void Pulse! Dark energy drains the ${enemy.name} for ${dmg} damage and restores ${mpRestore} of your MP!`, type:'player' };
+        }
+    },
+    {
+        id:'mending_wave', icon:'💙', name:'Mending Wave', type:'spell',
+        desc:'A sustained wave of healing energy -- restores HP and MP based on your Intelligence.',
+        stat:'INT x 6 HP + INT x 3 MP', price:50, cooldown:1, mpCost:22,
+        tags:['Spell','Healing'],
+        use:(c,enemy) => {
+            const int = c.stats.int + getEquipBonuses().int;
+            const hpRestore = int * 6;
+            const mpRestore = int * 3;
+            combat.playerHp = Math.min(c.maxHp, combat.playerHp + hpRestore);
+            combat.playerMp = Math.min(c.maxMp, combat.playerMp + mpRestore);
+            c.hp = combat.playerHp;
+            c.mp = combat.playerMp;
+            return { damage:0, log:`Mending Wave! A wave of healing restores ${hpRestore} HP and ${mpRestore} MP!`, type:'defend', noEnemyDamage:true };
+        }
+    },
 ];
 
 const TRAINER_QUOTES = [
@@ -3664,6 +4457,7 @@ function renderTrainingTab(tab) {
         const mpTag = ability.mpCost > 0
             ? `<span class="shop-tag" style="color:#80c0ff;border-color:#2a4a6a">${ability.mpCost} MP</span>`
             : `<span class="shop-tag" style="color:#80c080;border-color:#2a4a2a">No MP</span>`;
+        const FORGET_REFUND = 30;
         panel.innerHTML += `
             <div class="shop-item" aria-label="${ability.name}. ${ability.desc}. ${ability.price} gold.">
                 <span class="shop-item-icon" aria-hidden="true">${ability.icon}</span>
@@ -3674,7 +4468,10 @@ function renderTrainingTab(tab) {
                 </div>
                 <div class="shop-item-buy">
                     ${owned
-                        ? `<div class="shop-item-price" style="color:var(--green)">✓ Learned</div>`
+                        ? `<div class="shop-item-price" style="color:var(--green);margin-bottom:4px">✓ Learned</div>
+                           <button class="buy-btn" style="background:linear-gradient(135deg,#3a1a1a,#6a2a2a);color:#f0c0c0;font-size:0.75em"
+                               onclick="promptForgetAbility('${ability.id}')"
+                               aria-label="Forget ${ability.name} for ${FORGET_REFUND} gold refund">Forget</button>`
                         : `<div class="shop-item-price ${canAfford?'':'cant-afford'}">${ability.price}g</div>
                            <button class="buy-btn" ${canAfford?'':'disabled'} onclick="learnAbility('${ability.id}')" aria-label="Learn ${ability.name}">Learn</button>`
                     }
@@ -3694,6 +4491,40 @@ function learnAbility(id) {
     renderTrainingTab(ability.type==='skill'?'skills':'spells');
     showToast(`${ability.name} learned!`);
     announce(`You learned ${ability.name}! Available in combat.`);
+}
+
+let forgetPendingId = null;
+const FORGET_REFUND = 30;
+
+function promptForgetAbility(id) {
+    const ability = [...SKILLS_DATA,...SPELLS_DATA].find(a=>a.id===id);
+    if (!ability) return;
+    forgetPendingId = id;
+    document.getElementById('forget-ability-title').textContent = `Forget ${ability.name}?`;
+    document.getElementById('forget-ability-body').textContent =
+        `You will lose ${ability.name} and receive ${FORGET_REFUND} gold. You can relearn it later for ${ability.price} gold.`;
+    document.getElementById('forget-ability-overlay').classList.add('show');
+    announce(`Forget ${ability.name}? You will receive ${FORGET_REFUND} gold. Confirm or cancel.`);
+}
+
+function confirmForgetAbility() {
+    if (!forgetPendingId) return;
+    const ability = [...SKILLS_DATA,...SPELLS_DATA].find(a=>a.id===forgetPendingId);
+    if (!ability) { closeForgetAbility(); return; }
+    character.skills = (character.skills||[]).filter(id => id !== forgetPendingId);
+    character.gold += FORGET_REFUND;
+    saveGame(); populateUI(); renderCharAbilities();
+    document.getElementById('training-gold').textContent = character.gold;
+    closeForgetAbility();
+    renderTrainingTab(ability.type==='skill'?'skills':'spells');
+    showToast(`${ability.name} forgotten. +${FORGET_REFUND} gold.`);
+    announce(`${ability.name} forgotten. You received ${FORGET_REFUND} gold. You now have ${character.gold} gold.`);
+    forgetPendingId = null;
+}
+
+function closeForgetAbility() {
+    document.getElementById('forget-ability-overlay').classList.remove('show');
+    forgetPendingId = null;
 }
 
 // -- COMBAT ABILITIES --------------------------------------
@@ -3735,7 +4566,7 @@ function renderCombatAbilities(type) {
         const btn = document.createElement('button');
         btn.className = 'combat-use-item';
         btn.disabled = disabled;
-        btn.setAttribute('aria-label', `${ability.name}${statusText}. ${ability.desc}`);
+        btn.setAttribute('aria-label', `${ability.name}${statusText}`);
         btn.innerHTML = `
             <span class="combat-use-icon" aria-hidden="true">${ability.icon}</span>
             <div class="combat-use-info">
@@ -3812,6 +4643,24 @@ function getSellValue(item) {
         const found = SHOP_INVENTORY[cat].find(s => s.id === item.id);
         if (found) { basePrice = found.price; break; }
     }
+    if (basePrice === 0 && typeof IRONHOLD_INVENTORY !== 'undefined') {
+        for (const cat of ['weapons','armor']) {
+            const found = (IRONHOLD_INVENTORY[cat] || []).find(s => s.id === item.id);
+            if (found) { basePrice = found.price; break; }
+        }
+    }
+    if (basePrice === 0 && typeof WOLFHAVEN_INVENTORY !== 'undefined') {
+        for (const cat of ['weapons','armor','consumables']) {
+            const found = (WOLFHAVEN_INVENTORY[cat] || []).find(s => s.id === item.id);
+            if (found) { basePrice = found.price; break; }
+        }
+    }
+    if (basePrice === 0 && typeof SUNPORT_INVENTORY !== 'undefined') {
+        for (const cat of ['weapons','accessories','consumables']) {
+            const found = (SUNPORT_INVENTORY[cat] || []).find(s => s.id === item.id);
+            if (found) { basePrice = found.price; break; }
+        }
+    }
     if (basePrice === 0) {
         if (item.tags && item.tags.includes('Material')) return 5;
         if (item.stackable) return 8;
@@ -3823,7 +4672,7 @@ function getSellValue(item) {
 
 function renderSellTab() {
     const panel = document.getElementById('shop-sell');
-    const sellable = character.inventory.filter(i => !isItemEquipped(i.id));
+    const sellable = character.inventory.filter((i, idx) => !isItemEquipped(i.id, idx));
 
     if (sellable.length === 0) {
         panel.innerHTML = '<div class="inv-empty" style="padding:30px 0">Nothing to sell. Defeat enemies and find loot to bring back.</div>';
@@ -3986,6 +4835,7 @@ const SHOP_INVENTORY = {
         { id:'leather_belt',    icon:'👔', name:'Leather Belt',          desc:'A sturdy belt of thick leather.',                        price:24,  tags:['Medium','Waist'],    stat:'ARM +2',  type:'medium', slot:'waist'  },
         { id:'iron_girdle',     icon:'⚙',  name:'Iron Girdle',           desc:'A reinforced iron waistguard. Solid protection.',        price:42,  tags:['Heavy','Waist'],     stat:'ARM +3',  type:'heavy',  slot:'waist'  },
         { id:'iron_boots',      icon:'🥾', name:'Iron Boots',           desc:'Heavy iron boots. Slow but protective.',              price:48,  tags:['Heavy','Feet'],     stat:'ARM +3',  type:'heavy',  slot:'feet'   },
+        { id:'leather_boots',   icon:'🥾', name:'Leather Boots',        desc:'Sturdy leather boots. A reliable choice for any traveler.',price:30, tags:['Medium','Feet'],    stat:'ARM +2',  type:'medium', slot:'feet'   },
         { id:'cloth_slippers',  icon:'🩴', name:'Cloth Slippers',       desc:'Soft slippers. Silent as shadow.',                    price:16,  tags:['Light','Feet'],     stat:'MP +4',   type:'light',  slot:'feet'   },
         // Off Hand -- Shields
         { id:'wooden_shield',   icon:'🛡', name:'Wooden Shield',         desc:'A round wooden shield. Light and reliable.',          price:30,  tags:['Shield','Off-Hand'], stat:'ARM +3',  type:'light',  slot:'offHand' },
@@ -4396,9 +5246,114 @@ const DUNGEONS = {
             { id:'scarab_gem',     icon:'🦂', name:'Scarab Gem',        desc:'A gem shaped like a scarab beetle. Rare and valuable.',   stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
         ],
     },
+    iron_depths: {
+        id: 'iron_depths',
+        name: 'The Iron Depths',
+        icon: '⛏',
+        desc: 'Ancient mine shafts beneath Ironhold. The dwarves dug too deep. Something ancient stirs in the darkness below.',
+        flavor: 'Deep mines and ancient stone',
+        color: '#a0522d',
+        enemies: [
+            { name:'Cave Crawler',     icon:'🦟', level:1, hp:28,  atk:7,  xp:15, gold:[3,8],   floors:[1,6]   },
+            { name:'Mine Goblin',      icon:'👺', level:1, hp:25,  atk:6,  xp:13, gold:[4,10],  floors:[1,8]   },
+            { name:'Rogue Dwarf',      icon:'⛏',  level:2, hp:55,  atk:11, xp:28, gold:[8,16],  floors:[4,20]  },
+            { name:'Earth Elemental',  icon:'🪨', level:2, hp:60,  atk:10, xp:30, gold:[6,14],  floors:[5,22]  },
+            { name:'Stone Drake',      icon:'🐉', level:3, hp:75,  atk:13, xp:45, gold:[12,24], floors:[8,28]  },
+            { name:'Deep Troll',       icon:'🧌', level:3, hp:95,  atk:15, xp:55, gold:[15,28], floors:[12,32] },
+            { name:'Iron Golem',       icon:'🤖', level:4, hp:120, atk:17, xp:70, gold:[22,40], floors:[20,99] },
+            { name:'Cave Drake',       icon:'🐉', level:4, hp:130, atk:19, xp:78, gold:[25,44], floors:[28,99] },
+        ],
+        bosses: {
+            10: { name:'Foreman Grudge',      icon:'⛏',  level:4, hp:220, atk:20, xp:160, gold:[45,75],   desc:'A corrupted dwarven foreman, twisted by something deep in the mine' },
+            20: { name:'The Stone Titan',     icon:'🪨', level:5, hp:400, atk:26, xp:320, gold:[90,150],  desc:'An earth elemental grown massive over centuries in the deep dark' },
+            30: { name:'King Durak the Exile',icon:'⛏',  level:6, hp:580, atk:32, xp:500, gold:[170,260], desc:'The exiled dwarven king who fled into the depths rather than surrender' },
+        },
+        loot: [
+            { id:'dwarven_axe',    icon:'⚒', name:'Dwarven War Axe',   desc:'Masterwork dwarven craftsmanship. Heavy and perfectly balanced.',   stat:'STR +6', slot:'mainHand', tags:['Two-Handed','Axe'],   stackable:false },
+            { id:'stone_hammer',   icon:'🔨', name:'Stone Hammer',      desc:'A hammer carved from a single piece of granite.',                    stat:'STR +5', slot:'mainHand', tags:['One-Handed','Hammer'], stackable:false },
+            { id:'iron_plate',     icon:'🛡', name:'Iron Plate Armor',  desc:'Heavy dwarven plate. Virtually impenetrable.',                       stat:'ARM +8', slot:'chest',    tags:['Heavy','Chest'],      stackable:false, type:'heavy'  },
+            { id:'stone_shield',   icon:'🛡', name:'Stone Shield',      desc:'A shield hewn from deep stone. Incredibly tough.',                   stat:'ARM +7', slot:'offHand',  tags:['Shield','Off-Hand'],  stackable:false },
+            { id:'miners_helm',    icon:'⛑',  name:"Miner's Helm",      desc:'A dwarven mining helmet reinforced with iron.',                      stat:'ARM +5', slot:'head',     tags:['Heavy','Head'],       stackable:false, type:'heavy'  },
+            { id:'iron_ore',       icon:'🪨', name:'Iron Ore',          desc:'Raw iron ore from deep in the mine.',                                stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
+            { id:'cave_crystal',   icon:'💎', name:'Cave Crystal',      desc:'A glowing crystal found deep in the Iron Depths.',                   stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
+        ],
+    },
+    ashwood: {
+        id: 'ashwood',
+        name: 'The Ashwood',
+        icon: '🌑',
+        desc: 'An ancient forest choked by corruption. The trees move. The shadows watch. Something powerful twisted this place — and it has not left.',
+        flavor: 'Corruption and ancient dark magic',
+        color: '#4a8a5a',
+        enemies: [
+            // Corrupted woodland creatures
+            { name:'Corrupted Wolf',      icon:'🐺', level:1, hp:30,  atk:7,  xp:15, gold:[3,8],   floors:[1,6]   },
+            { name:'Shadow Bear',         icon:'🐻', level:2, hp:65,  atk:12, xp:32, gold:[8,18],  floors:[4,20]  },
+            { name:'Dark Sprite',         icon:'🧚', level:1, hp:22,  atk:9,  xp:16, gold:[2,7],   floors:[1,8]   },
+            { name:'Blighted Stag',       icon:'🦌', level:2, hp:55,  atk:10, xp:26, gold:[6,14],  floors:[3,18]  },
+            // Dark druids and cultists
+            { name:'Ashwood Cultist',     icon:'🧙', level:2, hp:48,  atk:11, xp:28, gold:[7,16],  floors:[4,22]  },
+            { name:'Dark Druid',          icon:'🌿', level:3, hp:70,  atk:13, xp:44, gold:[12,24], floors:[8,28]  },
+            { name:'Druid Warden',        icon:'🌿', level:3, hp:85,  atk:14, xp:50, gold:[14,26], floors:[12,32] },
+            // Shadow elementals and twisted plants
+            { name:'Shadow Elemental',    icon:'🌑', level:2, hp:50,  atk:13, xp:30, gold:[5,12],  floors:[5,22]  },
+            { name:'Thornwall',           icon:'🌵', level:3, hp:80,  atk:12, xp:46, gold:[11,22], floors:[8,30]  },
+            { name:'Void Wisp',           icon:'✨', level:2, hp:35,  atk:14, xp:28, gold:[4,10],  floors:[6,24]  },
+            { name:'Ancient Shambler',    icon:'🌳', level:4, hp:120, atk:17, xp:70, gold:[20,38], floors:[20,99] },
+            { name:'Corrupted Archdruid', icon:'🧙', level:4, hp:130, atk:19, xp:78, gold:[24,44], floors:[28,99] },
+        ],
+        bosses: {
+            10: { name:'Vexara the Blighted',     icon:'🐺', level:4, hp:230, atk:21, xp:165, gold:[46,78],   desc:'A massive corrupted wolf, once a guardian of the forest' },
+            20: { name:'The Thornwall Titan',     icon:'🌵', level:5, hp:420, atk:27, xp:335, gold:[94,158],  desc:'A colossal animated thornwall that has consumed three clearings whole' },
+            30: { name:'Druid-King Maelos',       icon:'🧙', level:6, hp:610, atk:33, xp:530, gold:[178,275], desc:'A once-revered druid king, now hollow-eyed and howling with corruption' },
+            40: { name:'Eryndal the Rootbound',   icon:'🌑', level:7, hp:870, atk:41, xp:800, gold:[275,400], desc:'The ancient druid whose grief and rage poisoned the Ashwood centuries ago — still here, still suffering, still destroying' },
+        },
+        loot: [
+            { id:'groveblade',      icon:'🗡',  name:'Groveblade',        desc:'A blade grown from corrupted heartwood. Hums with dark nature magic.',   stat:'INT +5', slot:'mainHand', tags:['One-Handed','Sword'],  stackable:false },
+            { id:'thornstaff',      icon:'🪄', name:'Thornstaff',          desc:'A staff twisted from ashwood. Channels nature magic powerfully.',         stat:'INT +6', slot:'mainHand', tags:['One-Handed','Staff'],  stackable:false },
+            { id:'druid_robes',     icon:'👘', name:'Druid Robes',          desc:'Ancient robes woven from living moss and ashwood fiber.',                 stat:'MP +10', slot:'chest',    tags:['Light','Chest'],       stackable:false, type:'light' },
+            { id:'shadow_mantle',   icon:'🧥', name:'Shadow Mantle',        desc:'A cloak that absorbs ambient darkness, granting strange protection.',     stat:'ARM +5', slot:'mantle',   tags:['Medium','Mantle'],     stackable:false, type:'medium' },
+            { id:'root_ring',       icon:'💍', name:'Root Ring',            desc:'A ring braided from living roots. Pulses with quiet power.',              stat:'INT +4', slot:'ring1',    tags:['Ring'],                stackable:false },
+            { id:'void_shard',      icon:'🌑', name:'Void Shard',           desc:'A fragment of crystallized shadow. Cold to the touch.',                   stat:'Material', slot:'item',   tags:['Material'],            stackable:true  },
+            { id:'ashwood_bark',    icon:'🌳', name:'Ashwood Bark',         desc:'Bark from a corrupted ashwood tree. Used in dark alchemy.',               stat:'Material', slot:'item',   tags:['Material'],            stackable:true  },
+        ],
+    },
+    sunken_mariner: {
+        id: 'sunken_mariner',
+        name: 'The Sunken Mariner',
+        icon: '🚢',
+        desc: 'The beached wreck of a legendary warship. Scavengers, sea creatures, and worse have made it their home — and its infamous captain never left.',
+        flavor: 'Salt, rot, and old blood',
+        color: '#4a8abd',
+        enemies: [
+            { name:'Scavenger Pirate',    icon:'🏴‍☠️', level:1, hp:32,  atk:7,  xp:16, gold:[5,12],  floors:[1,6]   },
+            { name:'Deserter Swordsman',  icon:'⚔',  level:1, hp:30,  atk:8,  xp:15, gold:[4,10],  floors:[1,8]   },
+            { name:'Giant Shore Crab',    icon:'🦀', level:2, hp:55,  atk:9,  xp:24, gold:[4,10],  floors:[1,10]  },
+            { name:'Reef Shark',          icon:'🦈', level:2, hp:45,  atk:12, xp:26, gold:[5,12],  floors:[3,15]  },
+            { name:'Corsair Veteran',     icon:'🏴‍☠️', level:2, hp:60,  atk:11, xp:30, gold:[8,18],  floors:[5,22]  },
+            { name:'Sea Serpent',         icon:'🐍', level:3, hp:75,  atk:14, xp:45, gold:[12,24], floors:[8,28]  },
+            { name:'Giant Barnacle Golem',icon:'🪸', level:3, hp:90,  atk:13, xp:50, gold:[14,26], floors:[10,32] },
+            { name:'Wrecked Corsair',     icon:'💀', level:3, hp:80,  atk:15, xp:48, gold:[12,22], floors:[12,30] },
+            { name:'Kraken Spawn',        icon:'🐙', level:4, hp:115, atk:18, xp:68, gold:[20,38], floors:[20,99] },
+            { name:'Corsair Captain',     icon:'🏴‍☠️', level:4, hp:125, atk:20, xp:75, gold:[24,44], floors:[25,99] },
+        ],
+        bosses: {
+            10: { name:'Tidebreaker',              icon:'🦀', level:4, hp:240, atk:20, xp:170, gold:[48,80],   desc:'A colossal crab that has claimed the lower decks as its shell' },
+            20: { name:'The Drowned Gunner',       icon:'💀', level:5, hp:420, atk:26, xp:330, gold:[92,155],  desc:'A wrecked corsair who refused to die, kept alive by saltwater and spite' },
+            30: { name:'The Serpent of the Hold',  icon:'🐍', level:6, hp:600, atk:32, xp:520, gold:[175,270], desc:'A sea serpent coiled in the flooded cargo hold, ancient and enormous' },
+            40: { name:'Admiral Grask, the Unsunk',icon:'🏴‍☠️', level:7, hp:850, atk:40, xp:780, gold:[270,390], desc:'The pirate warlord who sank this ship. He never left. Neither has his crew.' },
+        },
+        loot: [
+            { id:'corsair_blade',   icon:'⚔',  name:'Corsair Blade',     desc:'A curved pirate sword, well-balanced and razor-sharp.',          stat:'DEX +5', slot:'mainHand', tags:['One-Handed','Sword'],  stackable:false },
+            { id:'harpoon',         icon:'🔱', name:'Sea Harpoon',        desc:'A weighted harpoon repurposed as a weapon. Brutal at close range.',stat:'STR +5', slot:'mainHand', tags:['One-Handed','Spear'],  stackable:false },
+            { id:'saltweave_coat',  icon:'🧥', name:'Saltweave Coat',     desc:'A heavy sea coat hardened by salt and age.',                     stat:'ARM +5', slot:'chest',    tags:['Medium','Chest'],      stackable:false, type:'medium' },
+            { id:'coral_shield',    icon:'🛡', name:'Coral Shield',       desc:'A shield grown from living coral, hardened by the sea.',          stat:'ARM +7', slot:'offHand',  tags:['Shield','Off-Hand'],   stackable:false },
+            { id:'navigator_ring',  icon:'💍', name:"Navigator's Ring",   desc:'A ring bearing the compass rose of an old sea captain.',          stat:'DEX +4', slot:'ring1',    tags:['Ring'],                stackable:false },
+            { id:'kraken_ink',      icon:'🐙', name:'Kraken Ink',         desc:'Thick black ink from a kraken spawn. Valuable to scholars.',      stat:'Material', slot:'item',   tags:['Material'],            stackable:true  },
+            { id:'sea_glass',       icon:'🌊', name:'Sea Glass',          desc:'Smooth glass worn by the ocean. Used in coastal crafts.',         stat:'Material', slot:'item',   tags:['Material'],            stackable:true  },
+        ],
+    },
 };
-
-let currentDungeonId = 'wolfspire';
 
 
 function selectDungeon(dungeonId) {
@@ -4470,7 +5425,7 @@ function pickEnemyForDungeon() {
     return pickEnemy();
 }
 
-const MAX_CHARS = 10;
+const MAX_CHARS = 20;
 
 function getRoster() {
     try { return JSON.parse(localStorage.getItem('wolfspire_roster') || '[]'); }
@@ -4512,6 +5467,8 @@ function loadCharacterFromSlot(slot) {
         if (!character.highestFloor) character.highestFloor = 1;
         if (!character.dungeonHighest) character.dungeonHighest = {};
         if (!character.bankedGold) character.bankedGold = 0;
+        if (character.ironholdVisited === undefined) character.ironholdVisited = false;
+        if (character.sunportVisited === undefined) character.sunportVisited = false;
         // Add new equipment slots to old saves
         if (!character.equipment) character.equipment = {};
         if (character.equipment.mantle === undefined) character.equipment.mantle = null;
@@ -4766,6 +5723,514 @@ function titleAbout() {
 
 function closeAbout() {
     document.getElementById('about-overlay').classList.remove('show');
+}
+
+// -- WOLFHAVEN SHOP DATA ----------------------------------
+const WOLFHAVEN_INVENTORY = {
+    weapons: [
+        { id:'druid_staff',     icon:'🪄', name:'Druid Staff',        desc:'A living staff of ashwood. Hums with nature magic.',                   price:70,  tags:['One-Handed','Staff'],  stat:'INT +4', slot:'mainHand' },
+        { id:'moon_wand',       icon:'✨', name:'Moon Wand',           desc:'A slender wand carved from moonwood. Precise and powerful.',           price:60,  tags:['One-Handed','Wand'],   stat:'INT +3', slot:'mainHand' },
+        { id:'root_blade',      icon:'🗡',  name:'Root Blade',          desc:'A short blade grown from twisted roots. Sharp and strange.',           price:55,  tags:['One-Handed','Dagger'], stat:'DEX +3', slot:'mainHand' },
+        { id:'grove_bow',       icon:'🏹', name:'Grove Bow',            desc:'A bow of living wood, still growing. Exceptionally accurate.',         price:80,  tags:['Two-Handed','Bow'],    stat:'DEX +4', slot:'mainHand' },
+        { id:'spirit_staff',    icon:'🪄', name:'Spirit Staff',         desc:'A staff channeling Fennyx\'s holy light. Favored by priests.',         price:95,  tags:['One-Handed','Staff'],  stat:'INT +5', slot:'mainHand' },
+    ],
+    armor: [
+        // Light — INT/MP focus
+        { id:'moss_robes',      icon:'👘', name:'Moss Robes',           desc:'Soft robes grown from living forest moss. Cool and light.',            price:45,  tags:['Light','Chest'],    stat:'MP +12',  type:'light',  slot:'chest'  },
+        { id:'druid_hood',      icon:'🎩', name:'Druid Hood',            desc:'A hood woven from ashwood leaves. Rustles when magic is near.',        price:30,  tags:['Light','Head'],     stat:'INT +2',  type:'light',  slot:'head'   },
+        { id:'bark_bracers',    icon:'🥋', name:'Bark Bracers',          desc:'Hardened bark fitted to the forearms. Surprisingly tough.',            price:35,  tags:['Medium','Arms'],    stat:'ARM +3',  type:'medium', slot:'arms'   },
+        { id:'grove_sash',      icon:'🎀', name:'Grove Sash',            desc:'A sash woven from living vines. Channels natural energy.',             price:25,  tags:['Light','Waist'],    stat:'MP +6',   type:'light',  slot:'waist'  },
+        { id:'leaf_mantle',     icon:'🧣', name:'Leaf Mantle',           desc:'A mantle of layered ashwood leaves, light but protective.',            price:38,  tags:['Light','Mantle'],   stat:'INT +2',  type:'light',  slot:'mantle' },
+        { id:'spirit_pendant',  icon:'📿', name:'Spirit Pendant',        desc:'A pendant bearing Fennyx\'s golden wolf. Warm to the touch.',         price:50,  tags:['Neck'],             stat:'INT +3',  slot:'neck1'  },
+        { id:'nature_ring',     icon:'💍', name:'Nature Ring',           desc:'A ring of woven roots set with a green gemstone.',                    price:45,  tags:['Ring'],             stat:'INT +2',  slot:'ring1'  },
+        { id:'grove_boots',     icon:'🩴', name:'Grove Slippers',        desc:'Soft slippers of woven bark and moss. Silent in the forest.',         price:30,  tags:['Light','Feet'],     stat:'MP +5',   type:'light',  slot:'feet'   },
+        // Medium options for mixed builds
+        { id:'hide_vest_grove', icon:'🥋', name:'Grove Leather Vest',   desc:'Treated hide imbued with druidic preservation magic.',                price:60,  tags:['Medium','Chest'],   stat:'ARM +4',  type:'medium', slot:'chest'  },
+        { id:'warden_helm',     icon:'🧢', name:'Warden Helm',           desc:'A leather cap reinforced with ashwood plates.',                       price:45,  tags:['Medium','Head'],    stat:'ARM +3',  type:'medium', slot:'head'   },
+    ],
+    consumables: [
+        { id:'healing_herb',    icon:'🌿', name:'Healing Herb',          desc:'A potent natural herb. Restores 40% HP.',                             price:20,  tags:['Consumable'],       stackable:true  },
+        { id:'mana_bloom',      icon:'🌸', name:'Mana Bloom',             desc:'A rare flower that restores 40% MP when consumed.',                  price:20,  tags:['Consumable'],       stackable:true  },
+        { id:'thornpoison',     icon:'🌵', name:'Thorn Poison',           desc:'A vicious natural toxin. Enemy takes 25 damage per turn for 3 turns.',price:45, tags:['Consumable'],       stackable:true  },
+        { id:'bark_shield',     icon:'🌳', name:'Bark Shield Salve',      desc:'Apply before combat. Reduces next hit by 50%.',                      price:35,  tags:['Consumable'],       stackable:true  },
+        { id:'fennyx_blessing', icon:'✨', name:"Fennyx's Blessing",      desc:'A sacred vial of golden light. Fully restores HP and MP.',           price:80,  tags:['Consumable'],       stackable:true  },
+    ],
+};
+
+const AELINDRA_TOWN_QUOTES = [
+    '"Fennyx\'s light reaches even here, at the forest\'s edge."',
+    '"The Ashwood was not always dark. Remember that when you face what lives within."',
+    '"You carry something heavy. The forest feels it."',
+    '"Peace is found in stillness. But sometimes stillness must be earned."',
+    '"Whatever brought you north, Wolfhaven welcomes you."',
+];
+
+const AELINDRA_SHOP_QUOTES = [
+    '"May what you find here serve both blade and spirit."',
+    '"Everything in the Sanctum was grown or blessed. Nothing taken by force."',
+    '"The forest provides. I simply tend what it offers."',
+    '"Treat these items with care. They are still, in a sense, alive."',
+    '"Fennyx blesses those who prepare wisely."',
+];
+
+// -- WOLFHAVEN FUNCTIONS ----------------------------------
+function travelToWolfhaven() {
+    if (!character) return;
+    document.getElementById('wolfhaven-hp').textContent = character.hp + ' / ' + character.maxHp;
+    document.getElementById('wolfhaven-mp').textContent = character.mp + ' / ' + character.maxMp;
+    document.getElementById('wolfhaven-gold').textContent = character.gold;
+
+    const sub = document.getElementById('ashwood-sub');
+    if (sub) {
+        const highest = (character.dungeonHighest || {})['ashwood'] || 1;
+        sub.textContent = highest > 1 ? 'Highest: Floor ' + highest : 'Corrupted ancient forest';
+    }
+
+    const quote = AELINDRA_TOWN_QUOTES[Math.floor(Math.random() * AELINDRA_TOWN_QUOTES.length)];
+    document.getElementById('aelindra-town-quote').textContent = quote;
+
+    goToScreen('wolfhaven');
+    announce('Wolfhaven. Druidic settlement. Sister Aelindra greets you.');
+}
+
+function openWolfhavenShop() {
+    if (!character) return;
+    document.getElementById('wolfhaven-shop-gold').textContent = character.gold;
+    const quote = AELINDRA_SHOP_QUOTES[Math.floor(Math.random() * AELINDRA_SHOP_QUOTES.length)];
+    document.getElementById('aelindra-shop-quote').textContent = quote;
+    switchWolfhavenTab('weapons');
+    goToScreen('wolfhaven-shop');
+    announce("Aelindra's Grove Sanctum. Tabs: Weapons, Gear, Supplies, Sell.");
+}
+
+function switchWolfhavenTab(tab) {
+    ['weapons','armor','consumables','sell'].forEach(t => {
+        const btn = document.getElementById('wtab-' + t);
+        const panel = document.getElementById('wolfhaven-' + t);
+        if (btn) { btn.classList.remove('active'); btn.setAttribute('aria-selected','false'); }
+        if (panel) panel.classList.remove('active');
+    });
+    const activeBtn = document.getElementById('wtab-' + tab);
+    const activePanel = document.getElementById('wolfhaven-' + tab);
+    if (activeBtn) { activeBtn.classList.add('active'); activeBtn.setAttribute('aria-selected','true'); }
+    if (activePanel) activePanel.classList.add('active');
+    renderWolfhavenTab(tab);
+}
+
+function renderWolfhavenTab(tab) {
+    const panel = document.getElementById('wolfhaven-' + tab);
+    if (!panel) return;
+
+    if (tab === 'sell') {
+        renderWolfhavenSellTab();
+        return;
+    }
+
+    const items = WOLFHAVEN_INVENTORY[tab] || [];
+    panel.innerHTML = '';
+
+    items.forEach(item => {
+        const inInv = !item.stackable && character.inventory.some(i => i.id === item.id);
+        const isEquipped = !item.stackable && isItemEquipped(item.id);
+        const canAfford = character.gold >= item.price;
+        const tagHTML = (item.tags || []).map(t => {
+            const cls = t === 'Heavy' ? 'type-heavy' : t === 'Medium' ? 'type-medium' : t === 'Light' ? 'type-light' : '';
+            return `<span class="shop-tag ${cls}">${t}</span>`;
+        }).join('');
+
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.setAttribute('aria-label', `${item.name}. ${item.desc}. ${item.price} gold.`);
+        div.innerHTML = `
+            <span class="shop-item-icon" aria-hidden="true">${item.icon}</span>
+            <div class="shop-item-info">
+                <div class="shop-item-name">${item.name}</div>
+                <div class="shop-item-desc">${item.desc}</div>
+                <div class="shop-item-tags">${tagHTML}${item.stat ? `<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}</span>` : ''}</div>
+            </div>
+            <div class="shop-item-buy">
+                ${(inInv || isEquipped) && !item.stackable
+                    ? `<div class="shop-item-price" style="color:var(--green)">✓ Owned</div>`
+                    : `<div class="shop-item-price ${canAfford?'':'cant-afford'}">${item.price}g</div>
+                       <button class="buy-btn" ${canAfford?'':'disabled'} onclick="buyWolfhavenItem('${item.id}')" aria-label="Buy ${item.name} for ${item.price} gold">Buy</button>`
+                }
+            </div>
+        `;
+        panel.appendChild(div);
+    });
+}
+
+function renderWolfhavenSellTab() {
+    const panel = document.getElementById('wolfhaven-sell');
+    const sellable = character.inventory.filter((i, idx) => !isItemEquipped(i.id, idx));
+
+    if (sellable.length === 0) {
+        panel.innerHTML = '<div class="inv-empty" style="padding:30px 0">Nothing to sell. Brave the Ashwood and bring back what you find.</div>';
+        return;
+    }
+
+    panel.innerHTML = '';
+    sellable.forEach(item => {
+        const value = getSellValue(item);
+        const qty = item.stackable && item.quantity > 1 ? ` (x${item.quantity})` : '';
+        const totalVal = item.stackable ? value * item.quantity : value;
+        const realIndex = character.inventory.indexOf(item);
+
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.setAttribute('aria-label', `${item.name}${qty}. Sell for ${totalVal} gold.`);
+        div.innerHTML = `
+            <span class="shop-item-icon" aria-hidden="true">${item.icon}</span>
+            <div class="shop-item-info">
+                <div class="shop-item-name">${item.name}${qty}</div>
+                <div class="shop-item-desc">${item.desc}</div>
+            </div>
+            <div class="shop-item-buy">
+                <div class="shop-item-price">${totalVal}g</div>
+                <button class="buy-btn" style="background:linear-gradient(135deg,#1a3a1a,#2a5a2a);color:#c0f0c0"
+                    onclick="promptWolfhavenSell(${realIndex})"
+                    aria-label="Sell ${item.name} for ${totalVal} gold">Sell</button>
+            </div>
+        `;
+        panel.appendChild(div);
+    });
+}
+
+function promptWolfhavenSell(invIndex) {
+    sellPendingIndex = invIndex;
+    const item = character.inventory[invIndex];
+    if (!item) return;
+    const value = getSellValue(item);
+    document.getElementById('sell-confirm-title').textContent = `Sell ${item.name}?`;
+    if (item.stackable && item.quantity > 1) {
+        document.getElementById('sell-confirm-body').textContent = `You have ${item.quantity}. How many would you like to sell?`;
+        document.getElementById('sell-qty-row').style.display = 'block';
+        const input = document.getElementById('sell-qty-input');
+        input.max = item.quantity;
+        input.value = item.quantity;
+        updateSellPreview();
+    } else {
+        document.getElementById('sell-confirm-body').textContent = `Aelindra will give you ${value} gold for this.`;
+        document.getElementById('sell-qty-row').style.display = 'none';
+    }
+    document.getElementById('sell-confirm-overlay').classList.add('show');
+}
+
+function buyWolfhavenItem(itemId) {
+    if (!character) return;
+    const allItems = [
+        ...WOLFHAVEN_INVENTORY.weapons,
+        ...WOLFHAVEN_INVENTORY.armor,
+        ...WOLFHAVEN_INVENTORY.consumables,
+    ];
+    const item = allItems.find(i => i.id === itemId);
+    if (!item) return;
+
+    if (character.gold < item.price) {
+        showToast('Not enough gold!');
+        announce('Not enough gold to buy ' + item.name + '.');
+        return;
+    }
+
+    character.gold -= item.price;
+
+    if (item.stackable) {
+        const existing = character.inventory.find(i => i.id === item.id);
+        if (existing) { existing.quantity++; }
+        else { character.inventory.push({ ...item, quantity: 1 }); }
+    } else {
+        character.inventory.push({ ...item });
+    }
+
+    saveGame(); populateUI();
+    document.getElementById('wolfhaven-shop-gold').textContent = character.gold;
+    const tabToRefresh = WOLFHAVEN_INVENTORY.consumables.find(i=>i.id===itemId) ? 'consumables'
+                       : WOLFHAVEN_INVENTORY.armor.find(i=>i.id===itemId) ? 'armor' : 'weapons';
+    renderWolfhavenTab(tabToRefresh);
+    showToast(`Purchased ${item.name}!`);
+    announce(`Purchased ${item.name} for ${item.price} gold. You have ${character.gold} gold remaining.`);
+}
+
+// -- ASHWOOD DUNGEON --------------------------------------
+function enterAshwood() {
+    if (!character) return;
+    currentDungeonId = 'ashwood';
+
+    if (!character.equipment.mainHand) {
+        document.getElementById('unequipped-overlay').classList.add('show');
+        announce('Warning. You have no weapon equipped. Enter anyway or equip first.');
+        return;
+    }
+
+    if (!character.dungeonHighest) character.dungeonHighest = {};
+    const highest = character.dungeonHighest['ashwood'] || 1;
+    character.highestFloor = highest;
+
+    const dungeon = DUNGEONS['ashwood'];
+    document.getElementById('floor-select-title').textContent = `Enter ${dungeon.name}`;
+    document.getElementById('floor-btn-highest').textContent =
+        highest > 1 ? `Resume Floor ${highest}` : 'Start from Floor 1';
+    document.getElementById('floor-select-body').textContent =
+        highest > 1
+            ? `Your highest floor in ${dungeon.name} is ${highest}.`
+            : 'Choose a floor to enter.';
+
+    document.getElementById('floor-input').value = '';
+    document.getElementById('floor-select-overlay').classList.add('show');
+    announce('The Ashwood. Floor select open.');
+}
+
+// -- SUNPORT SHOP DATA ------------------------------------
+const SUNPORT_INVENTORY = {
+    weapons: [
+        { id:'cutlass',         icon:'⚔',  name:'Cutlass',             desc:'A single-edged blade favored by sailors. Light and fast.',          price:60,  tags:['One-Handed','Sword'],  stat:'DEX +4',  slot:'mainHand' },
+        { id:'boarding_axe',    icon:'🪓', name:'Boarding Axe',         desc:'A compact axe designed for close-quarters fighting on deck.',        price:55,  tags:['One-Handed','Axe'],    stat:'STR +4',  slot:'mainHand' },
+        { id:'sea_crossbow',    icon:'🏹', name:'Sea Crossbow',          desc:'A compact crossbow built for use on moving ships.',                  price:75,  tags:['Two-Handed','Bow'],    stat:'DEX +4',  slot:'mainHand' },
+        { id:'trident',         icon:'🔱', name:'Trident',               desc:'A three-pronged spear from the deep waters. Elegant and deadly.',    price:90,  tags:['Two-Handed','Spear'],  stat:'STR +5',  slot:'mainHand' },
+        { id:'hook_blade',      icon:'🗡',  name:'Hook Blade',            desc:'A curved blade fitted with a hooked tip. Catches enemies off-guard.', price:65, tags:['One-Handed','Dagger'], stat:'DEX +3',  slot:'mainHand' },
+    ],
+    accessories: [
+        { id:'compass_ring',    icon:'💍', name:'Compass Ring',          desc:'An enchanted ring that always points toward fortune.',               price:55,  tags:['Ring'],                stat:'DEX +3',  slot:'ring1'   },
+        { id:'pearl_pendant',   icon:'📿', name:'Pearl Pendant',          desc:'A lustrous deep-sea pearl on a silver chain.',                       price:50,  tags:['Neck'],                stat:'INT +3',  slot:'neck1'   },
+        { id:'anchor_talisman', icon:'⚓', name:'Anchor Talisman',        desc:'A small iron anchor worn as a talisman. Grounds the wearer.',        price:45,  tags:['Neck'],                stat:'ARM +2',  slot:'neck1'   },
+        { id:'sailor_bracers',  icon:'🥋', name:"Sailor's Bracers",       desc:'Salt-cured leather bracers worn by veteran sailors.',                price:40,  tags:['Medium','Wrists'],     stat:'ARM +3',  slot:'wrists1', type:'medium' },
+        { id:'tide_ring',       icon:'💍', name:'Tide Ring',              desc:'A ring carved from driftwood and sea-glass. Crackles with sea magic.',price:60,  tags:['Ring'],                stat:'INT +3',  slot:'ring2'   },
+        { id:'barnacle_band',   icon:'💍', name:'Barnacle Band',          desc:'A ring of calcified barnacle. Strangely resilient.',                 price:45,  tags:['Ring'],                stat:'RES +2',  slot:'ring1'   },
+        { id:'naval_boots',     icon:'🥾', name:'Naval Boots',            desc:'Reinforced leather boots built for wet decks.',                      price:50,  tags:['Medium','Feet'],       stat:'ARM +3',  slot:'feet', type:'medium' },
+        { id:'sea_cloak',       icon:'🧥', name:'Sea Cloak',              desc:'A treated cloak that sheds water and wind alike.',                   price:55,  tags:['Medium','Mantle'],     stat:'ARM +3',  slot:'mantle', type:'medium' },
+    ],
+    consumables: [
+        { id:'brine_tonic',     icon:'🧴', name:'Brine Tonic',            desc:'A harsh coastal remedy. Restores 50% HP.',                          price:28,  tags:['Consumable'],          stackable:true  },
+        { id:'surge_draught',   icon:'🌊', name:'Surge Draught',           desc:'A distilled wave-extract. Restores 50% MP.',                         price:28,  tags:['Consumable'],          stackable:true  },
+        { id:'smoke_flare',     icon:'🔥', name:'Smoke Flare',             desc:'A nautical flare rigged for combat. Deals 30-50 fire damage.',       price:35,  tags:['Consumable'],          stackable:true  },
+        { id:'salted_rations',  icon:'🥩', name:'Salted Rations',          desc:'Dense preserved food. Restores a modest 20% HP.',                    price:12,  tags:['Consumable'],          stackable:true  },
+        { id:'nettle_poison',   icon:'🌿', name:'Nettle Poison',           desc:'Applies a coastal toxin. Enemy takes 20 damage each turn for 3 turns.',price:40, tags:['Consumable'],         stackable:true  },
+    ],
+};
+
+const MAREN_TOWN_QUOTES = [
+    '"You look like someone who\'s survived a thing or two."',
+    '"The wreck doesn\'t care about your feelings. Mind the tides."',
+    '"Every scar is a story. Yours look interesting."',
+    '"Fair winds and sharp steel. That\'s all you need."',
+    '"Don\'t trust anyone who smiles too much near a port."',
+];
+
+const MAREN_SHOP_QUOTES = [
+    '"Everything here has a story. Most of them involve the sea."',
+    '"I traded three years of my life for these goods. Treat them well."',
+    '"The wreck gives and the wreck takes. Today it gives."',
+    '"No haggling. The price is the price."',
+    '"Finest coastal stock this side of the deep. Take a look."',
+];
+
+// -- SUNPORT FUNCTIONS ------------------------------------
+function travelToSunport() {
+    if (!character) return;
+    document.getElementById('sunport-hp').textContent = character.hp + ' / ' + character.maxHp;
+    document.getElementById('sunport-mp').textContent = character.mp + ' / ' + character.maxMp;
+    document.getElementById('sunport-gold').textContent = character.gold;
+
+    const sub = document.getElementById('shipwreck-sub');
+    if (sub) {
+        const highest = (character.dungeonHighest || {})['sunken_mariner'] || 1;
+        sub.textContent = highest > 1 ? 'Highest: Floor ' + highest : 'The Sunken Mariner';
+    }
+
+    const quote = MAREN_TOWN_QUOTES[Math.floor(Math.random() * MAREN_TOWN_QUOTES.length)];
+    document.getElementById('maren-town-quote').textContent = quote;
+
+    goToScreen('sunport');
+    announce('Sunport. Coastal trading city. Captain Maren Voss greets you.');
+}
+
+function openSunportShop() {
+    if (!character) return;
+    document.getElementById('sunport-shop-gold').textContent = character.gold;
+    const quote = MAREN_SHOP_QUOTES[Math.floor(Math.random() * MAREN_SHOP_QUOTES.length)];
+    document.getElementById('maren-shop-quote').textContent = quote;
+    switchSunportTab('weapons');
+    goToScreen('sunport-shop');
+    announce("Maren's Dockside Market. Tabs: Weapons, Accessories, Supplies, Sell.");
+}
+
+function switchSunportTab(tab) {
+    ['weapons','accessories','consumables','sell'].forEach(t => {
+        const btn = document.getElementById('stab-' + t);
+        const panel = document.getElementById('sunport-' + t);
+        if (btn) { btn.classList.remove('active'); btn.setAttribute('aria-selected','false'); }
+        if (panel) panel.classList.remove('active');
+    });
+    const activeBtn = document.getElementById('stab-' + tab);
+    const activePanel = document.getElementById('sunport-' + tab);
+    if (activeBtn) { activeBtn.classList.add('active'); activeBtn.setAttribute('aria-selected','true'); }
+    if (activePanel) activePanel.classList.add('active');
+    renderSunportTab(tab);
+}
+
+function renderSunportTab(tab) {
+    const panel = document.getElementById('sunport-' + tab);
+    if (!panel) return;
+
+    if (tab === 'sell') {
+        renderSunportSellTab();
+        return;
+    }
+
+    const items = SUNPORT_INVENTORY[tab === 'consumables' ? 'consumables' : tab] || [];
+    panel.innerHTML = '';
+
+    items.forEach(item => {
+        const owned = !item.stackable && isItemEquipped(item.id);
+        const inInv = !item.stackable && character.inventory.some(i => i.id === item.id);
+        const canAfford = character.gold >= item.price;
+        const tagHTML = (item.tags || []).map(t => `<span class="shop-tag">${t}</span>`).join('');
+
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.setAttribute('aria-label', `${item.name}. ${item.desc}. ${item.price} gold.`);
+        div.innerHTML = `
+            <span class="shop-item-icon" aria-hidden="true">${item.icon}</span>
+            <div class="shop-item-info">
+                <div class="shop-item-name">${item.name}</div>
+                <div class="shop-item-desc">${item.desc}</div>
+                <div class="shop-item-tags">${tagHTML}${item.stat ? `<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}</span>` : ''}</div>
+            </div>
+            <div class="shop-item-buy">
+                ${(owned || inInv) && !item.stackable
+                    ? `<div class="shop-item-price" style="color:var(--green)">✓ Owned</div>`
+                    : `<div class="shop-item-price ${canAfford?'':'cant-afford'}">${item.price}g</div>
+                       <button class="buy-btn" ${canAfford?'':'disabled'} onclick="buySunportItem('${item.id}')" aria-label="Buy ${item.name} for ${item.price} gold">Buy</button>`
+                }
+            </div>
+        `;
+        panel.appendChild(div);
+    });
+}
+
+function renderSunportSellTab() {
+    const panel = document.getElementById('sunport-sell');
+    const sellable = character.inventory.filter((i, idx) => !isItemEquipped(i.id, idx));
+
+    if (sellable.length === 0) {
+        panel.innerHTML = '<div class="inv-empty" style="padding:30px 0">Nothing to sell. Loot the wreck and bring it back.</div>';
+        return;
+    }
+
+    panel.innerHTML = '';
+    sellable.forEach(item => {
+        const value = getSellValue(item);
+        const qty = item.stackable && item.quantity > 1 ? ` (x${item.quantity})` : '';
+        const totalVal = item.stackable ? value * item.quantity : value;
+        const realIndex = character.inventory.indexOf(item);
+
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.setAttribute('aria-label', `${item.name}${qty}. Sell for ${totalVal} gold.`);
+        div.innerHTML = `
+            <span class="shop-item-icon" aria-hidden="true">${item.icon}</span>
+            <div class="shop-item-info">
+                <div class="shop-item-name">${item.name}${qty}</div>
+                <div class="shop-item-desc">${item.desc}</div>
+            </div>
+            <div class="shop-item-buy">
+                <div class="shop-item-price">${totalVal}g</div>
+                <button class="buy-btn" style="background:linear-gradient(135deg,#1a3a5a,#2a5a8a);color:#c0e0f0"
+                    onclick="promptSunportSell(${realIndex})"
+                    aria-label="Sell ${item.name} for ${totalVal} gold">Sell</button>
+            </div>
+        `;
+        panel.appendChild(div);
+    });
+}
+
+let sunportSellPendingIndex = null;
+
+function promptSunportSell(invIndex) {
+    // Reuse the main sell confirm overlay for simplicity
+    const item = character.inventory[invIndex];
+    if (!item) return;
+    sunportSellPendingIndex = invIndex;
+    sellPendingIndex = invIndex; // share the confirm logic
+    const value = getSellValue(item);
+
+    document.getElementById('sell-confirm-title').textContent = `Sell ${item.name}?`;
+    if (item.stackable && item.quantity > 1) {
+        document.getElementById('sell-confirm-body').textContent = `You have ${item.quantity}. How many would you like to sell?`;
+        document.getElementById('sell-qty-row').style.display = 'block';
+        const input = document.getElementById('sell-qty-input');
+        input.max = item.quantity;
+        input.value = item.quantity;
+        updateSellPreview();
+    } else {
+        document.getElementById('sell-confirm-body').textContent = `Maren will give you ${value} gold for this.`;
+        document.getElementById('sell-qty-row').style.display = 'none';
+    }
+
+    // Override confirm to refresh sunport sell tab after
+    document.getElementById('sell-confirm-overlay').classList.add('show');
+}
+
+function buySunportItem(itemId) {
+    if (!character) return;
+    const allItems = [
+        ...SUNPORT_INVENTORY.weapons,
+        ...SUNPORT_INVENTORY.accessories,
+        ...SUNPORT_INVENTORY.consumables,
+    ];
+    const item = allItems.find(i => i.id === itemId);
+    if (!item) return;
+
+    if (character.gold < item.price) {
+        showToast('Not enough gold!');
+        announce('Not enough gold to buy ' + item.name + '.');
+        return;
+    }
+
+    character.gold -= item.price;
+
+    if (item.stackable) {
+        const existing = character.inventory.find(i => i.id === item.id);
+        if (existing) { existing.quantity++; }
+        else { character.inventory.push({ ...item, quantity: 1 }); }
+    } else {
+        character.inventory.push({ ...item });
+    }
+
+    saveGame(); populateUI();
+    document.getElementById('sunport-shop-gold').textContent = character.gold;
+    renderSunportTab(item.stackable ? 'consumables' : (SUNPORT_INVENTORY.accessories.find(i=>i.id===itemId) ? 'accessories' : 'weapons'));
+    showToast(`Purchased ${item.name}!`);
+    announce(`Purchased ${item.name} for ${item.price} gold. You have ${character.gold} gold remaining.`);
+}
+
+// -- SHIPWRECK DUNGEON ------------------------------------
+function enterShipwreck() {
+    if (!character) return;
+    currentDungeonId = 'sunken_mariner';
+
+    if (!character.equipment.mainHand) {
+        document.getElementById('unequipped-overlay').classList.add('show');
+        announce('Warning. You have no weapon equipped. Enter anyway or equip first.');
+        return;
+    }
+
+    if (!character.dungeonHighest) character.dungeonHighest = {};
+    const highest = character.dungeonHighest['sunken_mariner'] || 1;
+    character.highestFloor = highest;
+
+    const dungeon = DUNGEONS['sunken_mariner'];
+    document.getElementById('floor-select-title').textContent = `Enter ${dungeon.name}`;
+    document.getElementById('floor-btn-highest').textContent =
+        highest > 1 ? `Resume Floor ${highest}` : 'Start from Floor 1';
+    document.getElementById('floor-select-body').textContent =
+        highest > 1
+            ? `Your highest floor in ${dungeon.name} is ${highest}.`
+            : 'Choose a floor to enter.';
+
+    document.getElementById('floor-input').value = '';
+    document.getElementById('floor-select-overlay').classList.add('show');
+    announce('The Sunken Mariner. Floor select open.');
 }
 
 // -- INIT ------------------------------------------------
