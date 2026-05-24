@@ -6551,30 +6551,37 @@ function applyAudioPrefsToUI() {
         if (slider) slider.value = volume;
         if (val) val.textContent = volume;
     });
-    musicPlayer.volume = audioState.music.enabled ? audioState.music.volume : 0;
 }
 
 function toggleAudio(type) {
     audioState[type].enabled = !audioState[type].enabled;
     saveAudioPrefs();
-    applyAudioPrefsToUI();
+
+    // Update UI
+    const toggle = document.getElementById('toggle-' + type);
+    const stateEl = document.getElementById(type + '-state');
+    const enabled = audioState[type].enabled;
+    if (toggle) { toggle.classList.toggle('on', enabled); toggle.setAttribute('aria-checked', enabled.toString()); }
+    if (stateEl) stateEl.textContent = enabled ? 'On' : 'Off';
+
+    // Apply to audio
     if (type === 'music') {
-        if (audioState.music.enabled) {
+        if (enabled) {
             musicPlayer.volume = audioState.music.volume;
+            if (musicPlayer.paused && currentTrackKey) musicPlayer.play().catch(() => {});
         } else {
-            musicPlayer.volume = 0;
+            musicPlayer.pause();
         }
     }
-    const state = audioState[type].enabled ? 'on' : 'off';
-    announce(type + ' turned ' + state + '.');
+    announce(type + ' turned ' + (enabled ? 'on' : 'off') + '.');
 }
 
 function setVolume(type, value) {
     audioState[type].volume = value / 100;
     const val = document.getElementById('val-' + type);
     if (val) val.textContent = value;
-    if (type === 'music' && audioState.music.enabled) {
-        musicPlayer.volume = audioState.music.volume;
+    if (type === 'music') {
+        musicPlayer.volume = audioState.music.enabled ? audioState.music.volume : 0;
     }
     saveAudioPrefs();
 }
