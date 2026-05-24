@@ -41,7 +41,94 @@
         .screen { display: none; flex-direction: column; flex: 1; overflow-y: auto; padding: 20px 20px calc(var(--nav-height) + 20px); }
         .screen.active { display: flex; }
 
-        /* -- RENAME / RESET / ROSTER -- */
+        /* -- SETTINGS -- */
+        .settings-group {
+            background: var(--bg-card);
+            border: 1px solid #2a2a44;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+        }
+        .settings-group-title {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85em;
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .settings-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .settings-row:last-child { margin-bottom: 0; }
+        .settings-label {
+            font-family: 'Cinzel', serif;
+            font-size: 0.78em;
+            color: var(--text-dim);
+            width: 60px;
+            flex-shrink: 0;
+        }
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+        .toggle-state {
+            font-family: 'Cinzel', serif;
+            font-size: 0.72em;
+            color: var(--text-dim);
+            min-width: 24px;
+        }
+        .toggle-btn {
+            width: 48px;
+            height: 28px;
+            border-radius: 14px;
+            border: none;
+            background: #2a2a44;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        .toggle-btn.on { background: var(--gold-dim); }
+        .toggle-thumb {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #888;
+            transition: all 0.2s;
+        }
+        .toggle-btn.on .toggle-thumb {
+            left: 23px;
+            background: var(--gold);
+        }
+        .toggle-btn:focus { outline: 3px solid var(--gold); outline-offset: 3px; }
+        .settings-slider {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            accent-color: var(--gold);
+            cursor: pointer;
+        }
+        .slider-val {
+            font-family: 'Cinzel', serif;
+            font-size: 0.72em;
+            color: var(--text-dim);
+            width: 28px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        /* -- END SETTINGS -- */
         .rename-btn {
             background: transparent;
             border: 1px solid #2a2a44;
@@ -1024,6 +1111,85 @@
 </div>
 
 <!-- -- COMBAT -- -->
+<!-- -- SETTINGS -- -->
+<div id="screen-settings" class="screen" role="main" aria-label="Settings">
+    <p class="screen-header">Game</p>
+    <h2 class="screen-title">Settings</h2>
+
+    <!-- Music -->
+    <div class="settings-group" aria-labelledby="settings-music-heading">
+        <div class="settings-group-title" id="settings-music-heading">
+            <span aria-hidden="true">🎵</span> Music
+        </div>
+        <div class="settings-row">
+            <label class="settings-label" for="toggle-music">Music</label>
+            <div class="toggle-wrap">
+                <span class="toggle-state" id="music-state">On</span>
+                <button class="toggle-btn on" id="toggle-music" role="switch" aria-checked="true"
+                    onclick="toggleAudio('music')" aria-label="Toggle music on or off">
+                    <span class="toggle-thumb"></span>
+                </button>
+            </div>
+        </div>
+        <div class="settings-row">
+            <label class="settings-label" for="slider-music">Volume</label>
+            <input type="range" id="slider-music" class="settings-slider" min="0" max="100" value="70"
+                aria-label="Music volume" oninput="setVolume('music', this.value)">
+            <span class="slider-val" id="val-music">70</span>
+        </div>
+    </div>
+
+    <!-- SFX -->
+    <div class="settings-group" aria-labelledby="settings-sfx-heading">
+        <div class="settings-group-title" id="settings-sfx-heading">
+            <span aria-hidden="true">💥</span> Sound Effects
+        </div>
+        <div class="settings-row">
+            <label class="settings-label" for="toggle-sfx">SFX</label>
+            <div class="toggle-wrap">
+                <span class="toggle-state" id="sfx-state">On</span>
+                <button class="toggle-btn on" id="toggle-sfx" role="switch" aria-checked="true"
+                    onclick="toggleAudio('sfx')" aria-label="Toggle sound effects on or off">
+                    <span class="toggle-thumb"></span>
+                </button>
+            </div>
+        </div>
+        <div class="settings-row">
+            <label class="settings-label" for="slider-sfx">Volume</label>
+            <input type="range" id="slider-sfx" class="settings-slider" min="0" max="100" value="80"
+                aria-label="Sound effects volume" oninput="setVolume('sfx', this.value)">
+            <span class="slider-val" id="val-sfx">80</span>
+        </div>
+    </div>
+
+    <!-- Ambience -->
+    <div class="settings-group" aria-labelledby="settings-amb-heading">
+        <div class="settings-group-title" id="settings-amb-heading">
+            <span aria-hidden="true">🌿</span> Ambience
+        </div>
+        <div class="settings-row">
+            <label class="settings-label" for="toggle-amb">Ambience</label>
+            <div class="toggle-wrap">
+                <span class="toggle-state" id="amb-state">On</span>
+                <button class="toggle-btn on" id="toggle-amb" role="switch" aria-checked="true"
+                    onclick="toggleAudio('amb')" aria-label="Toggle ambience on or off">
+                    <span class="toggle-thumb"></span>
+                </button>
+            </div>
+        </div>
+        <div class="settings-row">
+            <label class="settings-label" for="slider-amb">Volume</label>
+            <input type="range" id="slider-amb" class="settings-slider" min="0" max="100" value="50"
+                aria-label="Ambience volume" oninput="setVolume('amb', this.value)">
+            <span class="slider-val" id="val-amb">50</span>
+        </div>
+    </div>
+
+    <button class="leave-shop-btn" onclick="closeSettings()" aria-label="Close settings">
+        Done
+    </button>
+</div>
+
 <!-- -- JOURNAL -- -->
 <div id="screen-journal" class="screen" role="main" aria-label="Journal">
     <p class="screen-header">Your</p>
@@ -2088,6 +2254,14 @@
 
 <div class="purchase-toast" id="purchase-toast"></div>
 
+<!-- Floating settings button -->
+<button id="float-settings-btn"
+    onclick="openSettings()"
+    aria-label="Open settings"
+    style="position:fixed;bottom:calc(var(--nav-height) + 12px);right:16px;z-index:90;width:38px;height:38px;border-radius:50%;background:rgba(20,20,42,0.9);border:1px solid #2a2a44;color:var(--text-dim);font-size:1.1em;display:none;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(8px)">
+    ⚙
+</button>
+
 <script>
 // -- ENEMIES ----------------------------------------------
 
@@ -2439,6 +2613,10 @@ function goToScreen(id) {
     if (id === 'title' || id === 'create') {
         document.getElementById('bottomNav').classList.remove('visible');
     }
+    // Music routing
+    if (['town','ironhold','sunport','wolfhaven','character','inventory','journal','training','settings'].includes(id)) {
+        playMusic('town');
+    }
 }
 
 // -- COMBAT -----------------------------------------------
@@ -2604,7 +2782,9 @@ function startNextEncounter() {
 
     setActionsEnabled(true);
     document.getElementById('btn-defend').classList.remove('defending');
-    document.getElementById('bottomNav').classList.remove('visible'); // hide during active combat
+    document.getElementById('bottomNav').classList.remove('visible');
+    // Play boss or dungeon music
+    playMusic(isBoss ? 'boss' : 'dungeon');
     goToScreen('combat');
 
     const announceMsg = isBoss
@@ -3077,7 +3257,10 @@ function victory() {
     document.getElementById('result-rewards').innerHTML = rewardsHTML;
     document.getElementById('result-btn-main').textContent = floorDone ? 'Floor Complete!' : 'Next Encounter';
     document.getElementById('combat-result').classList.add('show');
-    document.getElementById('bottomNav').classList.add('visible'); // show nav on result screen
+    document.getElementById('bottomNav').classList.add('visible');
+    // Switch back to dungeon music after combat, play victory sfx
+    playMusic('dungeon');
+    playSFX(levelsGained > 0 ? 'levelup' : 'victory');
 
     const lootMsg = loot ? ` Found ${loot.name}.` : '';
     const msg = levelsGained > 0
@@ -5682,6 +5865,7 @@ function initTitleScreen() {
     const roster = getRoster();
     const hasChars = roster.filter(Boolean).length > 0;
     announce('Wolfspire. ' + (hasChars ? 'Tap Play to select your character.' : 'Tap Play to create your first character.'));
+    playMusic('title');
 }
 
 function titleNewGame() {
@@ -5727,9 +5911,7 @@ function closeConfirm() {
 }
 
 function titleSettings() {
-    // Placeholder -- settings screen coming soon
-    showToast('Settings coming soon!');
-    announce('Settings coming soon.');
+    openSettings();
 }
 
 function titleAbout() {
@@ -6317,9 +6499,154 @@ function enterShipwreck() {
     announce('The Sunken Mariner. Floor select open.');
 }
 
+// -- AUDIO SYSTEM -----------------------------------------
+const AUDIO_TRACKS = {
+    title:    'audio/music/Wolfspire Title Screen.mp3',
+    town:     'audio/music/Wolfspire Greatwolf City Theme.mp3',
+    dungeon:  'audio/music/Wolfspire Dungeon Theme.mp3',
+    boss:     'audio/music/Wolfspire Boss Theme.mp3',
+};
+
+const audioState = {
+    music:   { enabled: true, volume: 0.7 },
+    sfx:     { enabled: true, volume: 0.8 },
+    amb:     { enabled: true, volume: 0.5 },
+};
+
+let currentTrack = null;
+let currentTrackKey = null;
+const musicPlayer = new Audio();
+musicPlayer.loop = true;
+
+function loadAudioPrefs() {
+    try {
+        const saved = localStorage.getItem('wolfspire_audio');
+        if (saved) {
+            const p = JSON.parse(saved);
+            if (p.music !== undefined) Object.assign(audioState.music, p.music);
+            if (p.sfx !== undefined) Object.assign(audioState.sfx, p.sfx);
+            if (p.amb !== undefined) Object.assign(audioState.amb, p.amb);
+        }
+    } catch(e) {}
+    applyAudioPrefsToUI();
+}
+
+function saveAudioPrefs() {
+    try {
+        localStorage.setItem('wolfspire_audio', JSON.stringify(audioState));
+    } catch(e) {}
+}
+
+function applyAudioPrefsToUI() {
+    ['music','sfx','amb'].forEach(type => {
+        const toggle = document.getElementById('toggle-' + type);
+        const state = document.getElementById(type + '-state');
+        const slider = document.getElementById('slider-' + type);
+        const val = document.getElementById('val-' + type);
+        if (!toggle) return;
+        const enabled = audioState[type].enabled;
+        const volume = Math.round(audioState[type].volume * 100);
+        toggle.classList.toggle('on', enabled);
+        toggle.setAttribute('aria-checked', enabled.toString());
+        if (state) state.textContent = enabled ? 'On' : 'Off';
+        if (slider) slider.value = volume;
+        if (val) val.textContent = volume;
+    });
+    musicPlayer.volume = audioState.music.enabled ? audioState.music.volume : 0;
+}
+
+function toggleAudio(type) {
+    audioState[type].enabled = !audioState[type].enabled;
+    saveAudioPrefs();
+    applyAudioPrefsToUI();
+    if (type === 'music') {
+        if (audioState.music.enabled) {
+            musicPlayer.volume = audioState.music.volume;
+        } else {
+            musicPlayer.volume = 0;
+        }
+    }
+    const state = audioState[type].enabled ? 'on' : 'off';
+    announce(type + ' turned ' + state + '.');
+}
+
+function setVolume(type, value) {
+    audioState[type].volume = value / 100;
+    const val = document.getElementById('val-' + type);
+    if (val) val.textContent = value;
+    if (type === 'music' && audioState.music.enabled) {
+        musicPlayer.volume = audioState.music.volume;
+    }
+    saveAudioPrefs();
+}
+
+function playMusic(trackKey) {
+    if (currentTrackKey === trackKey) return;
+    const src = AUDIO_TRACKS[trackKey];
+    if (!src) return;
+    currentTrackKey = trackKey;
+    musicPlayer.src = src;
+    musicPlayer.volume = audioState.music.enabled ? audioState.music.volume : 0;
+    musicPlayer.play().catch(() => {});
+}
+
+function stopMusic() {
+    musicPlayer.pause();
+    musicPlayer.currentTime = 0;
+    currentTrackKey = null;
+}
+
+function playSFX(name) {
+    if (!audioState.sfx.enabled) return;
+    const sfxMap = {
+        hit:      'audio/sfx/hit.mp3',
+        victory:  'audio/sfx/victory.mp3',
+        levelup:  'audio/sfx/levelup.mp3',
+        purchase: 'audio/sfx/purchase.mp3',
+        chest:    'audio/sfx/chest.mp3',
+        flee:     'audio/sfx/flee.mp3',
+        defeat:   'audio/sfx/defeat.mp3',
+        cast:     'audio/sfx/cast.mp3',
+    };
+    const src = sfxMap[name];
+    if (!src) return;
+    const sfx = new Audio(src);
+    sfx.volume = audioState.sfx.volume;
+    sfx.play().catch(() => {});
+}
+
+// -- SETTINGS SCREEN --------------------------------------
+let settingsPreviousScreen = null;
+
+function openSettings() {
+    settingsPreviousScreen = document.querySelector('.screen.active')?.id || 'screen-town';
+    applyAudioPrefsToUI();
+    goToScreen('settings');
+    announce('Settings. Music, sound effects, and ambience controls.');
+}
+
+function closeSettings() {
+    if (settingsPreviousScreen) {
+        const prev = settingsPreviousScreen.replace('screen-','');
+        goToScreen(prev);
+    } else {
+        goToScreen('town');
+    }
+    announce('Settings closed.');
+}
+
 // -- INIT ------------------------------------------------
 refreshCreate();
 initTitleScreen();
+loadAudioPrefs();
+
+// Sync floating settings button with bottom nav visibility
+const navObserver = new MutationObserver(() => {
+    const navVisible = document.getElementById('bottomNav').classList.contains('visible');
+    const btn = document.getElementById('float-settings-btn');
+    if (btn) btn.style.display = navVisible ? 'flex' : 'none';
+});
+navObserver.observe(document.getElementById('bottomNav'), { attributes: true, attributeFilter: ['class'] });
 </script>
 </body>
 </html>
