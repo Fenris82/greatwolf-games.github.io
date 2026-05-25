@@ -962,7 +962,8 @@
             Wolfspire is a free, accessible RPG built on the belief that players deserve freedom -- no encumbrance, no forced builds, no pay-to-win.<br><br>
             Built with love by one developer.<br><br>
             <span style="color:var(--gold)">greatwolfgames.com</span><br><br>
-            <a href="https://discord.gg/yPhTvK9Eq" target="_blank" style="color:#7289da;font-family:'Cinzel',serif;font-size:0.9em;text-decoration:none">💬 Join us on Discord</a>
+            <a href="https://discord.gg/yPhTvK9Eq" target="_blank" style="color:#7289da;font-family:'Cinzel',serif;font-size:0.9em;text-decoration:none">💬 Join us on Discord</a><br><br>
+            <span style="color:var(--text-dim);font-size:0.85em">🎵 Music and sound effects provided by <a href="https://www.zapsplat.com" target="_blank" style="color:var(--gold-dim);text-decoration:none">ZapSplat.com</a></span>
         </div>
         <div class="confirm-buttons">
             <button class="confirm-btn cancel" onclick="closeAbout()" aria-label="Close about screen">Close</button>
@@ -1133,7 +1134,7 @@
         </div>
         <div class="settings-row">
             <label class="settings-label" for="slider-music">Volume</label>
-            <input type="range" id="slider-music" class="settings-slider" min="0" max="100" value="70"
+            <input type="range" id="slider-music" class="settings-slider" min="0" max="100" value="70" step="5"
                 aria-label="Music volume" oninput="setVolume('music', this.value)" onchange="setVolume('music', this.value)">
             <span class="slider-val" id="val-music">70</span>
         </div>
@@ -1157,7 +1158,7 @@
         <div class="settings-row">
             <label class="settings-label" for="slider-sfx">Volume</label>
             <input type="range" id="slider-sfx" class="settings-slider" min="0" max="100" value="80"
-                aria-label="Sound effects volume" oninput="setVolume('sfx', this.value)">
+                aria-label="Sound effects volume" oninput="setVolume('sfx', this.value)" onchange="setVolume('sfx', this.value)" step="5">
             <span class="slider-val" id="val-sfx">80</span>
         </div>
     </div>
@@ -1180,7 +1181,7 @@
         <div class="settings-row">
             <label class="settings-label" for="slider-amb">Volume</label>
             <input type="range" id="slider-amb" class="settings-slider" min="0" max="100" value="50"
-                aria-label="Ambience volume" oninput="setVolume('amb', this.value)">
+                aria-label="Ambience volume" oninput="setVolume('amb', this.value)" onchange="setVolume('amb', this.value)" step="5">
             <span class="slider-val" id="val-amb">50</span>
         </div>
     </div>
@@ -1255,9 +1256,12 @@
     <div class="combat-log" id="combat-log" role="log" aria-label="Combat log" aria-live="polite"></div>
 
     <div class="combat-actions" role="group" aria-label="Combat actions">
-        <div class="attack-row">
-            <button class="action-btn attack-btn" id="btn-attack" onclick="playerAttack()" aria-label="Attack the enemy">
-                <span class="act-icon" aria-hidden="true">⚔</span> Attack
+        <div class="attack-row" id="attack-row">
+            <button class="action-btn attack-btn" id="btn-attack" onclick="playerAttack('mainHand')" aria-label="Attack the enemy">
+                <span class="act-icon" aria-hidden="true">⚔</span> <span id="btn-attack-label">Attack</span>
+            </button>
+            <button class="action-btn attack-btn" id="btn-attack-offhand" onclick="playerAttack('offHand')" aria-label="Attack with off hand weapon" style="display:none">
+                <span class="act-icon" aria-hidden="true">⚔</span> <span id="btn-attack-offhand-label">Off Hand</span>
             </button>
         </div>
         <div class="secondary-row">
@@ -2300,6 +2304,10 @@ const ENEMIES_BY_TIER = {
         { name:'Corrupted Warrior', icon:'⚔',  level:4, hp:110, atk:18, xp:75, gold:[22,40], floors:[31,99] },
         { name:'Void Slime',        icon:'⚫', level:4, hp:95,  atk:17, xp:70, gold:[20,38], floors:[33,99] },
         { name:'Void Wraith',       icon:'🌑', level:5, hp:130, atk:24, xp:100,gold:[35,60], floors:[38,99] },
+        { name:'Varg Inquisitor',   icon:'🧟', level:3, hp:80,  atk:15, xp:58, gold:[14,28], floors:[20,38] },
+        { name:'Shadow Assassin',   icon:'🗡',  level:3, hp:70,  atk:17, xp:55, gold:[12,26], floors:[22,40] },
+        { name:'Bone Colossus',     icon:'💀', level:4, hp:145, atk:21, xp:88, gold:[28,50], floors:[32,99] },
+        { name:'Varg High Priest',  icon:'🔮', level:5, hp:155, atk:23, xp:98, gold:[33,58], floors:[40,99] },
     ]
 };
 
@@ -2783,6 +2791,7 @@ function startNextEncounter() {
     setActionsEnabled(true);
     document.getElementById('btn-defend').classList.remove('defending');
     document.getElementById('bottomNav').classList.remove('visible');
+    updateAttackButtons();
     // Play boss or dungeon music
     playMusic(isBoss ? 'boss' : 'dungeon');
     goToScreen('combat');
@@ -2834,12 +2843,14 @@ function addLog(msg, type) {
 
 function setActionsEnabled(enabled) {
     document.getElementById('btn-attack').disabled = !enabled;
+    const offhandBtn = document.getElementById('btn-attack-offhand');
+    if (offhandBtn) offhandBtn.disabled = !enabled;
     document.getElementById('btn-defend').disabled = !enabled;
     document.getElementById('btn-retreat').disabled = !enabled;
     const USABLE_IN_COMBAT = ['health_potion', 'mana_potion', 'smoke_bomb', 'iron_grenade', 'brine_tonic', 'surge_draught', 'smoke_flare', 'salted_rations', 'nettle_poison', 'healing_herb', 'mana_bloom', 'thornpoison', 'bark_shield', 'fennyx_blessing'];
     const hasItems = character && character.inventory.some(i => i.stackable && i.quantity > 0 && USABLE_IN_COMBAT.includes(i.id));
     document.getElementById('btn-items').disabled = !enabled || !hasItems;
-    const hasSkills = character && (character.skills||[]).some(id => SKILLS_DATA.find(s=>s.id===id));
+    const hasSkills = character && (character.skills||[]).some(id => SKILLS_DATA.find(s=>s.id===id && !s.passive));
     const hasSpells = character && (character.skills||[]).some(id => SPELLS_DATA.find(s=>s.id===id));
     document.getElementById('btn-skills').disabled = !enabled || !hasSkills;
     document.getElementById('btn-spells').disabled = !enabled || !hasSpells;
@@ -3001,7 +3012,7 @@ function roll(min, max) { return Math.floor(Math.random() * (max - min + 1)) + m
 
 // Calculate total stat bonuses from equipped gear
 function getEquipBonuses() {
-    const bonuses = { str:0, int:0, dex:0, res:0, arm:0, mp:0 };
+    const bonuses = { str:0, int:0, dex:0, res:0, arm:0, mp:0, critBonus:0 };
     if (!character || !character.equipment) return bonuses;
     Object.values(character.equipment).forEach(itemId => {
         if (!itemId) return;
@@ -3010,10 +3021,12 @@ function getEquipBonuses() {
             ...(SHOP_INVENTORY ? SHOP_INVENTORY.armor || [] : []),
             ...(typeof IRONHOLD_INVENTORY !== 'undefined' ? [...(IRONHOLD_INVENTORY.weapons||[]), ...(IRONHOLD_INVENTORY.armor||[])] : []),
             ...(typeof SUNPORT_INVENTORY !== 'undefined' ? [...(SUNPORT_INVENTORY.weapons||[]), ...(SUNPORT_INVENTORY.accessories||[])] : []),
+            ...(typeof WOLFHAVEN_INVENTORY !== 'undefined' ? [...(WOLFHAVEN_INVENTORY.weapons||[]), ...(WOLFHAVEN_INVENTORY.armor||[])] : []),
+            ...(typeof LEGENDARY_CHEST_ITEMS !== 'undefined' ? LEGENDARY_CHEST_ITEMS : []),
             ...(LOOT_POOL || []),
             ...Object.values(DUNGEONS).flatMap(d => d.loot || [])
         ];
-        const item = allItems.find(i => i.id === itemId);
+        const item = allItems.find(i => i.id === itemId.id || i.id === itemId);
         if (!item || !item.stat) return;
         const stat = item.stat;
         if (stat.includes('STR +')) bonuses.str += parseInt(stat.match(/STR \+(\d+)/)[1]);
@@ -3021,18 +3034,63 @@ function getEquipBonuses() {
         if (stat.includes('DEX +')) bonuses.dex += parseInt(stat.match(/DEX \+(\d+)/)[1]);
         if (stat.includes('ARM +')) bonuses.arm += parseInt(stat.match(/ARM \+(\d+)/)[1]);
         if (stat.includes('MP +'))  bonuses.mp  += parseInt(stat.match(/MP \+(\d+)/)[1]);
+        // Knightly Longsword crit bonus
+        if (item.special === 'knightly') bonuses.critBonus += 10;
     });
     return bonuses;
 }
 
-function calcPlayerDamage() {
+function calcPlayerDamage(hand) {
+    hand = hand || 'mainHand';
     const equip = getEquipBonuses();
     const str = character.stats.str + equip.str;
     const dex = character.stats.dex + equip.dex;
-    const base = roll(str * 2, str * 4);
-    const critChance = dex * 3;
+    const int = character.stats.int + equip.int;
+
+    // Determine scaling stat based on equipped weapon tags
+    const weapon = character.equipment[hand];
+    let scalingStat = str; // default STR
+    if (weapon) {
+        const allWeapons = [
+            ...(SHOP_INVENTORY.weapons || []),
+            ...(IRONHOLD_INVENTORY.weapons || []),
+            ...(SUNPORT_INVENTORY ? SUNPORT_INVENTORY.weapons || [] : []),
+            ...(WOLFHAVEN_INVENTORY ? WOLFHAVEN_INVENTORY.weapons || [] : []),
+            ...LEGENDARY_CHEST_ITEMS,
+            ...Object.values(DUNGEONS).flatMap(d => d.loot || []).filter(l => l.slot === 'mainHand'),
+        ];
+        const weaponData = allWeapons.find(w => w.id === weapon.id);
+        if (weaponData) {
+            const tags = weaponData.tags || [];
+            if (tags.includes('Staff') || tags.includes('Wand')) scalingStat = int;
+            else if (tags.includes('Dagger') || tags.includes('Bow')) scalingStat = dex;
+            else scalingStat = str;
+        }
+    }
+
+    const base = roll(scalingStat * 2, scalingStat * 4);
+
+    // Add weapon base damage
+    let weaponBonus = 0;
+    if (weapon) {
+        const allWeapons = [
+            ...(SHOP_INVENTORY.weapons || []),
+            ...(IRONHOLD_INVENTORY.weapons || []),
+            ...(SUNPORT_INVENTORY ? SUNPORT_INVENTORY.weapons || [] : []),
+            ...(WOLFHAVEN_INVENTORY ? WOLFHAVEN_INVENTORY.weapons || [] : []),
+            ...LEGENDARY_CHEST_ITEMS,
+            ...Object.values(DUNGEONS).flatMap(d => d.loot || []).filter(l => l.slot === 'mainHand'),
+        ];
+        const weaponData = allWeapons.find(w => w.id === weapon.id);
+        if (weaponData && weaponData.dmg) {
+            weaponBonus = roll(weaponData.dmg[0], weaponData.dmg[1]);
+        }
+    }
+
+    const total = base + weaponBonus;
+    const critChance = (dex * 3) + (equip.critBonus || 0);
     const isCrit = Math.random() * 100 < critChance;
-    return { damage: isCrit ? Math.floor(base * 1.5) : base, crit: isCrit };
+    return { damage: isCrit ? Math.floor(total * 1.5) : total, crit: isCrit };
 }
 
 function calcEnemyDamage() {
@@ -3052,26 +3110,99 @@ function calcEnemyDamage() {
     return { damage: dodged ? 0 : reduced, dodged };
 }
 
-function playerAttack() {
+function playerAttack(hand) {
     if (!combat || !combat.playerTurn || combat.over) return;
+    hand = hand || 'mainHand';
     setActionsEnabled(false);
     combat.defending = false;
     document.getElementById('btn-defend').classList.remove('defending');
 
-    const { damage, crit } = calcPlayerDamage();
+    const { damage, crit } = calcPlayerDamage(hand);
     combat.enemy.hp -= damage;
 
+    const weaponName = getWeaponName(hand);
     if (crit) {
-        addLog(`Critical hit! You strike the ${combat.enemy.name} for ${damage} damage!`, 'player');
+        addLog(`Critical hit with ${weaponName}! You strike the ${combat.enemy.name} for ${damage} damage!`, 'player');
         announce(`Critical hit! ${damage} damage dealt. Enemy has ${Math.max(0,combat.enemy.hp)} HP left.`);
     } else {
-        addLog(`You attack the ${combat.enemy.name} for ${damage} damage.`, 'player');
+        addLog(`You attack with ${weaponName} for ${damage} damage.`, 'player');
         announce(`You attack for ${damage} damage. Enemy has ${Math.max(0,combat.enemy.hp)} HP left.`);
     }
 
     setEnemyBar(combat.enemy.hp, combat.enemy.maxHp);
     if (combat.enemy.hp <= 0) { setTimeout(victory, 600); return; }
+
+    // Check for legendary weapon special effects
+    const weapon = character.equipment[hand];
+    if (weapon) {
+        const weaponData = LEGENDARY_CHEST_ITEMS.find(w => w.id === weapon.id);
+        if (weaponData && weaponData.special) {
+            if (weaponData.special === 'justice' && Math.random() < 0.3) {
+                combat.enemyFrozen = true;
+                addLog(`The Maul of Justice rings out with judgment! The ${combat.enemy.name} is stunned and you strike again!`, 'player');
+                const { damage: bonusDmg } = calcPlayerDamage(hand);
+                combat.enemy.hp -= bonusDmg;
+                addLog(`Bonus strike deals ${bonusDmg} more damage!`, 'player');
+                setEnemyBar(combat.enemy.hp, combat.enemy.maxHp);
+                if (combat.enemy.hp <= 0) { setTimeout(victory, 600); return; }
+                setTimeout(enemyTurn, 800);
+                return;
+            }
+            if (weaponData.special === 'lifestaff' && Math.random() < 0.2) {
+                combat.playerMp = character.maxMp;
+                character.mp = character.maxMp;
+                setCombatPlayerBars();
+                addLog(`The Staff of Life pulses with golden light — your MP is fully restored!`, 'defend');
+                announce(`Staff of Life restores your MP fully.`);
+            }
+            if (weaponData.special === 'torch') {
+                combat.enemyPoisoned = 3;
+                combat.poisonDmg = 18;
+                addLog(`Geminus's Torch roars! The ${combat.enemy.name} is set ablaze and will burn for 3 turns!`, 'player');
+                announce(`Enemy is burning. 18 fire damage per turn for 3 turns.`);
+            }
+        }
+    }
+
     setTimeout(enemyTurn, 800);
+}
+
+function getWeaponName(hand) {
+    const equipped = character.equipment[hand];
+    if (!equipped) return hand === 'mainHand' ? 'your weapon' : 'your off hand';
+    return equipped.name || 'your weapon';
+}
+
+function updateAttackButtons() {
+    if (!character) return;
+    const hasDualWield = (character.skills || []).includes('dual_wield');
+    const offHandWeapon = character.equipment.offHand;
+    const isOffHandWeapon = offHandWeapon && offHandWeapon.tags &&
+        (offHandWeapon.tags.includes('Sword') || offHandWeapon.tags.includes('Dagger') ||
+         offHandWeapon.tags.includes('Axe') || offHandWeapon.tags.includes('Hammer') ||
+         offHandWeapon.tags.includes('Mace') || offHandWeapon.tags.includes('Staff') ||
+         offHandWeapon.tags.includes('Wand') || offHandWeapon.tags.includes('Gun') ||
+         offHandWeapon.tags.includes('Bow') || offHandWeapon.tags.includes('Spear') ||
+         offHandWeapon.tags.includes('Flail') || offHandWeapon.tags.includes('Pick'));
+
+    const showOffhand = hasDualWield && isOffHandWeapon;
+    const offhandBtn = document.getElementById('btn-attack-offhand');
+    const mainBtn = document.getElementById('btn-attack');
+
+    if (offhandBtn) offhandBtn.style.display = showOffhand ? 'flex' : 'none';
+
+    // Update button labels
+    const mainWeapon = character.equipment.mainHand;
+    if (mainBtn) {
+        const mainLabel = document.getElementById('btn-attack-label');
+        if (mainLabel) mainLabel.textContent = mainWeapon ? mainWeapon.name : 'Attack';
+        mainBtn.setAttribute('aria-label', `Attack with ${mainWeapon ? mainWeapon.name : 'weapon'}`);
+    }
+    if (offhandBtn && showOffhand) {
+        const offLabel = document.getElementById('btn-attack-offhand-label');
+        if (offLabel) offLabel.textContent = offHandWeapon.name;
+        offhandBtn.setAttribute('aria-label', `Attack with ${offHandWeapon.name}`);
+    }
 }
 
 function playerDefend() {
@@ -3598,11 +3729,40 @@ function rollEnemyLoot(enemy) {
     return null;
 }
 
+// Rare chest-only legendary weapons
+const LEGENDARY_CHEST_ITEMS = [
+    { id:'machine_gun',      icon:'🔫', name:'Machine Gun',        desc:'An impossible weapon of unknown origin. Fires a terrifying storm of rounds.',        stat:'STR +8',  slot:'mainHand', tags:['Two-Handed','Gun'],    stackable:false, dmg:[22,35], type:'legendary' },
+    { id:'bazooka',          icon:'💥', name:'Bazooka',             desc:'Geminus himself would approve. One shot. Enormous damage. No questions asked.',       stat:'STR +10', slot:'mainHand', tags:['Two-Handed','Gun'],    stackable:false, dmg:[30,50], type:'legendary' },
+    { id:'void_cannon',      icon:'🌑', name:'Void Cannon',         desc:'A weapon imbued with shadow energy. Fires concentrated darkness.',                    stat:'INT +8',  slot:'mainHand', tags:['Two-Handed','Staff'],  stackable:false, dmg:[25,40], type:'legendary' },
+    { id:'inferno_lance',    icon:'🔥', name:'Inferno Lance',       desc:'A spear wreathed in permanent flame. Burns everything it touches.',                   stat:'STR +7',  slot:'mainHand', tags:['Two-Handed','Spear'],  stackable:false, dmg:[20,32], type:'legendary' },
+    { id:'wolfsteel_blade',  icon:'⚔',  name:'Wolfsteel Blade',     desc:'A blade forged from Wolfsteel. Lightweight, golden, and impossibly sharp.',           stat:'STR +9',  slot:'mainHand', tags:['One-Handed','Sword'],  stackable:false, dmg:[18,28], type:'legendary' },
+    { id:'maul_of_justice',  icon:'⚖',  name:'Maul of Justice',     desc:"Fenris's legendary weapon. Said to strike with the weight of judgment itself. On hit: chance to stun and strike again.",  stat:'STR +12', slot:'mainHand', tags:['Two-Handed','Hammer'], stackable:false, dmg:[28,45], type:'legendary', special:'justice' },
+    { id:'staff_of_life',    icon:'✨', name:'Staff of Life',        desc:'An ancient staff humming with restorative energy. Each strike has a 20% chance to fully restore your MP.',               stat:'INT +10', slot:'mainHand', tags:['One-Handed','Staff'],  stackable:false, dmg:[14,22], type:'legendary', special:'lifestaff' },
+    { id:'knightly_longsword',icon:'⚔', name:'Knightly Longsword',  desc:'A perfectly balanced sword carried by knights of old. Grants a permanent +10% critical strike chance.',                  stat:'STR +8',  slot:'mainHand', tags:['One-Handed','Sword'],  stackable:false, dmg:[20,30], type:'legendary', special:'knightly' },
+    { id:'geminus_torch',    icon:'🔥', name:"Geminus's Torch",     desc:"The flamethrower carried by Geminus of the Greatwolf Defenders. Burns enemies and leaves them scorched for 3 turns.",     stat:'STR +9',  slot:'mainHand', tags:['Two-Handed','Gun'],    stackable:false, dmg:[22,34], type:'legendary', special:'torch' },
+];
+
 function rollChestLoot() {
-    // Chests always have something -- weighted toward consumables and materials
+    const dungeon = DUNGEONS[currentDungeonId];
+    const floor = dungeonState ? dungeonState.floor : 1;
+    const perBonus = character.stats.per || 1;
+
+    // 5% chance for a legendary item on floors 20+
+    if (floor >= 20 && Math.random() < 0.05) {
+        const leg = LEGENDARY_CHEST_ITEMS[Math.floor(Math.random() * LEGENDARY_CHEST_ITEMS.length)];
+        return { ...leg };
+    }
+
+    // 50% chance for dungeon-specific gear drop
+    if (dungeon && dungeon.loot && Math.random() < 0.5) {
+        const gearPool = dungeon.loot.filter(l => !l.stackable);
+        if (gearPool.length > 0) {
+            return { ...gearPool[Math.floor(Math.random() * gearPool.length)] };
+        }
+    }
+
+    // Otherwise consumables and materials from the main loot pool
     const chestPool = LOOT_POOL.filter(l => l.stackable || ['rusty_dagger','bone_club','cracked_bow','torn_cloth','hide_scraps','iron_shard'].includes(l.id));
-    const perBonus = (character.stats.per || 1);
-    // Higher perception = slightly better chest loot (weighted roll)
     const idx = Math.max(0, Math.floor(Math.random() * chestPool.length) - Math.floor(perBonus / 5));
     return chestPool[idx] || chestPool[0];
 }
@@ -3653,18 +3813,22 @@ let detailInvIndex = null;
 
 const IRONHOLD_INVENTORY = {
     weapons: [
-        { id:'dwarven_hand_axe',  icon:'⚒', name:'Dwarven Hand Axe',   desc:'A compact dwarven axe. Better balanced than anything from Aldric.',  price:80,  tags:['One-Handed','Axe'],    stat:'STR +4', slot:'mainHand' },
-        { id:'dwarven_hammer',    icon:'🔨', name:'Dwarven War Hammer', desc:'Heavier and better crafted than a standard war hammer.',              price:95,  tags:['One-Handed','Hammer'], stat:'STR +5', slot:'mainHand' },
-        { id:'dwarven_greataxe',  icon:'⚒', name:'Dwarven Greataxe',   desc:'A two-handed axe of exceptional dwarven craft.',                      price:130, tags:['Two-Handed','Axe'],    stat:'STR +7', slot:'mainHand' },
-        { id:'iron_pick',         icon:'⛏', name:'Iron Pickaxe',       desc:'A sturdy mining pick repurposed as a weapon.',                        price:65,  tags:['One-Handed','Pick'],   stat:'STR +3', slot:'mainHand' },
+        { id:'dwarven_hand_axe',  icon:'⚒', name:'Dwarven Hand Axe',     desc:'A compact dwarven axe. Better balanced than anything from Aldric.',  price:80,  tags:['One-Handed','Axe'],    stat:'STR +4', slot:'mainHand', dmg:[12,18] },
+        { id:'dwarven_hammer',    icon:'🔨', name:'Dwarven War Hammer',   desc:'Heavier and better crafted than a standard war hammer.',              price:95,  tags:['One-Handed','Hammer'], stat:'STR +5', slot:'mainHand', dmg:[14,20] },
+        { id:'dwarven_greataxe',  icon:'⚒', name:'Dwarven Greataxe',     desc:'A two-handed axe of exceptional dwarven craft.',                      price:130, tags:['Two-Handed','Axe'],    stat:'STR +7', slot:'mainHand', dmg:[20,30] },
+        { id:'iron_pick',         icon:'⛏', name:'Iron Pickaxe',         desc:'A sturdy mining pick repurposed as a weapon.',                        price:65,  tags:['One-Handed','Pick'],   stat:'STR +3', slot:'mainHand', dmg:[10,15] },
+        { id:'dwarven_mace',      icon:'🏏', name:'Dwarven Mace',         desc:'A flanged iron mace forged in the deepest Ironhold furnaces.',        price:85,  tags:['One-Handed','Mace'],   stat:'STR +4', slot:'mainHand', dmg:[13,19] },
+        { id:'dwarven_flail',     icon:'⛓', name:'Dwarven Flail',        desc:'A heavy spiked flail on a chain of dwarven iron.',                    price:100, tags:['One-Handed','Flail'],  stat:'STR +5', slot:'mainHand', dmg:[15,22] },
+        { id:'dwarven_rifle',     icon:'🔫', name:'Dwarven Rifle',        desc:'A prototype firearm of dwarven engineering. Heavy, loud, devastating.', price:140, tags:['Two-Handed','Gun'],  stat:'STR +6', slot:'mainHand', dmg:[18,28] },
+        { id:'dwarven_pistol',    icon:'🔫', name:'Dwarven Pistol',       desc:'A compact dwarven sidearm. Short range but brutal impact.',           price:110, tags:['One-Handed','Gun'],    stat:'STR +5', slot:'mainHand', dmg:[14,22] },
     ],
     armor: [
-        { id:'dwarven_helm',      icon:'⛑',  name:'Dwarven Helm',       desc:'A masterwork dwarven helmet. Solid iron construction.',               price:75,  tags:['Heavy','Head'],     stat:'ARM +5', type:'heavy', slot:'head'    },
-        { id:'dwarven_chest',     icon:'🧥', name:'Dwarven Plate',      desc:'Heavy dwarven plate armor. Better than anything in the south.',       price:120, tags:['Heavy','Chest'],    stat:'ARM +7', type:'heavy', slot:'chest'   },
-        { id:'dwarven_boots',     icon:'🥾', name:'Dwarven Boots',      desc:'Iron-tipped boots built to last a lifetime in the mines.',            price:70,  tags:['Heavy','Feet'],     stat:'ARM +4', type:'heavy', slot:'feet'    },
-        { id:'dwarven_gauntlets', icon:'🧤', name:'Dwarven Gauntlets',  desc:'Iron gauntlets that protect the hands completely.',                   price:65,  tags:['Heavy','Hands'],    stat:'ARM +4', type:'heavy', slot:'hands'   },
-        { id:'dwarven_shield',    icon:'🛡', name:'Dwarven Shield',     desc:'A round shield bearing the Ironhold crest. Excellent protection.',    price:90,  tags:['Shield','Off-Hand'], stat:'ARM +6', slot:'offHand' },
-        { id:'stone_pauldrons',   icon:'🧣', name:'Stone Pauldrons',    desc:'Shoulder guards carved from deep stone.',                             price:80,  tags:['Heavy','Mantle'],   stat:'ARM +5', type:'heavy', slot:'mantle'  },
+        { id:'dwarven_helm',      icon:'⛑',  name:'Dwarven Helm',         desc:'A masterwork dwarven helmet. Solid iron construction.',               price:75,  tags:['Heavy','Head'],     stat:'ARM +5', type:'heavy', slot:'head'    },
+        { id:'dwarven_chest',     icon:'🧥', name:'Dwarven Plate',         desc:'Heavy dwarven plate armor. Better than anything in the south.',       price:120, tags:['Heavy','Chest'],    stat:'ARM +7', type:'heavy', slot:'chest'   },
+        { id:'dwarven_boots',     icon:'🥾', name:'Dwarven Boots',         desc:'Iron-tipped boots built to last a lifetime in the mines.',            price:70,  tags:['Heavy','Feet'],     stat:'ARM +4', type:'heavy', slot:'feet'    },
+        { id:'dwarven_gauntlets', icon:'🧤', name:'Dwarven Gauntlets',     desc:'Iron gauntlets that protect the hands completely.',                   price:65,  tags:['Heavy','Hands'],    stat:'ARM +4', type:'heavy', slot:'hands'   },
+        { id:'dwarven_shield',    icon:'🛡', name:'Dwarven Shield',        desc:'A round shield bearing the Ironhold crest. Excellent protection.',    price:90,  tags:['Shield','Off-Hand'], stat:'ARM +6', slot:'offHand' },
+        { id:'stone_pauldrons',   icon:'🧣', name:'Stone Pauldrons',       desc:'Shoulder guards carved from deep stone.',                             price:80,  tags:['Heavy','Mantle'],   stat:'ARM +5', type:'heavy', slot:'mantle'  },
     ],
 };
 
@@ -3743,22 +3907,25 @@ function renderIronholdShop() {
         const panel = document.getElementById('ironhold-' + category);
         panel.innerHTML = '';
         IRONHOLD_INVENTORY[category].forEach(item => {
-            const canAfford = character.gold >= item.price;
+            const finalPrice = getDiscountedPrice(item.price);
+            const canAfford = character.gold >= finalPrice;
+            const originalPrice = finalPrice !== item.price ? `<span style="text-decoration:line-through;color:#555;font-size:0.8em">${item.price}g</span> ` : '';
             const tagHTML = item.tags.map(t => {
                 const cls = t === 'Heavy' ? 'type-heavy' : t === 'Medium' ? 'type-medium' : t === 'Light' ? 'type-light' : '';
                 return `<span class="shop-tag ${cls}">${t}</span>`;
             }).join('');
+            const dmgTag = item.dmg ? `<span class="shop-tag" style="color:#e07070;border-color:#5a2a2a">DMG ${item.dmg[0]}-${item.dmg[1]}</span>` : '';
             panel.innerHTML += `
-                <div class="shop-item" aria-label="${item.name}, ${item.desc}, costs ${item.price} gold">
+                <div class="shop-item" aria-label="${item.name}, ${item.desc}, costs ${finalPrice} gold">
                     <span class="shop-item-icon" aria-hidden="true">${item.icon}</span>
                     <div class="shop-item-info">
                         <div class="shop-item-name">${item.name}</div>
                         <div class="shop-item-desc">${item.desc}</div>
-                        <div class="shop-item-tags">${tagHTML}<span class="shop-tag">${item.stat}</span></div>
+                        <div class="shop-item-tags">${tagHTML}<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}</span>${dmgTag}</div>
                     </div>
                     <div class="shop-item-buy">
-                        <div class="shop-item-price ${canAfford ? '' : 'cant-afford'}">${item.price}g</div>
-                        <button class="buy-btn" ${canAfford ? '' : 'disabled'} onclick="buyIronholdItem('${item.id}')" aria-label="Buy ${item.name} for ${item.price} gold">Buy</button>
+                        <div class="shop-item-price ${canAfford ? '' : 'cant-afford'}">${originalPrice}${finalPrice}g</div>
+                        <button class="buy-btn" ${canAfford ? '' : 'disabled'} onclick="buyIronholdItem('${item.id}')" aria-label="Buy ${item.name} for ${finalPrice} gold">Buy</button>
                     </div>
                 </div>`;
         });
@@ -3791,14 +3958,16 @@ function renderIronholdShop() {
 function buyIronholdItem(itemId) {
     const allItems = [...IRONHOLD_INVENTORY.weapons, ...IRONHOLD_INVENTORY.armor];
     const item = allItems.find(i => i.id === itemId);
-    if (!item || character.gold < item.price) return;
-    character.gold -= item.price;
+    if (!item) return;
+    const finalPrice = getDiscountedPrice(item.price);
+    if (character.gold < finalPrice) { showToast('Not enough gold!'); return; }
+    character.gold -= finalPrice;
     character.inventory.push({ ...item, quantity: 1 });
     document.getElementById('ironhold-shop-gold').textContent = character.gold;
     saveGame(); populateUI();
     renderIronholdShop();
     showToast(`Bought ${item.name}!`);
-    announce(`Purchased ${item.name} for ${item.price} gold.`);
+    announce(`Purchased ${item.name} for ${finalPrice} gold.`);
 }
 
 function sellItemFromIronhold(idx) {
@@ -4072,7 +4241,17 @@ function equipFromDetail() {
     // Normalize slot type — strip trailing digits so 'ring1'/'ring2' both map to 'ring'
     const rawSlot = item.slot;
     const slotType = rawSlot ? rawSlot.replace(/[0-9]+$/, '') : rawSlot;
-    const possibleSlots = SLOT_MAP[slotType] || [rawSlot];
+
+    // Dual Wield: if player has the skill, mainHand weapons can also go in offHand
+    // We use the item's actual slot for SLOT_MAP but allow offHand as override
+    let possibleSlots = SLOT_MAP[slotType] || [rawSlot];
+
+    // If it's a mainHand weapon and player has dual wield, add offHand as an option
+    const hasDualWield = (character.skills || []).includes('dual_wield');
+    const isOneHanded = item.tags && item.tags.includes('One-Handed');
+    if (slotType === 'mainHand' && hasDualWield && isOneHanded) {
+        possibleSlots = ['mainHand', 'offHand'];
+    }
 
     // Find an empty slot first, otherwise use the first slot
     let targetSlot = possibleSlots.find(s => !character.equipment[s]);
@@ -4455,6 +4634,14 @@ const SKILLS_DATA = [
         }
     },
     {
+        id:'dual_wield', icon:'⚔', name:'Dual Wield', type:'skill',
+        desc:'Unlocks the ability to equip a one-handed weapon in your off hand slot. When a second weapon is equipped, the Attack button splits — choose which weapon to strike with each turn.',
+        stat:'Passive — Off Hand Weapon', price:75, cooldown:0, mpCost:0,
+        tags:['Skill','Passive'],
+        passive: true,
+        use:(c,enemy) => ({ damage:0, log:'', type:'player' })
+    },
+    {
         id:'shield_bash', icon:'🛡', name:'Shield Bash', type:'skill',
         desc:'Slam into the enemy with brute force -- deals damage and stuns them, skipping their next turn.',
         stat:'STR x 1.0 + Stun', price:50, cooldown:1, mpCost:0,
@@ -4652,9 +4839,11 @@ function renderTrainingTab(tab) {
         const owned = (character.skills||[]).includes(ability.id);
         const canAfford = character.gold >= ability.price;
         const tagHTML = ability.tags.map(t=>`<span class="shop-tag">${t}</span>`).join('');
-        const mpTag = ability.mpCost > 0
-            ? `<span class="shop-tag" style="color:#80c0ff;border-color:#2a4a6a">${ability.mpCost} MP</span>`
-            : `<span class="shop-tag" style="color:#80c080;border-color:#2a4a2a">No MP</span>`;
+        const mpTag = ability.passive
+            ? `<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">Passive</span>`
+            : ability.mpCost > 0
+                ? `<span class="shop-tag" style="color:#80c0ff;border-color:#2a4a6a">${ability.mpCost} MP</span>`
+                : `<span class="shop-tag" style="color:#80c080;border-color:#2a4a2a">No MP</span>`;
         const FORGET_REFUND = 30;
         panel.innerHTML += `
             <div class="shop-item" aria-label="${ability.name}. ${ability.desc}. ${ability.price} gold.">
@@ -4750,7 +4939,7 @@ function renderCombatAbilities(type) {
     document.getElementById('combat-abilities-title').textContent = type==='skill' ? '✨ Skills' : '🔮 Spells';
     const owned = (character.skills||[]);
     const data = type==='skill' ? SKILLS_DATA : SPELLS_DATA;
-    const available = data.filter(a=>owned.includes(a.id));
+    const available = data.filter(a => owned.includes(a.id) && !a.passive);
     if (available.length === 0) {
         list.innerHTML = `<div class="combat-no-items">No ${type}s learned. Visit Fennyx's Training Grounds in town.</div>`;
         return;
@@ -4995,13 +5184,19 @@ function closeSellConfirm() {
 // -- SHOP DATA --------------------------------------------
 const SHOP_INVENTORY = {
     weapons: [
-        { id:'iron_sword',    icon:'⚔',  name:'Iron Sword',       desc:'A reliable one-handed blade. Steady and true.',         price:40,  tags:['One-Handed','Sword'],   stat:'STR +2',  slot:'mainHand' },
-        { id:'war_hammer',    icon:'🔨',  name:'War Hammer',        desc:'Heavy and brutal. Shatters armor with ease.',           price:55,  tags:['One-Handed','Hammer'],  stat:'STR +3',  slot:'mainHand' },
-        { id:'hand_axe',      icon:'🪓',  name:'Hand Axe',          desc:'A balanced one-handed axe. Fast and effective.',        price:45,  tags:['One-Handed','Axe'],     stat:'STR +3',  slot:'mainHand' },
-        { id:'dagger',        icon:'🗡',  name:'Dagger',            desc:'Fast and precise. Favored by those who strike first.',  price:25,  tags:['One-Handed','Dagger'],  stat:'DEX +2',  slot:'mainHand' },
-        { id:'hunting_bow',   icon:'🏹',  name:'Hunting Bow',       desc:'A sturdy bow carved from ash wood.',                   price:45,  tags:['Two-Handed','Bow'],     stat:'DEX +2',  slot:'mainHand' },
-        { id:'flintlock',     icon:'🔫',  name:'Flintlock Pistol',  desc:'A surprising find. Loud, deadly, effective.',          price:70,  tags:['One-Handed','Gun'],     stat:'DEX +3',  slot:'mainHand' },
-        { id:'apprentice_staff', icon:'🪄', name:'Apprentice Staff', desc:'A slender wooden staff humming with arcane energy. Favored by spellcasters.', price:50, tags:['One-Handed','Staff'], stat:'INT +3', slot:'mainHand' },
+        { id:'iron_sword',       icon:'⚔',  name:'Iron Sword',        desc:'A reliable one-handed blade. Steady and true.',                  price:40,  tags:['One-Handed','Sword'],   stat:'STR +2',  slot:'mainHand', dmg:[6,10]  },
+        { id:'war_hammer',       icon:'🔨',  name:'War Hammer',         desc:'Heavy and brutal. Shatters armor with ease.',                    price:55,  tags:['One-Handed','Hammer'],  stat:'STR +3',  slot:'mainHand', dmg:[8,13]  },
+        { id:'hand_axe',         icon:'🪓',  name:'Hand Axe',           desc:'A balanced one-handed axe. Fast and effective.',                 price:45,  tags:['One-Handed','Axe'],     stat:'STR +3',  slot:'mainHand', dmg:[7,12]  },
+        { id:'dagger',           icon:'🗡',  name:'Dagger',             desc:'Fast and precise. Favored by those who strike first.',           price:25,  tags:['One-Handed','Dagger'],  stat:'DEX +2',  slot:'mainHand', dmg:[4,8]   },
+        { id:'hunting_bow',      icon:'🏹',  name:'Hunting Bow',        desc:'A sturdy bow carved from ash wood.',                             price:45,  tags:['Two-Handed','Bow'],     stat:'DEX +2',  slot:'mainHand', dmg:[8,14]  },
+        { id:'flintlock',        icon:'🔫',  name:'Flintlock Pistol',   desc:'A surprising find. Loud, deadly, effective.',                    price:70,  tags:['One-Handed','Gun'],     stat:'STR +3',  slot:'mainHand', dmg:[10,16] },
+        { id:'apprentice_staff', icon:'🪄',  name:'Apprentice Staff',   desc:'A slender wooden staff humming with arcane energy.',             price:50,  tags:['One-Handed','Staff'],   stat:'INT +3',  slot:'mainHand', dmg:[5,9]   },
+        { id:'mace',             icon:'🏏',  name:'Mace',               desc:'A flanged iron mace. Crushes bone and armor alike.',             price:50,  tags:['One-Handed','Mace'],    stat:'STR +3',  slot:'mainHand', dmg:[8,12]  },
+        { id:'flail',            icon:'⛓',  name:'Flail',              desc:'A spiked ball on a chain. Unpredictable and devastating.',       price:60,  tags:['One-Handed','Flail'],   stat:'STR +4',  slot:'mainHand', dmg:[9,15]  },
+        { id:'greatsword',       icon:'⚔',  name:'Greatsword',         desc:'A massive two-handed blade. Slow but absolutely lethal.',        price:80,  tags:['Two-Handed','Sword'],   stat:'STR +5',  slot:'mainHand', dmg:[14,22] },
+        { id:'greataxe',         icon:'🪓',  name:'Greataxe',           desc:'A hulking two-handed axe. One swing can end a fight.',           price:85,  tags:['Two-Handed','Axe'],     stat:'STR +5',  slot:'mainHand', dmg:[15,24] },
+        { id:'longbow',          icon:'🏹',  name:'Longbow',            desc:'A tall war bow with tremendous range and power.',                price:65,  tags:['Two-Handed','Bow'],     stat:'DEX +4',  slot:'mainHand', dmg:[12,18] },
+        { id:'crossbow',         icon:'🏹',  name:'Crossbow',           desc:'A mechanical bow. Slower to reload but hits harder.',            price:70,  tags:['Two-Handed','Bow'],     stat:'DEX +3',  slot:'mainHand', dmg:[11,17] },
     ],
     armor: [
         // Chest
@@ -5360,6 +5555,10 @@ const DUNGEONS = {
             { name:'Elder Dire Wolf',   icon:'🐺', level:4, hp:120, atk:20, xp:75, gold:[22,40], floors:[25,99] },
             { name:'Orc Warchief',      icon:'👹', level:4, hp:130, atk:22, xp:80, gold:[25,45], floors:[30,99] },
             { name:'Wild Druid',        icon:'🌿', level:2, hp:50,  atk:10, xp:26, gold:[6,14],  floors:[8,25]  },
+            { name:'Giant Spider',      icon:'🕷', level:2, hp:52,  atk:11, xp:28, gold:[6,14],  floors:[6,22]  },
+            { name:'Venomfang Serpent', icon:'🐍', level:3, hp:72,  atk:15, xp:46, gold:[12,24], floors:[14,32] },
+            { name:'Treant Elder',      icon:'🌳', level:4, hp:145, atk:19, xp:82, gold:[26,46], floors:[28,99] },
+            { name:'Alpha Dire Wolf',   icon:'🐺', level:5, hp:155, atk:23, xp:92, gold:[30,52], floors:[35,99] },
         ],
         bosses: {
             10: { name:'Greyback the Dire',      icon:'🐺', level:4, hp:220, atk:20, xp:160, gold:[45,75],   desc:'An ancient dire wolf, scarred and enormous' },
@@ -5393,6 +5592,10 @@ const DUNGEONS = {
             { name:'Frost Viking Jarl',icon:'🪖', level:4, hp:125, atk:20, xp:78, gold:[24,42], floors:[25,99] },
             { name:'Ancient Yeti',     icon:'🦣', level:4, hp:140, atk:22, xp:85, gold:[28,48], floors:[30,99] },
             { name:'Frost Druid',      icon:'🌿', level:2, hp:45,  atk:11, xp:27, gold:[6,13],  floors:[8,25]  },
+            { name:'Ice Wraith',       icon:'👻', level:3, hp:68,  atk:15, xp:44, gold:[10,22], floors:[14,30] },
+            { name:'Frost Drake',      icon:'🐉', level:4, hp:135, atk:20, xp:80, gold:[26,46], floors:[28,99] },
+            { name:'Glacial Titan',    icon:'🗿', level:5, hp:160, atk:24, xp:95, gold:[32,55], floors:[35,99] },
+            { name:'Viking Berserker', icon:'🪖', level:3, hp:80,  atk:17, xp:50, gold:[13,26], floors:[16,34] },
         ],
         bosses: {
             10: { name:'Frostmaw the Yeti',      icon:'🦣', level:4, hp:210, atk:19, xp:155, gold:[42,72],   desc:'A massive yeti who rules the frozen peaks' },
@@ -5426,6 +5629,10 @@ const DUNGEONS = {
             { name:'Ancient Construct',icon:'🗿', level:4, hp:120, atk:18, xp:72, gold:[22,40], floors:[20,99] },
             { name:'Sand Colossus',    icon:'🏜', level:4, hp:140, atk:21, xp:82, gold:[26,46], floors:[30,99] },
             { name:'Sand Druid',       icon:'🌿', level:2, hp:48,  atk:10, xp:26, gold:[6,13],  floors:[8,25]  },
+            { name:'Cursed Pharaoh',   icon:'🧟', level:3, hp:85,  atk:14, xp:52, gold:[14,26], floors:[16,34] },
+            { name:'Desert Basilisk',  icon:'🦎', level:3, hp:90,  atk:15, xp:55, gold:[15,28], floors:[18,35] },
+            { name:'Tomb Colossus',    icon:'⚱',  level:5, hp:155, atk:22, xp:90, gold:[30,52], floors:[32,99] },
+            { name:'Ancient Lich',     icon:'💀', level:5, hp:145, atk:24, xp:95, gold:[33,56], floors:[38,99] },
         ],
         bosses: {
             10: { name:'The Scorpion Queen',     icon:'🦂', level:4, hp:200, atk:18, xp:150, gold:[40,70],   desc:'A massive scorpion queen, ancient as the desert itself' },
@@ -5460,6 +5667,10 @@ const DUNGEONS = {
             { name:'Deep Troll',       icon:'🧌', level:3, hp:95,  atk:15, xp:55, gold:[15,28], floors:[12,32] },
             { name:'Iron Golem',       icon:'🤖', level:4, hp:120, atk:17, xp:70, gold:[22,40], floors:[20,99] },
             { name:'Cave Drake',       icon:'🐉', level:4, hp:130, atk:19, xp:78, gold:[25,44], floors:[28,99] },
+            { name:'Cave Spider',      icon:'🕷', level:2, hp:45,  atk:12, xp:26, gold:[5,12],  floors:[6,22]  },
+            { name:'Dwarven Spirit',   icon:'👻', level:3, hp:65,  atk:14, xp:46, gold:[10,22], floors:[14,32] },
+            { name:'Corrupted Golem',  icon:'🤖', level:4, hp:140, atk:21, xp:80, gold:[26,46], floors:[30,99] },
+            { name:'Deep Horror',      icon:'👁',  level:5, hp:160, atk:24, xp:95, gold:[32,55], floors:[35,99] },
         ],
         bosses: {
             10: { name:'Foreman Grudge',      icon:'⛏',  level:4, hp:220, atk:20, xp:160, gold:[45,75],   desc:'A corrupted dwarven foreman, twisted by something deep in the mine' },
@@ -5499,6 +5710,10 @@ const DUNGEONS = {
             { name:'Void Wisp',           icon:'✨', level:2, hp:35,  atk:14, xp:28, gold:[4,10],  floors:[6,24]  },
             { name:'Ancient Shambler',    icon:'🌳', level:4, hp:120, atk:17, xp:70, gold:[20,38], floors:[20,99] },
             { name:'Corrupted Archdruid', icon:'🧙', level:4, hp:130, atk:19, xp:78, gold:[24,44], floors:[28,99] },
+            { name:'Shadow Wolf',         icon:'🐺', level:2, hp:55,  atk:13, xp:32, gold:[7,15],  floors:[8,24]  },
+            { name:'Corrupted Treant',    icon:'🌳', level:4, hp:150, atk:20, xp:85, gold:[26,46], floors:[25,99] },
+            { name:'Druid Lich',          icon:'💀', level:5, hp:145, atk:22, xp:92, gold:[30,52], floors:[32,99] },
+            { name:'Corrupted Fae',       icon:'🧚', level:3, hp:60,  atk:16, xp:42, gold:[10,22], floors:[14,30] },
         ],
         bosses: {
             10: { name:'Vexara the Blighted',     icon:'🐺', level:4, hp:230, atk:21, xp:165, gold:[46,78],   desc:'A massive corrupted wolf, once a guardian of the forest' },
@@ -5534,6 +5749,10 @@ const DUNGEONS = {
             { name:'Wrecked Corsair',     icon:'💀', level:3, hp:80,  atk:15, xp:48, gold:[12,22], floors:[12,30] },
             { name:'Kraken Spawn',        icon:'🐙', level:4, hp:115, atk:18, xp:68, gold:[20,38], floors:[20,99] },
             { name:'Corsair Captain',     icon:'🏴‍☠️', level:4, hp:125, atk:20, xp:75, gold:[24,44], floors:[25,99] },
+            { name:'Ghost Sailor',        icon:'👻', level:3, hp:70,  atk:15, xp:46, gold:[10,22], floors:[14,30] },
+            { name:'Deep Angler',         icon:'🐟', level:3, hp:80,  atk:16, xp:50, gold:[12,24], floors:[18,34] },
+            { name:'Cursed Siren',        icon:'🧜', level:4, hp:105, atk:19, xp:72, gold:[20,38], floors:[22,99] },
+            { name:'Drowned Berserker',   icon:'💀', level:5, hp:150, atk:23, xp:90, gold:[30,52], floors:[35,99] },
         ],
         bosses: {
             10: { name:'Tidebreaker',              icon:'🦀', level:4, hp:240, atk:20, xp:170, gold:[48,80],   desc:'A colossal crab that has claimed the lower decks as its shell' },
@@ -5925,11 +6144,14 @@ function closeAbout() {
 // -- WOLFHAVEN SHOP DATA ----------------------------------
 const WOLFHAVEN_INVENTORY = {
     weapons: [
-        { id:'druid_staff',     icon:'🪄', name:'Druid Staff',        desc:'A living staff of ashwood. Hums with nature magic.',                   price:70,  tags:['One-Handed','Staff'],  stat:'INT +4', slot:'mainHand' },
-        { id:'moon_wand',       icon:'✨', name:'Moon Wand',           desc:'A slender wand carved from moonwood. Precise and powerful.',           price:60,  tags:['One-Handed','Wand'],   stat:'INT +3', slot:'mainHand' },
-        { id:'root_blade',      icon:'🗡',  name:'Root Blade',          desc:'A short blade grown from twisted roots. Sharp and strange.',           price:55,  tags:['One-Handed','Dagger'], stat:'DEX +3', slot:'mainHand' },
-        { id:'grove_bow',       icon:'🏹', name:'Grove Bow',            desc:'A bow of living wood, still growing. Exceptionally accurate.',         price:80,  tags:['Two-Handed','Bow'],    stat:'DEX +4', slot:'mainHand' },
-        { id:'spirit_staff',    icon:'🪄', name:'Spirit Staff',         desc:'A staff channeling Fennyx\'s holy light. Favored by priests.',         price:95,  tags:['One-Handed','Staff'],  stat:'INT +5', slot:'mainHand' },
+        { id:'druid_staff',      icon:'🪄', name:'Druid Staff',         desc:'A living staff of ashwood. Hums with nature magic.',                   price:70,  tags:['One-Handed','Staff'],  stat:'INT +4', slot:'mainHand', dmg:[8,13]  },
+        { id:'moon_wand',        icon:'✨', name:'Moon Wand',            desc:'A slender wand carved from moonwood. Precise and powerful.',           price:60,  tags:['One-Handed','Wand'],   stat:'INT +3', slot:'mainHand', dmg:[7,11]  },
+        { id:'root_blade',       icon:'🗡',  name:'Root Blade',           desc:'A short blade grown from twisted roots. Sharp and strange.',           price:55,  tags:['One-Handed','Dagger'], stat:'DEX +3', slot:'mainHand', dmg:[8,13]  },
+        { id:'grove_bow',        icon:'🏹', name:'Grove Bow',             desc:'A bow of living wood, still growing. Exceptionally accurate.',         price:80,  tags:['Two-Handed','Bow'],    stat:'DEX +4', slot:'mainHand', dmg:[12,18] },
+        { id:'spirit_staff',     icon:'🪄', name:'Spirit Staff',          desc:"A staff channeling Fennyx's holy light. Favored by priests.",          price:95,  tags:['One-Handed','Staff'],  stat:'INT +5', slot:'mainHand', dmg:[10,16] },
+        { id:'shadow_bow',       icon:'🏹', name:'Shadow Bow',            desc:'A bow of darkwood carved in shadow. Silent and deadly accurate.',      price:100, tags:['Two-Handed','Bow'],    stat:'DEX +5', slot:'mainHand', dmg:[14,20] },
+        { id:'twin_daggers',     icon:'🗡',  name:'Twin Daggers',          desc:'A matched pair of nature-blessed daggers. Strike twice as fast.',      price:90,  tags:['One-Handed','Dagger'], stat:'DEX +4', slot:'mainHand', dmg:[9,14]  },
+        { id:'warped_greatbow',  icon:'🏹', name:'Warped Greatbow',       desc:'A massive bow twisted from corrupted ashwood. Punishing range.',       price:130, tags:['Two-Handed','Bow'],    stat:'DEX +6', slot:'mainHand', dmg:[18,26] },
     ],
     armor: [
         // Light — INT/MP focus
@@ -6043,7 +6265,7 @@ function renderWolfhavenTab(tab) {
             <div class="shop-item-info">
                 <div class="shop-item-name">${item.name}</div>
                 <div class="shop-item-desc">${item.desc}</div>
-                <div class="shop-item-tags">${tagHTML}${item.stat ? `<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}</span>` : ''}</div>
+                <div class="shop-item-tags">${tagHTML}${item.stat ? `<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}</span>` : ''}${item.dmg ? `<span class="shop-tag" style="color:#e07070;border-color:#5a2a2a">DMG ${item.dmg[0]}-${item.dmg[1]}</span>` : ''}</div>
             </div>
             <div class="shop-item-buy">
                 ${(inInv || isEquipped) && !item.stackable
@@ -6123,13 +6345,14 @@ function buyWolfhavenItem(itemId) {
     const item = allItems.find(i => i.id === itemId);
     if (!item) return;
 
-    if (character.gold < item.price) {
+    const finalPrice = getDiscountedPrice(item.price);
+    if (character.gold < finalPrice) {
         showToast('Not enough gold!');
         announce('Not enough gold to buy ' + item.name + '.');
         return;
     }
 
-    character.gold -= item.price;
+    character.gold -= finalPrice;
 
     if (item.stackable) {
         const existing = character.inventory.find(i => i.id === item.id);
@@ -6145,7 +6368,7 @@ function buyWolfhavenItem(itemId) {
                        : WOLFHAVEN_INVENTORY.armor.find(i=>i.id===itemId) ? 'armor' : 'weapons';
     renderWolfhavenTab(tabToRefresh);
     showToast(`Purchased ${item.name}!`);
-    announce(`Purchased ${item.name} for ${item.price} gold. You have ${character.gold} gold remaining.`);
+    announce(`Purchased ${item.name} for ${finalPrice} gold. You have ${character.gold} gold remaining.`);
 }
 
 // -- ASHWOOD DUNGEON --------------------------------------
@@ -6248,11 +6471,13 @@ function setActiveNav(navId) {
 // -- SUNPORT SHOP DATA ------------------------------------
 const SUNPORT_INVENTORY = {
     weapons: [
-        { id:'cutlass',         icon:'⚔',  name:'Cutlass',             desc:'A single-edged blade favored by sailors. Light and fast.',          price:60,  tags:['One-Handed','Sword'],  stat:'DEX +4',  slot:'mainHand' },
-        { id:'boarding_axe',    icon:'🪓', name:'Boarding Axe',         desc:'A compact axe designed for close-quarters fighting on deck.',        price:55,  tags:['One-Handed','Axe'],    stat:'STR +4',  slot:'mainHand' },
-        { id:'sea_crossbow',    icon:'🏹', name:'Sea Crossbow',          desc:'A compact crossbow built for use on moving ships.',                  price:75,  tags:['Two-Handed','Bow'],    stat:'DEX +4',  slot:'mainHand' },
-        { id:'trident',         icon:'🔱', name:'Trident',               desc:'A three-pronged spear from the deep waters. Elegant and deadly.',    price:90,  tags:['Two-Handed','Spear'],  stat:'STR +5',  slot:'mainHand' },
-        { id:'hook_blade',      icon:'🗡',  name:'Hook Blade',            desc:'A curved blade fitted with a hooked tip. Catches enemies off-guard.', price:65, tags:['One-Handed','Dagger'], stat:'DEX +3',  slot:'mainHand' },
+        { id:'cutlass',          icon:'⚔',  name:'Cutlass',              desc:'A single-edged blade favored by sailors. Light and fast.',           price:60,  tags:['One-Handed','Sword'],  stat:'DEX +4',  slot:'mainHand', dmg:[10,16] },
+        { id:'boarding_axe',     icon:'🪓', name:'Boarding Axe',          desc:'A compact axe designed for close-quarters fighting on deck.',         price:55,  tags:['One-Handed','Axe'],    stat:'STR +4',  slot:'mainHand', dmg:[10,15] },
+        { id:'sea_crossbow',     icon:'🏹', name:'Sea Crossbow',           desc:'A compact crossbow built for use on moving ships.',                   price:75,  tags:['Two-Handed','Bow'],    stat:'DEX +4',  slot:'mainHand', dmg:[13,19] },
+        { id:'trident',          icon:'🔱', name:'Trident',                desc:'A three-pronged spear from the deep waters. Elegant and deadly.',     price:90,  tags:['Two-Handed','Spear'],  stat:'STR +5',  slot:'mainHand', dmg:[15,22] },
+        { id:'hook_blade',       icon:'🗡',  name:'Hook Blade',             desc:'A curved blade fitted with a hooked tip. Catches enemies off-guard.',price:65,  tags:['One-Handed','Dagger'], stat:'DEX +3',  slot:'mainHand', dmg:[9,14]  },
+        { id:'flintlock_pistol', icon:'🔫', name:'Flintlock Pistol',       desc:'A pirate-grade flintlock. One shot, one kill if your aim holds.',     price:85,  tags:['One-Handed','Gun'],    stat:'STR +4',  slot:'mainHand', dmg:[14,20] },
+        { id:'blunderbuss',      icon:'🔫', name:'Blunderbuss',            desc:'A wide-mouthed naval firearm. Devastating at close range.',           price:110, tags:['Two-Handed','Gun'],    stat:'STR +5',  slot:'mainHand', dmg:[18,26] },
     ],
     accessories: [
         { id:'compass_ring',    icon:'💍', name:'Compass Ring',          desc:'An enchanted ring that always points toward fortune.',               price:55,  tags:['Ring'],                stat:'DEX +3',  slot:'ring1'   },
@@ -6359,7 +6584,7 @@ function renderSunportTab(tab) {
             <div class="shop-item-info">
                 <div class="shop-item-name">${item.name}</div>
                 <div class="shop-item-desc">${item.desc}</div>
-                <div class="shop-item-tags">${tagHTML}${item.stat ? `<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}</span>` : ''}</div>
+                <div class="shop-item-tags">${tagHTML}${item.stat ? `<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}</span>` : ''}${item.dmg ? `<span class="shop-tag" style="color:#e07070;border-color:#5a2a2a">DMG ${item.dmg[0]}-${item.dmg[1]}</span>` : ''}</div>
             </div>
             <div class="shop-item-buy">
                 ${(owned || inInv) && !item.stackable
@@ -6446,13 +6671,14 @@ function buySunportItem(itemId) {
     const item = allItems.find(i => i.id === itemId);
     if (!item) return;
 
-    if (character.gold < item.price) {
+    const finalPrice = getDiscountedPrice(item.price);
+    if (character.gold < finalPrice) {
         showToast('Not enough gold!');
         announce('Not enough gold to buy ' + item.name + '.');
         return;
     }
 
-    character.gold -= item.price;
+    character.gold -= finalPrice;
 
     if (item.stackable) {
         const existing = character.inventory.find(i => i.id === item.id);
@@ -6466,7 +6692,7 @@ function buySunportItem(itemId) {
     document.getElementById('sunport-shop-gold').textContent = character.gold;
     renderSunportTab(item.stackable ? 'consumables' : (SUNPORT_INVENTORY.accessories.find(i=>i.id===itemId) ? 'accessories' : 'weapons'));
     showToast(`Purchased ${item.name}!`);
-    announce(`Purchased ${item.name} for ${item.price} gold. You have ${character.gold} gold remaining.`);
+    announce(`Purchased ${item.name} for ${finalPrice} gold. You have ${character.gold} gold remaining.`);
 }
 
 // -- SHIPWRECK DUNGEON ------------------------------------
