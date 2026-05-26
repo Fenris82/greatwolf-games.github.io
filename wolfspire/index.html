@@ -3935,18 +3935,18 @@ function rollChestLoot() {
 const LOOT_POOL = [
     // -- WEAPONS --
     // Basic drops
-    { id:'rusty_dagger',      icon:'🗡', name:'Rusty Dagger',         desc:'A worn dagger, still sharp enough.',                    stat:'DEX +1',  slot:'mainHand', tags:['One-Handed','Dagger'],      stackable:false },
-    { id:'bone_club',         icon:'🦴', name:'Bone Club',             desc:'Fashioned from monster bone.',                          stat:'STR +2',  slot:'mainHand', tags:['One-Handed','Club'],         stackable:false },
-    { id:'cracked_bow',       icon:'🏹', name:'Cracked Bow',           desc:'Damaged but still functional.',                         stat:'DEX +1',  slot:'mainHand', tags:['Two-Handed','Bow'],          stackable:false },
+    { id:'rusty_dagger',      icon:'🗡', name:'Rusty Dagger',         desc:'A worn dagger, still sharp enough.',                    stat:'DEX +1',  slot:'mainHand', tags:['Dagger'],      stackable:false },
+    { id:'bone_club',         icon:'🦴', name:'Bone Club',             desc:'Fashioned from monster bone.',                          stat:'STR +2',  slot:'mainHand', tags:['Club'],         stackable:false },
+    { id:'cracked_bow',       icon:'🏹', name:'Cracked Bow',           desc:'Damaged but still functional.',                         stat:'DEX +1',  slot:'mainHand', tags:['Bow'],          stackable:false },
     // Dungeon-only weapons
-    { id:'battle_axe',        icon:'🪓', name:'Battle Axe',            desc:'A massive two-handed axe. Devastating in the right hands.',  stat:'STR +5',  slot:'mainHand', tags:['Two-Handed','Axe'],          stackable:false },
-    { id:'throwing_axe',      icon:'🪓', name:'Throwing Axe',          desc:'Perfectly weighted for throwing. Deadly at any range.',      stat:'DEX +4',  slot:'mainHand', tags:['One-Handed','Axe'],          stackable:false },
-    { id:'great_maul',        icon:'🔨', name:'Great Maul',            desc:'A massive two-handed war hammer. Devastating power.',    stat:'STR +6',  slot:'mainHand', tags:['Two-Handed','Maul'],         stackable:false },
-    { id:'flintlock_rifle',   icon:'🔫', name:'Flintlock Rifle',       desc:'A longer, deadlier gun. Favored by sharpshooters.',      stat:'DEX +5',  slot:'mainHand', tags:['Two-Handed','Gun'],          stackable:false },
+    { id:'battle_axe',        icon:'🪓', name:'Battle Axe',            desc:'A massive two-handed axe. Devastating in the right hands.',  stat:'STR +5',  slot:'mainHand', tags:['Axe'],          stackable:false },
+    { id:'throwing_axe',      icon:'🪓', name:'Throwing Axe',          desc:'Perfectly weighted for throwing. Deadly at any range.',      stat:'DEX +4',  slot:'mainHand', tags:['Axe'],          stackable:false },
+    { id:'great_maul',        icon:'🔨', name:'Great Maul',            desc:'A massive two-handed war hammer. Devastating power.',    stat:'STR +6',  slot:'mainHand', tags:['Maul'],         stackable:false },
+    { id:'flintlock_rifle',   icon:'🔫', name:'Flintlock Rifle',       desc:'A longer, deadlier gun. Favored by sharpshooters.',      stat:'DEX +5',  slot:'mainHand', tags:['Gun'],          stackable:false },
     { id:'wand_of_sparks',    icon:'🪄', name:'Wand of Sparks',        desc:'Crackles with arcane energy. Amplifies spells.',         stat:'INT +4',  slot:'offHand',  tags:['Off-Hand','Wand'],           stackable:false },
-    { id:'shadow_staff',      icon:'🖤', name:'Shadow Staff',          desc:'A staff carved from darkwood. Hums with void energy.',   stat:'INT +5',  slot:'mainHand', tags:['One-Handed','Staff'],        stackable:false },
-    { id:'bone_dagger',       icon:'🦷', name:'Bone Dagger',           desc:'Carved from the bones of a fallen colossus.',           stat:'DEX +3',  slot:'mainHand', tags:['One-Handed','Dagger'],       stackable:false },
-    { id:'varg_blade',        icon:'🗡', name:"Varg's Blade",          desc:'A corrupted short sword soaked in dark energy.',         stat:'STR +4',  slot:'mainHand', tags:['One-Handed','Sword'],        stackable:false },
+    { id:'shadow_staff',      icon:'🖤', name:'Shadow Staff',          desc:'A staff carved from darkwood. Hums with void energy.',   stat:'INT +5',  slot:'mainHand', tags:['Staff'],        stackable:false },
+    { id:'bone_dagger',       icon:'🦷', name:'Bone Dagger',           desc:'Carved from the bones of a fallen colossus.',           stat:'DEX +3',  slot:'mainHand', tags:['Dagger'],       stackable:false },
+    { id:'varg_blade',        icon:'🗡', name:"Varg's Blade",          desc:'A corrupted short sword soaked in dark energy.',         stat:'STR +4',  slot:'mainHand', tags:['Sword'],        stackable:false },
     // -- ARMOR --
     // Basic drops
     { id:'torn_cloth',        icon:'🧣', name:'Torn Cloth Wrap',       desc:'Scraps of fabric bound together.',                       stat:'MP +5',   slot:'chest',    tags:['Light','Chest'],             stackable:false, type:'light'  },
@@ -4024,15 +4024,15 @@ function rollEnemyLoot(enemy) {
 
 // Rare chest-only legendary weapons
 const LEGENDARY_CHEST_ITEMS = [
-    { id:'machine_gun',      icon:'🔫', name:'Machine Gun',        desc:'An impossible weapon of unknown origin. Fires a terrifying storm of rounds.',        stat:'STR +8',  slot:'mainHand', tags:['Two-Handed','Gun'],    stackable:false, dmg:[22,35], type:'legendary' },
-    { id:'bazooka',          icon:'💥', name:'Bazooka',             desc:'Geminus himself would approve. One shot. Enormous damage. No questions asked.',       stat:'STR +10', slot:'mainHand', tags:['Two-Handed','Gun'],    stackable:false, dmg:[30,50], type:'legendary' },
-    { id:'void_cannon',      icon:'🌑', name:'Void Cannon',         desc:'A weapon imbued with shadow energy. Fires concentrated darkness.',                    stat:'INT +8',  slot:'mainHand', tags:['Two-Handed','Staff'],  stackable:false, dmg:[25,40], type:'legendary' },
-    { id:'inferno_lance',    icon:'🔥', name:'Inferno Lance',       desc:'A spear wreathed in permanent flame. Burns everything it touches.',                   stat:'STR +7',  slot:'mainHand', tags:['Two-Handed','Spear'],  stackable:false, dmg:[20,32], type:'legendary' },
-    { id:'wolfsteel_blade',  icon:'⚔',  name:'Wolfsteel Blade',     desc:'A blade forged from Wolfsteel. Lightweight, golden, and impossibly sharp.',           stat:'STR +9',  slot:'mainHand', tags:['One-Handed','Sword'],  stackable:false, dmg:[18,28], type:'legendary' },
-    { id:'maul_of_justice',  icon:'⚖',  name:'Maul of Justice',     desc:"Fenris's legendary weapon. Said to strike with the weight of judgment itself. On hit: chance to stun and strike again.",  stat:'STR +12', slot:'mainHand', tags:['Two-Handed','Hammer'], stackable:false, dmg:[28,45], type:'legendary', special:'justice' },
-    { id:'staff_of_life',    icon:'✨', name:'Staff of Life',        desc:'An ancient staff humming with restorative energy. Each strike has a 20% chance to fully restore your MP.',               stat:'INT +10', slot:'mainHand', tags:['One-Handed','Staff'],  stackable:false, dmg:[14,22], type:'legendary', special:'lifestaff' },
-    { id:'knightly_longsword',icon:'⚔', name:'Knightly Longsword',  desc:'A perfectly balanced sword carried by knights of old. Grants a permanent +10% critical strike chance.',                  stat:'STR +8',  slot:'mainHand', tags:['One-Handed','Sword'],  stackable:false, dmg:[20,30], type:'legendary', special:'knightly' },
-    { id:'geminus_torch',    icon:'🔥', name:"Geminus's Torch",     desc:"The flamethrower carried by Geminus of the Greatwolf Defenders. Burns enemies and leaves them scorched for 3 turns.",     stat:'STR +9',  slot:'mainHand', tags:['Two-Handed','Gun'],    stackable:false, dmg:[22,34], type:'legendary', special:'torch' },
+    { id:'machine_gun',      icon:'🔫', name:'Machine Gun',        desc:'An impossible weapon of unknown origin. Fires a terrifying storm of rounds.',        stat:'STR +8',  slot:'mainHand', tags:['Gun'],    stackable:false, dmg:[22,35], type:'legendary' },
+    { id:'bazooka',          icon:'💥', name:'Bazooka',             desc:'Geminus himself would approve. One shot. Enormous damage. No questions asked.',       stat:'STR +10', slot:'mainHand', tags:['Gun'],    stackable:false, dmg:[30,50], type:'legendary' },
+    { id:'void_cannon',      icon:'🌑', name:'Void Cannon',         desc:'A weapon imbued with shadow energy. Fires concentrated darkness.',                    stat:'INT +8',  slot:'mainHand', tags:['Staff'],  stackable:false, dmg:[25,40], type:'legendary' },
+    { id:'inferno_lance',    icon:'🔥', name:'Inferno Lance',       desc:'A spear wreathed in permanent flame. Burns everything it touches.',                   stat:'STR +7',  slot:'mainHand', tags:['Spear'],  stackable:false, dmg:[20,32], type:'legendary' },
+    { id:'wolfsteel_blade',  icon:'⚔',  name:'Wolfsteel Blade',     desc:'A blade forged from Wolfsteel. Lightweight, golden, and impossibly sharp.',           stat:'STR +9',  slot:'mainHand', tags:['Sword'],  stackable:false, dmg:[18,28], type:'legendary' },
+    { id:'maul_of_justice',  icon:'⚖',  name:'Maul of Justice',     desc:"Fenris's legendary weapon. Said to strike with the weight of judgment itself. On hit: chance to stun and strike again.",  stat:'STR +12', slot:'mainHand', tags:['Hammer'], stackable:false, dmg:[28,45], type:'legendary', special:'justice' },
+    { id:'staff_of_life',    icon:'✨', name:'Staff of Life',        desc:'An ancient staff humming with restorative energy. Each strike has a 20% chance to fully restore your MP.',               stat:'INT +10', slot:'mainHand', tags:['Staff'],  stackable:false, dmg:[14,22], type:'legendary', special:'lifestaff' },
+    { id:'knightly_longsword',icon:'⚔', name:'Knightly Longsword',  desc:'A perfectly balanced sword carried by knights of old. Grants a permanent +10% critical strike chance.',                  stat:'STR +8',  slot:'mainHand', tags:['Sword'],  stackable:false, dmg:[20,30], type:'legendary', special:'knightly' },
+    { id:'geminus_torch',    icon:'🔥', name:"Geminus's Torch",     desc:"The flamethrower carried by Geminus of the Greatwolf Defenders. Burns enemies and leaves them scorched for 3 turns.",     stat:'STR +9',  slot:'mainHand', tags:['Gun'],    stackable:false, dmg:[22,34], type:'legendary', special:'torch' },
 ];
 
 function rollChestLoot() {
@@ -4107,14 +4107,14 @@ let detailEquippedSlot = null;
 
 const IRONHOLD_INVENTORY = {
     weapons: [
-        { id:'dwarven_hand_axe',  icon:'⚒', name:'Dwarven Hand Axe',     desc:'A compact dwarven axe. Better balanced than anything from Aldric.',  price:80,  tags:['One-Handed','Axe'],    stat:'STR +4', slot:'mainHand', dmg:[12,18] },
-        { id:'dwarven_hammer',    icon:'🔨', name:'Dwarven War Hammer',   desc:'Heavier and better crafted than a standard war hammer.',              price:95,  tags:['One-Handed','Hammer'], stat:'STR +5', slot:'mainHand', dmg:[14,20] },
-        { id:'dwarven_greataxe',  icon:'⚒', name:'Dwarven Greataxe',     desc:'A two-handed axe of exceptional dwarven craft.',                      price:130, tags:['Two-Handed','Axe'],    stat:'STR +7', slot:'mainHand', dmg:[20,30] },
-        { id:'iron_pick',         icon:'⛏', name:'Iron Pickaxe',         desc:'A sturdy mining pick repurposed as a weapon.',                        price:65,  tags:['One-Handed','Pick'],   stat:'STR +3', slot:'mainHand', dmg:[10,15] },
-        { id:'dwarven_mace',      icon:'🏏', name:'Dwarven Mace',         desc:'A flanged iron mace forged in the deepest Ironhold furnaces.',        price:85,  tags:['One-Handed','Mace'],   stat:'STR +4', slot:'mainHand', dmg:[13,19] },
-        { id:'dwarven_flail',     icon:'⛓', name:'Dwarven Flail',        desc:'A heavy spiked flail on a chain of dwarven iron.',                    price:100, tags:['One-Handed','Flail'],  stat:'STR +5', slot:'mainHand', dmg:[15,22] },
-        { id:'dwarven_rifle',     icon:'🔫', name:'Dwarven Rifle',        desc:'A prototype firearm of dwarven engineering. Heavy, loud, devastating.', price:140, tags:['Two-Handed','Gun'],  stat:'STR +6', slot:'mainHand', dmg:[18,28] },
-        { id:'dwarven_pistol',    icon:'🔫', name:'Dwarven Pistol',       desc:'A compact dwarven sidearm. Short range but brutal impact.',           price:110, tags:['One-Handed','Gun'],    stat:'STR +5', slot:'mainHand', dmg:[14,22] },
+        { id:'dwarven_hand_axe',  icon:'⚒', name:'Dwarven Hand Axe',     desc:'A compact dwarven axe. Better balanced than anything from Aldric.',  price:80,  tags:['Axe'],    stat:'STR +4', slot:'mainHand', dmg:[12,18] },
+        { id:'dwarven_hammer',    icon:'🔨', name:'Dwarven War Hammer',   desc:'Heavier and better crafted than a standard war hammer.',              price:95,  tags:['Hammer'], stat:'STR +5', slot:'mainHand', dmg:[14,20] },
+        { id:'dwarven_greataxe',  icon:'⚒', name:'Dwarven Greataxe',     desc:'A two-handed axe of exceptional dwarven craft.',                      price:130, tags:['Axe'],    stat:'STR +7', slot:'mainHand', dmg:[20,30] },
+        { id:'iron_pick',         icon:'⛏', name:'Iron Pickaxe',         desc:'A sturdy mining pick repurposed as a weapon.',                        price:65,  tags:['Pick'],   stat:'STR +3', slot:'mainHand', dmg:[10,15] },
+        { id:'dwarven_mace',      icon:'🏏', name:'Dwarven Mace',         desc:'A flanged iron mace forged in the deepest Ironhold furnaces.',        price:85,  tags:['Mace'],   stat:'STR +4', slot:'mainHand', dmg:[13,19] },
+        { id:'dwarven_flail',     icon:'⛓', name:'Dwarven Flail',        desc:'A heavy spiked flail on a chain of dwarven iron.',                    price:100, tags:['Flail'],  stat:'STR +5', slot:'mainHand', dmg:[15,22] },
+        { id:'dwarven_rifle',     icon:'🔫', name:'Dwarven Rifle',        desc:'A prototype firearm of dwarven engineering. Heavy, loud, devastating.', price:140, tags:['Gun'],  stat:'STR +6', slot:'mainHand', dmg:[18,28] },
+        { id:'dwarven_pistol',    icon:'🔫', name:'Dwarven Pistol',       desc:'A compact dwarven sidearm. Short range but brutal impact.',           price:110, tags:['Gun'],    stat:'STR +5', slot:'mainHand', dmg:[14,22] },
     ],
     armor: [
         { id:'dwarven_helm',      icon:'⛑',  name:'Dwarven Helm',         desc:'A masterwork dwarven helmet. Solid iron construction.',               price:75,  tags:['Heavy','Head'],     stat:'ARM +5', type:'heavy', slot:'head'    },
@@ -4584,11 +4584,25 @@ function equipFromDetail() {
     // We use the item's actual slot for SLOT_MAP but allow offHand as override
     let possibleSlots = SLOT_MAP[slotType] || [rawSlot];
 
-    // If it's a weapon and player has dual wield, offHand is always an option
+    // If it's a weapon and player has dual wield, always offer both slots
     const hasDualWield = (character.skills || []).includes('dual_wield');
-    const isWeapon = item.slot === 'mainHand';
+    const isWeapon = slotType === 'mainHand';
     if (isWeapon && hasDualWield) {
-        possibleSlots = ['mainHand', 'offHand'];
+        if (!character.equipment.mainHand) {
+            possibleSlots = ['mainHand'];
+        } else if (!character.equipment.offHand) {
+            possibleSlots = ['offHand'];
+        } else {
+            // Both slots full — ask player which to replace
+            const main = character.equipment.mainHand;
+            const off = character.equipment.offHand;
+            closeDetail();
+            if (confirm(`Which slot?\n\nMain Hand: ${main.name}\nOff Hand: ${off.name}\n\nOK = Main Hand\nCancel = Off Hand`)) {
+                possibleSlots = ['mainHand'];
+            } else {
+                possibleSlots = ['offHand'];
+            }
+        }
     }
 
     // Find an empty slot first, otherwise use the first slot
@@ -5604,19 +5618,19 @@ function closeSellConfirm() {
 // -- SHOP DATA --------------------------------------------
 const SHOP_INVENTORY = {
     weapons: [
-        { id:'iron_sword',       icon:'⚔',  name:'Iron Sword',        desc:'A reliable one-handed blade. Steady and true.',                  price:40,  tags:['One-Handed','Sword'],   stat:'STR +2',  slot:'mainHand', dmg:[6,10]  },
-        { id:'war_hammer',       icon:'🔨',  name:'War Hammer',         desc:'Heavy and brutal. Shatters armor with ease.',                    price:55,  tags:['One-Handed','Hammer'],  stat:'STR +3',  slot:'mainHand', dmg:[8,13]  },
-        { id:'hand_axe',         icon:'🪓',  name:'Hand Axe',           desc:'A balanced one-handed axe. Fast and effective.',                 price:45,  tags:['One-Handed','Axe'],     stat:'STR +3',  slot:'mainHand', dmg:[7,12]  },
-        { id:'dagger',           icon:'🗡',  name:'Dagger',             desc:'Fast and precise. Favored by those who strike first.',           price:25,  tags:['One-Handed','Dagger'],  stat:'DEX +2',  slot:'mainHand', dmg:[4,8]   },
-        { id:'hunting_bow',      icon:'🏹',  name:'Hunting Bow',        desc:'A sturdy bow carved from ash wood.',                             price:45,  tags:['Two-Handed','Bow'],     stat:'DEX +2',  slot:'mainHand', dmg:[8,14]  },
-        { id:'flintlock',        icon:'🔫',  name:'Flintlock Pistol',   desc:'A surprising find. Loud, deadly, effective.',                    price:70,  tags:['One-Handed','Gun'],     stat:'STR +3',  slot:'mainHand', dmg:[10,16] },
-        { id:'apprentice_staff', icon:'🪄',  name:'Apprentice Staff',   desc:'A slender wooden staff humming with arcane energy.',             price:50,  tags:['One-Handed','Staff'],   stat:'INT +3',  slot:'mainHand', dmg:[5,9]   },
-        { id:'mace',             icon:'🏏',  name:'Mace',               desc:'A flanged iron mace. Crushes bone and armor alike.',             price:50,  tags:['One-Handed','Mace'],    stat:'STR +3',  slot:'mainHand', dmg:[8,12]  },
-        { id:'flail',            icon:'⛓',  name:'Flail',              desc:'A spiked ball on a chain. Unpredictable and devastating.',       price:60,  tags:['One-Handed','Flail'],   stat:'STR +4',  slot:'mainHand', dmg:[9,15]  },
-        { id:'greatsword',       icon:'⚔',  name:'Greatsword',         desc:'A massive two-handed blade. Slow but absolutely lethal.',        price:80,  tags:['Two-Handed','Sword'],   stat:'STR +5',  slot:'mainHand', dmg:[14,22] },
-        { id:'greataxe',         icon:'🪓',  name:'Greataxe',           desc:'A hulking two-handed axe. One swing can end a fight.',           price:85,  tags:['Two-Handed','Axe'],     stat:'STR +5',  slot:'mainHand', dmg:[15,24] },
-        { id:'longbow',          icon:'🏹',  name:'Longbow',            desc:'A tall war bow with tremendous range and power.',                price:65,  tags:['Two-Handed','Bow'],     stat:'DEX +4',  slot:'mainHand', dmg:[12,18] },
-        { id:'crossbow',         icon:'🏹',  name:'Crossbow',           desc:'A mechanical bow. Slower to reload but hits harder.',            price:70,  tags:['Two-Handed','Bow'],     stat:'DEX +3',  slot:'mainHand', dmg:[11,17] },
+        { id:'iron_sword',       icon:'⚔',  name:'Iron Sword',        desc:'A reliable one-handed blade. Steady and true.',                  price:40,  tags:['Sword'],   stat:'STR +2',  slot:'mainHand', dmg:[6,10]  },
+        { id:'war_hammer',       icon:'🔨',  name:'War Hammer',         desc:'Heavy and brutal. Shatters armor with ease.',                    price:55,  tags:['Hammer'],  stat:'STR +3',  slot:'mainHand', dmg:[8,13]  },
+        { id:'hand_axe',         icon:'🪓',  name:'Hand Axe',           desc:'A balanced one-handed axe. Fast and effective.',                 price:45,  tags:['Axe'],     stat:'STR +3',  slot:'mainHand', dmg:[7,12]  },
+        { id:'dagger',           icon:'🗡',  name:'Dagger',             desc:'Fast and precise. Favored by those who strike first.',           price:25,  tags:['Dagger'],  stat:'DEX +2',  slot:'mainHand', dmg:[4,8]   },
+        { id:'hunting_bow',      icon:'🏹',  name:'Hunting Bow',        desc:'A sturdy bow carved from ash wood.',                             price:45,  tags:['Bow'],     stat:'DEX +2',  slot:'mainHand', dmg:[8,14]  },
+        { id:'flintlock',        icon:'🔫',  name:'Flintlock Pistol',   desc:'A surprising find. Loud, deadly, effective.',                    price:70,  tags:['Gun'],     stat:'STR +3',  slot:'mainHand', dmg:[10,16] },
+        { id:'apprentice_staff', icon:'🪄',  name:'Apprentice Staff',   desc:'A slender wooden staff humming with arcane energy.',             price:50,  tags:['Staff'],   stat:'INT +3',  slot:'mainHand', dmg:[5,9]   },
+        { id:'mace',             icon:'🏏',  name:'Mace',               desc:'A flanged iron mace. Crushes bone and armor alike.',             price:50,  tags:['Mace'],    stat:'STR +3',  slot:'mainHand', dmg:[8,12]  },
+        { id:'flail',            icon:'⛓',  name:'Flail',              desc:'A spiked ball on a chain. Unpredictable and devastating.',       price:60,  tags:['Flail'],   stat:'STR +4',  slot:'mainHand', dmg:[9,15]  },
+        { id:'greatsword',       icon:'⚔',  name:'Greatsword',         desc:'A massive two-handed blade. Slow but absolutely lethal.',        price:80,  tags:['Sword'],   stat:'STR +5',  slot:'mainHand', dmg:[14,22] },
+        { id:'greataxe',         icon:'🪓',  name:'Greataxe',           desc:'A hulking two-handed axe. One swing can end a fight.',           price:85,  tags:['Axe'],     stat:'STR +5',  slot:'mainHand', dmg:[15,24] },
+        { id:'longbow',          icon:'🏹',  name:'Longbow',            desc:'A tall war bow with tremendous range and power.',                price:65,  tags:['Bow'],     stat:'DEX +4',  slot:'mainHand', dmg:[12,18] },
+        { id:'crossbow',         icon:'🏹',  name:'Crossbow',           desc:'A mechanical bow. Slower to reload but hits harder.',            price:70,  tags:['Bow'],     stat:'DEX +3',  slot:'mainHand', dmg:[11,17] },
     ],
     armor: [
         // Chest
@@ -5987,8 +6001,8 @@ const DUNGEONS = {
             40: { name:'The Ancient Grove',       icon:'🌳', level:7, hp:800, atk:38, xp:750, gold:[260,370], desc:'A sentient ancient tree awakened by dark magic' },
         },
         loot: [
-            { id:'elf_bow',        icon:'🏹', name:'Elven Bow',        desc:'A bow carved by rogue elves. Incredibly accurate.',    stat:'DEX +5', slot:'mainHand', tags:['Two-Handed','Bow'],   stackable:false },
-            { id:'orc_axe',        icon:'🪓', name:'Orc Waraxe',       desc:'A brutal axe taken from an orc warrior.',              stat:'STR +5', slot:'mainHand', tags:['One-Handed','Axe'],   stackable:false },
+            { id:'elf_bow',        icon:'🏹', name:'Elven Bow',        desc:'A bow carved by rogue elves. Incredibly accurate.',    stat:'DEX +5', slot:'mainHand', tags:['Bow'],   stackable:false },
+            { id:'orc_axe',        icon:'🪓', name:'Orc Waraxe',       desc:'A brutal axe taken from an orc warrior.',              stat:'STR +5', slot:'mainHand', tags:['Axe'],   stackable:false },
             { id:'wolf_pelt',      icon:'🐺', name:'Dire Wolf Pelt',   desc:'Thick fur from a dire wolf. Warm and protective.',      stat:'ARM +5', slot:'chest',    tags:['Medium','Chest'],     stackable:false, type:'medium' },
             { id:'troll_hide',     icon:'🧌', name:'Troll Hide Vest',  desc:'Incredibly tough hide from a forest troll.',           stat:'ARM +6', slot:'chest',    tags:['Heavy','Chest'],      stackable:false, type:'heavy'  },
             { id:'sprite_dust',    icon:'🧚', name:'Sprite Dust',      desc:'Shimmering dust from a woodland sprite.',              stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
@@ -6024,8 +6038,8 @@ const DUNGEONS = {
             40: { name:'The Glacier Titan',      icon:'🗿', level:7, hp:780, atk:36, xp:720, gold:[255,360], desc:'An enormous golem of pure glacial ice' },
         },
         loot: [
-            { id:'frost_axe',      icon:'🪓', name:'Frost Axe',        desc:'A Viking axe edged with enchanted ice.',               stat:'STR +5', slot:'mainHand', tags:['One-Handed','Axe'],   stackable:false },
-            { id:'ice_staff',      icon:'🪄', name:'Ice Staff',         desc:'A staff carved from glacial ice. Amplifies frost magic.',stat:'INT +5', slot:'mainHand', tags:['One-Handed','Staff'], stackable:false },
+            { id:'frost_axe',      icon:'🪓', name:'Frost Axe',        desc:'A Viking axe edged with enchanted ice.',               stat:'STR +5', slot:'mainHand', tags:['Axe'],   stackable:false },
+            { id:'ice_staff',      icon:'🪄', name:'Ice Staff',         desc:'A staff carved from glacial ice. Amplifies frost magic.',stat:'INT +5', slot:'mainHand', tags:['Staff'], stackable:false },
             { id:'yeti_fur',       icon:'🦣', name:'Yeti Fur Cloak',   desc:'Incredibly warm fur from a yeti.',                     stat:'ARM +5', slot:'mantle',   tags:['Heavy','Mantle'],     stackable:false, type:'heavy'  },
             { id:'viking_shield',  icon:'🛡', name:'Viking Shield',    desc:'A round shield bearing Norse markings.',               stat:'ARM +6', slot:'offHand',  tags:['Shield','Off-Hand'],  stackable:false },
             { id:'frost_ring',     icon:'💍', name:'Frost Ring',       desc:'A ring that crackles with cold energy.',               stat:'INT +4', slot:'ring1',    tags:['Ring'],               stackable:false },
@@ -6062,8 +6076,8 @@ const DUNGEONS = {
             50: { name:'The Great Worm',          icon:'🐛', level:8, hp:1000, atk:40, xp:980,  gold:[340,490], desc:'A colossal worm that tunnels beneath the desert, ancient as the sand itself' },
         },
         loot: [
-            { id:'sand_blade',     icon:'🗡',  name:'Sand Blade',       desc:'A curved blade forged in the ancient desert kingdoms.',  stat:'DEX +5', slot:'mainHand', tags:['One-Handed','Sword'], stackable:false },
-            { id:'tomb_staff',     icon:'🪄', name:'Tomb Staff',        desc:'A staff topped with an ancient relic. Hums with power.',  stat:'INT +5', slot:'mainHand', tags:['One-Handed','Staff'], stackable:false },
+            { id:'sand_blade',     icon:'🗡',  name:'Sand Blade',       desc:'A curved blade forged in the ancient desert kingdoms.',  stat:'DEX +5', slot:'mainHand', tags:['Sword'], stackable:false },
+            { id:'tomb_staff',     icon:'🪄', name:'Tomb Staff',        desc:'A staff topped with an ancient relic. Hums with power.',  stat:'INT +5', slot:'mainHand', tags:['Staff'], stackable:false },
             { id:'desert_robes',   icon:'👘', name:'Desert Robes',      desc:'Light robes that keep the heat at bay.',                  stat:'MP +8',  slot:'chest',    tags:['Light','Chest'],      stackable:false, type:'light'  },
             { id:'scarab_shield',  icon:'🛡', name:'Scarab Shield',     desc:'A shield decorated with ancient scarab markings.',        stat:'ARM +6', slot:'offHand',  tags:['Shield','Off-Hand'],  stackable:false },
             { id:'pharaoh_ring',   icon:'💍', name:"Pharaoh's Ring",    desc:'A golden ring bearing the seal of an ancient pharaoh.',   stat:'STR +4', slot:'ring1',    tags:['Ring'],               stackable:false },
@@ -6098,8 +6112,8 @@ const DUNGEONS = {
             30: { name:'King Durak the Exile',icon:'⛏',  level:6, hp:580, atk:32, xp:500, gold:[170,260], desc:'The exiled dwarven king who fled into the depths rather than surrender' },
         },
         loot: [
-            { id:'dwarven_axe',    icon:'⚒', name:'Dwarven War Axe',   desc:'Masterwork dwarven craftsmanship. Heavy and perfectly balanced.',   stat:'STR +6', slot:'mainHand', tags:['Two-Handed','Axe'],   stackable:false },
-            { id:'stone_hammer',   icon:'🔨', name:'Stone Hammer',      desc:'A hammer carved from a single piece of granite.',                    stat:'STR +5', slot:'mainHand', tags:['One-Handed','Hammer'], stackable:false },
+            { id:'dwarven_axe',    icon:'⚒', name:'Dwarven War Axe',   desc:'Masterwork dwarven craftsmanship. Heavy and perfectly balanced.',   stat:'STR +6', slot:'mainHand', tags:['Axe'],   stackable:false },
+            { id:'stone_hammer',   icon:'🔨', name:'Stone Hammer',      desc:'A hammer carved from a single piece of granite.',                    stat:'STR +5', slot:'mainHand', tags:['Hammer'], stackable:false },
             { id:'iron_plate',     icon:'🛡', name:'Iron Plate Armor',  desc:'Heavy dwarven plate. Virtually impenetrable.',                       stat:'ARM +8', slot:'chest',    tags:['Heavy','Chest'],      stackable:false, type:'heavy'  },
             { id:'stone_shield',   icon:'🛡', name:'Stone Shield',      desc:'A shield hewn from deep stone. Incredibly tough.',                   stat:'ARM +7', slot:'offHand',  tags:['Shield','Off-Hand'],  stackable:false },
             { id:'miners_helm',    icon:'⛑',  name:"Miner's Helm",      desc:'A dwarven mining helmet reinforced with iron.',                      stat:'ARM +5', slot:'head',     tags:['Heavy','Head'],       stackable:false, type:'heavy'  },
@@ -6142,8 +6156,8 @@ const DUNGEONS = {
             40: { name:'Eryndal the Rootbound',   icon:'🌑', level:7, hp:870, atk:41, xp:800, gold:[275,400], desc:'The ancient druid whose grief and rage poisoned the Ashwood centuries ago — still here, still suffering, still destroying' },
         },
         loot: [
-            { id:'groveblade',      icon:'🗡',  name:'Groveblade',        desc:'A blade grown from corrupted heartwood. Hums with dark nature magic.',   stat:'INT +5', slot:'mainHand', tags:['One-Handed','Sword'],  stackable:false },
-            { id:'thornstaff',      icon:'🪄', name:'Thornstaff',          desc:'A staff twisted from ashwood. Channels nature magic powerfully.',         stat:'INT +6', slot:'mainHand', tags:['One-Handed','Staff'],  stackable:false },
+            { id:'groveblade',      icon:'🗡',  name:'Groveblade',        desc:'A blade grown from corrupted heartwood. Hums with dark nature magic.',   stat:'INT +5', slot:'mainHand', tags:['Sword'],  stackable:false },
+            { id:'thornstaff',      icon:'🪄', name:'Thornstaff',          desc:'A staff twisted from ashwood. Channels nature magic powerfully.',         stat:'INT +6', slot:'mainHand', tags:['Staff'],  stackable:false },
             { id:'druid_robes',     icon:'👘', name:'Druid Robes',          desc:'Ancient robes woven from living moss and ashwood fiber.',                 stat:'MP +10', slot:'chest',    tags:['Light','Chest'],       stackable:false, type:'light' },
             { id:'shadow_mantle',   icon:'🧥', name:'Shadow Mantle',        desc:'A cloak that absorbs ambient darkness, granting strange protection.',     stat:'ARM +5', slot:'mantle',   tags:['Medium','Mantle'],     stackable:false, type:'medium' },
             { id:'root_ring',       icon:'💍', name:'Root Ring',            desc:'A ring braided from living roots. Pulses with quiet power.',              stat:'INT +4', slot:'ring1',    tags:['Ring'],                stackable:false },
@@ -6181,8 +6195,8 @@ const DUNGEONS = {
             40: { name:'Admiral Grask, the Unsunk',icon:'🏴‍☠️', level:7, hp:850, atk:40, xp:780, gold:[270,390], desc:'The pirate warlord who sank this ship. He never left. Neither has his crew.' },
         },
         loot: [
-            { id:'corsair_blade',   icon:'⚔',  name:'Corsair Blade',     desc:'A curved pirate sword, well-balanced and razor-sharp.',          stat:'DEX +5', slot:'mainHand', tags:['One-Handed','Sword'],  stackable:false },
-            { id:'harpoon',         icon:'🔱', name:'Sea Harpoon',        desc:'A weighted harpoon repurposed as a weapon. Brutal at close range.',stat:'STR +5', slot:'mainHand', tags:['One-Handed','Spear'],  stackable:false },
+            { id:'corsair_blade',   icon:'⚔',  name:'Corsair Blade',     desc:'A curved pirate sword, well-balanced and razor-sharp.',          stat:'DEX +5', slot:'mainHand', tags:['Sword'],  stackable:false },
+            { id:'harpoon',         icon:'🔱', name:'Sea Harpoon',        desc:'A weighted harpoon repurposed as a weapon. Brutal at close range.',stat:'STR +5', slot:'mainHand', tags:['Spear'],  stackable:false },
             { id:'saltweave_coat',  icon:'🧥', name:'Saltweave Coat',     desc:'A heavy sea coat hardened by salt and age.',                     stat:'ARM +5', slot:'chest',    tags:['Medium','Chest'],      stackable:false, type:'medium' },
             { id:'coral_shield',    icon:'🛡', name:'Coral Shield',       desc:'A shield grown from living coral, hardened by the sea.',          stat:'ARM +7', slot:'offHand',  tags:['Shield','Off-Hand'],   stackable:false },
             { id:'navigator_ring',  icon:'💍', name:"Navigator's Ring",   desc:'A ring bearing the compass rose of an old sea captain.',          stat:'DEX +4', slot:'ring1',    tags:['Ring'],                stackable:false },
@@ -6584,14 +6598,14 @@ function closeAbout() {
 // -- WOLFHAVEN SHOP DATA ----------------------------------
 const WOLFHAVEN_INVENTORY = {
     weapons: [
-        { id:'druid_staff',      icon:'🪄', name:'Druid Staff',         desc:'A living staff of ashwood. Hums with nature magic.',                   price:70,  tags:['One-Handed','Staff'],  stat:'INT +4', slot:'mainHand', dmg:[8,13]  },
-        { id:'moon_wand',        icon:'✨', name:'Moon Wand',            desc:'A slender wand carved from moonwood. Precise and powerful.',           price:60,  tags:['One-Handed','Wand'],   stat:'INT +3', slot:'mainHand', dmg:[7,11]  },
-        { id:'root_blade',       icon:'🗡',  name:'Root Blade',           desc:'A short blade grown from twisted roots. Sharp and strange.',           price:55,  tags:['One-Handed','Dagger'], stat:'DEX +3', slot:'mainHand', dmg:[8,13]  },
-        { id:'grove_bow',        icon:'🏹', name:'Grove Bow',             desc:'A bow of living wood, still growing. Exceptionally accurate.',         price:80,  tags:['Two-Handed','Bow'],    stat:'DEX +4', slot:'mainHand', dmg:[12,18] },
-        { id:'spirit_staff',     icon:'🪄', name:'Spirit Staff',          desc:"A staff channeling Fennyx's holy light. Favored by priests.",          price:95,  tags:['One-Handed','Staff'],  stat:'INT +5', slot:'mainHand', dmg:[10,16] },
-        { id:'shadow_bow',       icon:'🏹', name:'Shadow Bow',            desc:'A bow of darkwood carved in shadow. Silent and deadly accurate.',      price:100, tags:['Two-Handed','Bow'],    stat:'DEX +5', slot:'mainHand', dmg:[14,20] },
-        { id:'twin_daggers',     icon:'🗡',  name:'Twin Daggers',          desc:'A matched pair of nature-blessed daggers. Strike twice as fast.',      price:90,  tags:['One-Handed','Dagger'], stat:'DEX +4', slot:'mainHand', dmg:[9,14]  },
-        { id:'warped_greatbow',  icon:'🏹', name:'Warped Greatbow',       desc:'A massive bow twisted from corrupted ashwood. Punishing range.',       price:130, tags:['Two-Handed','Bow'],    stat:'DEX +6', slot:'mainHand', dmg:[18,26] },
+        { id:'druid_staff',      icon:'🪄', name:'Druid Staff',         desc:'A living staff of ashwood. Hums with nature magic.',                   price:70,  tags:['Staff'],  stat:'INT +4', slot:'mainHand', dmg:[8,13]  },
+        { id:'moon_wand',        icon:'✨', name:'Moon Wand',            desc:'A slender wand carved from moonwood. Precise and powerful.',           price:60,  tags:['Wand'],   stat:'INT +3', slot:'mainHand', dmg:[7,11]  },
+        { id:'root_blade',       icon:'🗡',  name:'Root Blade',           desc:'A short blade grown from twisted roots. Sharp and strange.',           price:55,  tags:['Dagger'], stat:'DEX +3', slot:'mainHand', dmg:[8,13]  },
+        { id:'grove_bow',        icon:'🏹', name:'Grove Bow',             desc:'A bow of living wood, still growing. Exceptionally accurate.',         price:80,  tags:['Bow'],    stat:'DEX +4', slot:'mainHand', dmg:[12,18] },
+        { id:'spirit_staff',     icon:'🪄', name:'Spirit Staff',          desc:"A staff channeling Fennyx's holy light. Favored by priests.",          price:95,  tags:['Staff'],  stat:'INT +5', slot:'mainHand', dmg:[10,16] },
+        { id:'shadow_bow',       icon:'🏹', name:'Shadow Bow',            desc:'A bow of darkwood carved in shadow. Silent and deadly accurate.',      price:100, tags:['Bow'],    stat:'DEX +5', slot:'mainHand', dmg:[14,20] },
+        { id:'twin_daggers',     icon:'🗡',  name:'Twin Daggers',          desc:'A matched pair of nature-blessed daggers. Strike twice as fast.',      price:90,  tags:['Dagger'], stat:'DEX +4', slot:'mainHand', dmg:[9,14]  },
+        { id:'warped_greatbow',  icon:'🏹', name:'Warped Greatbow',       desc:'A massive bow twisted from corrupted ashwood. Punishing range.',       price:130, tags:['Bow'],    stat:'DEX +6', slot:'mainHand', dmg:[18,26] },
     ],
     armor: [
         // Light — INT/MP focus
@@ -7460,13 +7474,13 @@ function getAttackFlavor(hand, enemyName, isCrit) {
 // -- GRENADE/THROWABLE SCALING ----------------------------
 const SUNPORT_INVENTORY = {
     weapons: [
-        { id:'cutlass',          icon:'⚔',  name:'Cutlass',              desc:'A single-edged blade favored by sailors. Light and fast.',           price:60,  tags:['One-Handed','Sword'],  stat:'DEX +4',  slot:'mainHand', dmg:[10,16] },
-        { id:'boarding_axe',     icon:'🪓', name:'Boarding Axe',          desc:'A compact axe designed for close-quarters fighting on deck.',         price:55,  tags:['One-Handed','Axe'],    stat:'STR +4',  slot:'mainHand', dmg:[10,15] },
-        { id:'sea_crossbow',     icon:'🏹', name:'Sea Crossbow',           desc:'A compact crossbow built for use on moving ships.',                   price:75,  tags:['Two-Handed','Bow'],    stat:'DEX +4',  slot:'mainHand', dmg:[13,19] },
-        { id:'trident',          icon:'🔱', name:'Trident',                desc:'A three-pronged spear from the deep waters. Elegant and deadly.',     price:90,  tags:['Two-Handed','Spear'],  stat:'STR +5',  slot:'mainHand', dmg:[15,22] },
-        { id:'hook_blade',       icon:'🗡',  name:'Hook Blade',             desc:'A curved blade fitted with a hooked tip. Catches enemies off-guard.',price:65,  tags:['One-Handed','Dagger'], stat:'DEX +3',  slot:'mainHand', dmg:[9,14]  },
-        { id:'flintlock_pistol', icon:'🔫', name:'Flintlock Pistol',       desc:'A pirate-grade flintlock. One shot, one kill if your aim holds.',     price:85,  tags:['One-Handed','Gun'],    stat:'STR +4',  slot:'mainHand', dmg:[14,20] },
-        { id:'blunderbuss',      icon:'🔫', name:'Blunderbuss',            desc:'A wide-mouthed naval firearm. Devastating at close range.',           price:110, tags:['Two-Handed','Gun'],    stat:'STR +5',  slot:'mainHand', dmg:[18,26] },
+        { id:'cutlass',          icon:'⚔',  name:'Cutlass',              desc:'A single-edged blade favored by sailors. Light and fast.',           price:60,  tags:['Sword'],  stat:'DEX +4',  slot:'mainHand', dmg:[10,16] },
+        { id:'boarding_axe',     icon:'🪓', name:'Boarding Axe',          desc:'A compact axe designed for close-quarters fighting on deck.',         price:55,  tags:['Axe'],    stat:'STR +4',  slot:'mainHand', dmg:[10,15] },
+        { id:'sea_crossbow',     icon:'🏹', name:'Sea Crossbow',           desc:'A compact crossbow built for use on moving ships.',                   price:75,  tags:['Bow'],    stat:'DEX +4',  slot:'mainHand', dmg:[13,19] },
+        { id:'trident',          icon:'🔱', name:'Trident',                desc:'A three-pronged spear from the deep waters. Elegant and deadly.',     price:90,  tags:['Spear'],  stat:'STR +5',  slot:'mainHand', dmg:[15,22] },
+        { id:'hook_blade',       icon:'🗡',  name:'Hook Blade',             desc:'A curved blade fitted with a hooked tip. Catches enemies off-guard.',price:65,  tags:['Dagger'], stat:'DEX +3',  slot:'mainHand', dmg:[9,14]  },
+        { id:'flintlock_pistol', icon:'🔫', name:'Flintlock Pistol',       desc:'A pirate-grade flintlock. One shot, one kill if your aim holds.',     price:85,  tags:['Gun'],    stat:'STR +4',  slot:'mainHand', dmg:[14,20] },
+        { id:'blunderbuss',      icon:'🔫', name:'Blunderbuss',            desc:'A wide-mouthed naval firearm. Devastating at close range.',           price:110, tags:['Gun'],    stat:'STR +5',  slot:'mainHand', dmg:[18,26] },
     ],
     accessories: [
         { id:'compass_ring',    icon:'💍', name:'Compass Ring',          desc:'An enchanted ring that always points toward fortune.',               price:55,  tags:['Ring'],                stat:'DEX +3',  slot:'ring1'   },
