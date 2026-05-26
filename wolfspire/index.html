@@ -4101,6 +4101,7 @@ const SLOT_MAP = {
 
 let detailItem = null;
 let detailInvIndex = null;
+let detailEquippedSlot = null;
 
 // -- IRONHOLD ---------------------------------------------
 
@@ -4525,6 +4526,7 @@ function openDetail(invIndex, equippedSlot) {
     if (!item) return;
     detailItem = item;
     detailInvIndex = invIndex;
+    detailEquippedSlot = equippedSlot || null;
 
     document.getElementById('detail-icon').textContent = item.icon;
     document.getElementById('detail-name').textContent = item.name;
@@ -4566,6 +4568,7 @@ function closeDetail() {
     document.getElementById('item-detail-overlay').classList.remove('show');
     detailItem = null;
     detailInvIndex = null;
+    detailEquippedSlot = null;
 }
 
 function equipFromDetail() {
@@ -4619,15 +4622,20 @@ function unequipFromDetail() {
     if (!detailItem) return;
     const item = detailItem;
 
-    for (const slotId of Object.keys(character.equipment)) {
-        const e = character.equipment[slotId];
-        if (!e) continue;
-        const matches = (e._uid && item._uid) ? e._uid === item._uid
-                      : (e.invIndex !== undefined && detailInvIndex !== undefined) ? e.invIndex === detailInvIndex
-                      : e.id === item.id;
-        if (matches) {
-            character.equipment[slotId] = null;
-            break;
+    // If we know exactly which slot was tapped, clear that directly
+    if (detailEquippedSlot && character.equipment[detailEquippedSlot]) {
+        character.equipment[detailEquippedSlot] = null;
+    } else {
+        // Fall back to uid/id matching
+        for (const slotId of Object.keys(character.equipment)) {
+            const e = character.equipment[slotId];
+            if (!e) continue;
+            const matches = (e._uid && item._uid) ? e._uid === item._uid
+                          : e.id === item.id;
+            if (matches) {
+                character.equipment[slotId] = null;
+                break;
+            }
         }
     }
 
