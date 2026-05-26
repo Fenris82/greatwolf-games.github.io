@@ -7035,7 +7035,6 @@ function getForgeableItems() {
         .map((item, idx) => ({ item, idx }))
         .filter(({ item }) =>
             !item.stackable &&
-            !isRelic(item) &&
             (item.slot === 'mainHand' || item.slot === 'chest' || item.slot === 'head' ||
              item.slot === 'offHand' || item.slot === 'feet' || item.slot === 'hands' ||
              item.slot === 'arms' || item.slot === 'mantle' || item.slot === 'waist' ||
@@ -7126,7 +7125,7 @@ function renderForgeList() {
 
 function forgeItem(invIndex) {
     const item = character.inventory[invIndex];
-    if (!item || isRelic(item)) return;
+    if (!item) return;
 
     const currentTier = item.forgeTier || 0;
     if (currentTier >= 10) { showToast('Already at max upgrade!'); return; }
