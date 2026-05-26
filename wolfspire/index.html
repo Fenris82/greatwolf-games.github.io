@@ -2462,6 +2462,7 @@
                     style="flex:2;padding:10px;font-family:'Cinzel',serif;font-size:1.1em;font-weight:700;text-align:center;background:var(--bg-deep);border:2px solid var(--gold-dim);border-radius:8px;color:var(--gold)"
                     aria-label="Quantity to sell"
                     oninput="updateSellPreview()"
+                    onchange="clampSellQty()"
                 >
                 <button class="confirm-btn cancel" style="flex:1;padding:10px" onclick="setSellQty('max')" aria-label="Sell maximum, all">Max</button>
             </div>
@@ -5502,18 +5503,32 @@ function setSellQty(type) {
     const item = character.inventory[sellPendingIndex];
     if (!item) return;
     const input = document.getElementById('sell-qty-input');
-    input.value = type === 'min' ? 1 : item.quantity;
+    const max = item.stackable ? (item.quantity || 1) : parseInt(input.max || 1);
+    input.value = type === 'min' ? 1 : max;
     updateSellPreview();
     announce(`Quantity set to ${input.value}.`);
+}
+
+function clampSellQty() {
+    const item = character.inventory[sellPendingIndex];
+    if (!item) return;
+    const input = document.getElementById('sell-qty-input');
+    const max = item.stackable ? (item.quantity || 1) : parseInt(input.max || 1);
+    let qty = parseInt(input.value) || 1;
+    qty = Math.max(1, Math.min(qty, max));
+    input.value = qty;
+    updateSellPreview();
 }
 
 function updateSellPreview() {
     const item = character.inventory[sellPendingIndex];
     if (!item) return;
     const input = document.getElementById('sell-qty-input');
+    const max = item.stackable ? (item.quantity || 1) : parseInt(input.max || 1);
     let qty = parseInt(input.value) || 1;
-    qty = Math.max(1, Math.min(qty, item.quantity));
-    input.value = qty;
+    // Only clamp if value exceeds max — don't reset while typing
+    if (qty > max) { qty = max; input.value = qty; }
+    if (qty < 1) qty = 1;
     const value = getSellValue(item);
     const total = value * qty;
     document.getElementById('sell-gold-preview').textContent = `${total}g`;
