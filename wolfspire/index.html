@@ -1520,8 +1520,12 @@
 
         <div style="border-top:1px solid #2a2a44;margin:16px 0;padding-top:16px">
             <div style="font-family:'Cinzel',serif;font-size:0.85em;color:var(--gold);margin-bottom:10px">🏦 Olivia's Vault</div>
-            <div style="display:flex;gap:8px;margin-bottom:8px;font-size:0.9em;color:var(--text-dim)">
-                <span>Banked Gold:</span>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;font-size:0.9em;color:var(--text-dim)">
+                <span>On Hand:</span>
+                <span id="inn-onhand" style="color:var(--text);font-family:'Cinzel',serif">0</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:12px;font-size:0.9em;color:var(--text-dim)">
+                <span>Banked:</span>
                 <span id="inn-banked" style="color:var(--gold);font-family:'Cinzel',serif">0</span>
             </div>
             <div style="display:flex;gap:8px;margin-bottom:12px">
@@ -4905,8 +4909,10 @@ function bankWithdrawAll() {
 }
 
 function updateBankDisplay() {
-    const el = document.getElementById('inn-banked');
-    if (el) el.textContent = character.bankedGold || 0;
+    const banked = document.getElementById('inn-banked');
+    if (banked) banked.textContent = (character.bankedGold || 0).toLocaleString() + 'g';
+    const onhand = document.getElementById('inn-onhand');
+    if (onhand) onhand.textContent = (character.gold || 0).toLocaleString() + 'g';
     const goldEl = document.getElementById('inn-gold');
     if (goldEl) goldEl.textContent = character.gold;
 }
