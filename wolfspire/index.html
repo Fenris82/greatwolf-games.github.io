@@ -2338,7 +2338,7 @@
 <div class="combat-result" id="dungeon-select-overlay" role="dialog" aria-modal="true" aria-labelledby="dungeon-select-title" style="background:rgba(0,0,0,0.95);padding:30px 20px;justify-content:flex-start;padding-top:60px">
     <div style="width:100%;max-width:420px">
         <div style="font-family:'Cinzel',serif;font-size:1.6em;font-weight:700;color:var(--gold);margin-bottom:4px;text-align:center" id="dungeon-select-title">Choose Your Dungeon</div>
-        <div style="font-style:italic;color:var(--text-dim);font-size:0.85em;margin-bottom:24px;text-align:center">Four dungeons await beyond Greatwolf City.</div>
+        <div style="font-style:italic;color:var(--text-dim);font-size:0.85em;margin-bottom:24px;text-align:center">The path appears when you choose it. Where it leads, few ask.</div>
 
         <div id="dungeon-card-list" style="display:flex;flex-direction:column;gap:12px;margin-bottom:20px"></div>
 
@@ -4853,7 +4853,9 @@ function showDungeonSelectScreen() {
     const list = document.getElementById('dungeon-card-list');
     list.innerHTML = '';
 
-    Object.values(DUNGEONS).forEach(dungeon => {
+    CITY_DUNGEONS.forEach(id => {
+        const dungeon = DUNGEONS[id];
+        if (!dungeon) return;
         const highest = (character.dungeonHighest || {})[dungeon.id] || 1;
         const card = document.createElement('div');
         card.style.cssText = 'background:var(--bg-card);border:1px solid #2a2a44;border-radius:12px;padding:16px;cursor:pointer;transition:all 0.15s;';
@@ -4879,7 +4881,7 @@ function showDungeonSelectScreen() {
     });
 
     document.getElementById('dungeon-select-overlay').classList.add('show');
-    announce('Dungeon select. Four dungeons available. Choose one to enter.');
+    announce('Dungeon select. Choose a dungeon to enter.');
 }
 
 // -- BANK -------------------------------------------------
@@ -6101,6 +6103,78 @@ const DUNGEONS = {
             { id:'scarab_gem',     icon:'🦂', name:'Scarab Gem',        desc:'A gem shaped like a scarab beetle. Rare and valuable.',   stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
         ],
     },
+    emerald_canopy: {
+        id: 'emerald_canopy',
+        name: 'The Emerald Canopy',
+        icon: '🌴',
+        desc: 'A steaming jungle teeming with beasts. The path appears when you choose it — where it leads, few ask.',
+        flavor: 'Heat and venom',
+        color: '#3d9e6a',
+        enemies: [
+            { name:'Jungle Monkey',    icon:'🐒', level:1, hp:24,  atk:6,  xp:12, gold:[2,7],   floors:[1,10]  },
+            { name:'Tree Snake',       icon:'🐍', level:1, hp:22,  atk:8,  xp:14, gold:[2,6],   floors:[1,12]  },
+            { name:'Ridge Lizard',     icon:'🦎', level:1, hp:28,  atk:7,  xp:13, gold:[3,8],   floors:[1,14]  },
+            { name:'Poison Frog',      icon:'🐸', level:1, hp:18,  atk:9,  xp:15, gold:[2,6],   floors:[3,18]  },
+            { name:'Howler Monkey',    icon:'🐒', level:2, hp:48,  atk:10, xp:24, gold:[5,12],  floors:[6,22]  },
+            { name:'Constrictor',      icon:'🐍', level:2, hp:52,  atk:11, xp:26, gold:[6,14],  floors:[8,28]  },
+            { name:'Jungle Druid',     icon:'🌿', level:2, hp:50,  atk:10, xp:26, gold:[6,13],  floors:[8,28]  },
+            { name:'Giant Iguana',     icon:'🦎', level:3, hp:78,  atk:13, xp:44, gold:[11,22], floors:[12,32] },
+            { name:'Jaguar',           icon:'🐆', level:3, hp:72,  atk:15, xp:46, gold:[12,24], floors:[14,35] },
+            { name:'Canopy Serpent',   icon:'🐍', level:4, hp:115, atk:18, xp:70, gold:[20,38], floors:[20,99] },
+            { name:'Silverback',       icon:'🦍', level:4, hp:125, atk:20, xp:78, gold:[22,40], floors:[25,99] },
+        ],
+        bosses: {
+            10: { name:'Grokk the Silverback', icon:'🦍', level:4, hp:210, atk:19, xp:155, gold:[42,72],   desc:'An enormous silverback who rules the lower canopy' },
+            20: { name:'Mother Coila',         icon:'🐍', level:5, hp:360, atk:24, xp:290, gold:[82,135],  desc:'A massive serpent whose coils span entire clearings' },
+            30: { name:'The Jungle Druid',     icon:'🌿', level:6, hp:520, atk:29, xp:460, gold:[155,230], desc:'A druid who commands the beasts of the Emerald Canopy' },
+            40: { name:'King Scale',           icon:'🦎', level:7, hp:780, atk:36, xp:720, gold:[255,360], desc:'An ancient armored monitor, lord of the deep jungle' },
+        },
+        loot: [
+            { id:'vine_blade',       icon:'🗡',  name:'Vine Blade',           desc:'A curved blade wrapped in living vine. Light and deadly.',           stat:'DEX +5', slot:'mainHand', tags:['Sword'], stackable:false },
+            { id:'canopy_blowgun',   icon:'🏹', name:'Canopy Blowgun',       desc:'A hollow reed tipped with poison darts. Silent and precise.',      stat:'DEX +5', slot:'mainHand', tags:['Bow'],   stackable:false },
+            { id:'scale_vest',       icon:'🦎', name:'Scale Vest',           desc:'Vest sewn from thick jungle lizard scales.',                        stat:'ARM +6', slot:'chest',    tags:['Medium','Chest'],     stackable:false, type:'medium' },
+            { id:'chameleon_cloak',  icon:'🧥', name:'Chameleon Cloak',      desc:'A cloak of shifting green hues. Blends with the canopy.',           stat:'ARM +5', slot:'mantle',   tags:['Light','Mantle'],     stackable:false, type:'light'  },
+            { id:'monkey_charm',     icon:'🐒', name:"Monkey's Luck Charm",  desc:'A carved charm said to bring fortune to bold travelers.',             stat:'CHA +4', slot:'ring1',    tags:['Ring'],               stackable:false },
+            { id:'canopy_resin',     icon:'🌴', name:'Canopy Resin',         desc:'Sticky resin harvested from the jungle canopy.',                    stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
+        ],
+    },
+    red_wolf_swamp: {
+        id: 'red_wolf_swamp',
+        name: 'The Red Wolf Swamp',
+        icon: '🐺',
+        desc: 'A foul swamp where wolves run red with Varg\'s corruption. The path appears when you choose it — where it leads, few ask.',
+        flavor: 'Blood, bog, and Varg\'s wolves',
+        color: '#9b2d3a',
+        enemies: [
+            { name:'Red Wolf',           icon:'🐺', level:1, hp:30,  atk:7,  xp:14, gold:[3,8],   floors:[1,10]  },
+            { name:'Bog Leech',          icon:'🪱', level:1, hp:20,  atk:6,  xp:11, gold:[2,6],   floors:[1,8]   },
+            { name:'Swamp Wolf',         icon:'🐺', level:2, hp:48,  atk:10, xp:24, gold:[5,12],  floors:[3,18]  },
+            { name:'Varg Cultist',       icon:'🧟', level:2, hp:45,  atk:9,  xp:25, gold:[6,14],  floors:[4,22]  },
+            { name:'Swamp Orc',          icon:'👹', level:2, hp:58,  atk:11, xp:27, gold:[7,15],  floors:[5,22]  },
+            { name:'Bog Stalker',        icon:'🐊', level:2, hp:52,  atk:12, xp:26, gold:[5,13],  floors:[6,24]  },
+            { name:'Swamp Ogre',         icon:'👾', level:3, hp:88,  atk:14, xp:46, gold:[12,24], floors:[8,28]  },
+            { name:'Swamp Druid',        icon:'🌿', level:2, hp:50,  atk:10, xp:26, gold:[6,13],  floors:[8,28]  },
+            { name:'Corrupted Mage',     icon:'🔮', level:3, hp:65,  atk:15, xp:48, gold:[11,22], floors:[10,30] },
+            { name:'Corrupted Red Wolf', icon:'🔴', level:3, hp:75,  atk:16, xp:50, gold:[12,25], floors:[12,32] },
+            { name:'Swamp Troll',        icon:'🧌', level:3, hp:95,  atk:14, xp:52, gold:[14,26], floors:[14,35] },
+            { name:'Red Wolf Alpha',     icon:'🐺', level:4, hp:120, atk:19, xp:74, gold:[20,38], floors:[20,99] },
+            { name:'Varg Berserker',     icon:'😈', level:3, hp:78,  atk:16, xp:52, gold:[13,26], floors:[16,34] },
+        ],
+        bosses: {
+            10: { name:'Scarlet the Huntress', icon:'🐺', level:4, hp:215, atk:20, xp:158, gold:[44,74],   desc:'An alpha red wolf whose pack hunts anything that enters the bog' },
+            20: { name:'The Bog Prophet',      icon:'🔮', level:5, hp:370, atk:25, xp:295, gold:[84,138],  desc:'A Varg shaman who whispers corruption into the swamp waters' },
+            30: { name:'Redmaw',             icon:'🔴', level:6, hp:530, atk:30, xp:470, gold:[158,235], desc:'A colossal wolf touched directly by Varg — fury made flesh' },
+            40: { name:'The Swamp Heart',    icon:'💔', level:7, hp:790, atk:37, xp:730, gold:[258,365], desc:'A pulsing knot of corruption at the swamp\'s core, fed by red wolf blood' },
+        },
+        loot: [
+            { id:'crimson_claw',     icon:'🗡',  name:'Crimson Claw',         desc:'A jagged blade stained the color of red wolf blood.',                stat:'STR +5', slot:'mainHand', tags:['Sword'], stackable:false },
+            { id:'bog_staff',        icon:'🪄', name:'Bog Staff',             desc:'A staff of twisted bogwood. Channels corrupted swamp magic.',         stat:'INT +5', slot:'mainHand', tags:['Staff'], stackable:false },
+            { id:'redwolf_pelt',     icon:'🐺', name:'Redwolf Pelt',          desc:'Fur from a Varg-touched wolf. Warm, heavy, and unsettling.',          stat:'ARM +6', slot:'chest',    tags:['Medium','Chest'],     stackable:false, type:'medium' },
+            { id:'swamp_cloak',       icon:'🧥', name:'Swamp Cloak',          desc:'A sodden cloak that reeks of bog water and old magic.',               stat:'ARM +5', slot:'mantle',   tags:['Light','Mantle'],     stackable:false, type:'light'  },
+            { id:'blood_signet',     icon:'💍', name:'Blood Signet',          desc:'A ring that pulses faintly red. Marks you as predator, not prey.',    stat:'STR +4', slot:'ring1',    tags:['Ring'],               stackable:false },
+            { id:'redwolf_fang',     icon:'🔴', name:'Redwolf Fang',          desc:'A fang from a corrupted red wolf. Still warm to the touch.',          stat:'Material', slot:'item',   tags:['Material'],           stackable:true  },
+        ],
+    },
     iron_depths: {
         id: 'iron_depths',
         name: 'The Iron Depths',
@@ -6221,6 +6295,10 @@ const DUNGEONS = {
         ],
     },
 };
+
+
+// Dungeons reachable from Greatwolf City dungeon select (teleport paths)
+const CITY_DUNGEONS = ['wolfspire', 'verdant', 'frostpeak', 'sunken_sands', 'emerald_canopy', 'red_wolf_swamp'];
 
 
 function selectDungeon(dungeonId) {
