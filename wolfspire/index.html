@@ -4996,6 +4996,18 @@ const SKILLS_DATA = [
         }
     },
     {
+        id:'ground_strike', icon:'💥', name:'Ground Strike', type:'skill',
+        desc:'Drive your weapon into the earth with devastating force — deals 250% of your normal attack damage in a shockwave.',
+        stat:'Weapon x 2.5', price:50, cooldown:1, mpCost:0,
+        tags:['Skill','Physical'],
+        use:(c,enemy) => {
+            const hit = calcPlayerDamage('mainHand');
+            const dmg = Math.floor(hit.damage * 2.5);
+            const critNote = hit.crit ? ' Critical hit!' : '';
+            return { damage:dmg, log:`GROUND STRIKE! You slam your weapon into the earth — a shockwave tears through the ${enemy.name} for ${dmg} massive damage!${critNote}`, type:'player' };
+        }
+    },
+    {
         id:'cleave', icon:'⚔', name:'Cleave', type:'skill',
         desc:'A powerful strike dealing 150% of your normal attack damage.',
         stat:'STR x 1.5', price:50, cooldown:1, mpCost:0,
