@@ -3339,7 +3339,7 @@ function roll(min, max) { return Math.floor(Math.random() * (max - min + 1)) + m
 
 // Calculate total stat bonuses from equipped gear
 function getEquipBonuses() {
-    const bonuses = { str:0, int:0, dex:0, res:0, arm:0, mp:0, critBonus:0 };
+    const bonuses = { str:0, int:0, dex:0, res:0, cha:0, arm:0, mp:0, critBonus:0 };
     if (!character || !character.equipment) return bonuses;
     Object.values(character.equipment).forEach(itemId => {
         if (!itemId) return;
@@ -3359,6 +3359,7 @@ function getEquipBonuses() {
         if (stat.includes('STR +')) bonuses.str += parseInt(stat.match(/STR \+(\d+)/)[1]);
         if (stat.includes('INT +')) bonuses.int += parseInt(stat.match(/INT \+(\d+)/)[1]);
         if (stat.includes('DEX +')) bonuses.dex += parseInt(stat.match(/DEX \+(\d+)/)[1]);
+        if (stat.includes('CHA +')) bonuses.cha += parseInt(stat.match(/CHA \+(\d+)/)[1]);
         if (stat.includes('ARM +')) bonuses.arm += parseInt(stat.match(/ARM \+(\d+)/)[1]);
         if (stat.includes('MP +'))  bonuses.mp  += parseInt(stat.match(/MP \+(\d+)/)[1]);
         // Knightly Longsword crit bonus
@@ -4213,7 +4214,7 @@ function openIronhold() {
 function openIronholdShop() {
     if (!character) return;
     const quote = BRUNDAR_RETURN[Math.floor(Math.random() * BRUNDAR_RETURN.length)];
-    document.getElementById('brundar-shop-quote').textContent = `"${quote}"`;
+    document.getElementById('brundar-shop-quote').textContent = formatShopkeeperQuote(quote);
     document.getElementById('ironhold-shop-gold').textContent = character.gold;
     renderIronholdShop();
     goToScreen('ironhold-shop');
@@ -4238,7 +4239,6 @@ function renderIronholdShop() {
         IRONHOLD_INVENTORY[category].forEach(item => {
             const finalPrice = getDiscountedPrice(item.price);
             const canAfford = character.gold >= finalPrice;
-            const originalPrice = finalPrice !== item.price ? `<span style="text-decoration:line-through;color:#555;font-size:0.8em">${item.price}g<\/span> ` : '';
             const tagHTML = item.tags.map(t => {
                 const cls = t === 'Heavy' ? 'type-heavy' : t === 'Medium' ? 'type-medium' : t === 'Light' ? 'type-light' : '';
                 return `<span class="shop-tag ${cls}">${t}<\/span>`;
@@ -4253,7 +4253,7 @@ function renderIronholdShop() {
                         <div class="shop-item-tags">${tagHTML}<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}<\/span>${dmgTag}<\/div>
                     <\/div>
                     <div class="shop-item-buy">
-                        <div class="shop-item-price ${canAfford ? '' : 'cant-afford'}">${originalPrice}${finalPrice}g<\/div>
+                        <div class="shop-item-price ${canAfford ? '' : 'cant-afford'}">${formatShopPriceHTML(item.price)}<\/div>
                         <button class="buy-btn" ${canAfford ? '' : 'disabled'} onclick="buyIronholdItem('${item.id}')" aria-label="Buy ${item.name} for ${finalPrice} gold">Buy<\/button>
                     <\/div>
                 <\/div>`;
@@ -5768,13 +5768,30 @@ function openShop() {
 }
 
 function getCharismaDiscount() {
-    // Each point of Charisma above 1 gives 1% discount, max 15%
-    return Math.min(15, Math.max(0, (character.stats.cha || 1) - 1));
+    if (!character || !character.stats) return 0;
+    // Each point of Charisma above 1 gives 1% discount, max 15% (includes gear)
+    const cha = (character.stats.cha || 5) + (getEquipBonuses().cha || 0);
+    return Math.min(15, Math.max(0, cha - 1));
 }
 
 function getDiscountedPrice(price) {
     const discount = getCharismaDiscount();
     return Math.max(1, Math.floor(price * (1 - discount / 100)));
+}
+
+function formatShopPriceHTML(price) {
+    const finalPrice = getDiscountedPrice(price);
+    const original = finalPrice !== price
+        ? `<span style="text-decoration:line-through;color:#555;font-size:0.8em">${price}g<\/span> `
+        : '';
+    return `${original}${finalPrice}g`;
+}
+
+function formatShopkeeperQuote(quote) {
+    const discount = getCharismaDiscount();
+    const text = quote.startsWith('"') ? quote : `"${quote}"`;
+    if (discount <= 0) return text;
+    return `${text} (Your charm earns you a ${discount}% discount!)`;
 }
 
 function renderShop() {
@@ -5812,7 +5829,6 @@ function renderShopTab(category) {
             const cls = t === 'Light' ? 'type-light' : t === 'Medium' ? 'type-medium' : t === 'Heavy' ? 'type-heavy' : '';
             return `<span class="shop-tag ${cls}">${t}<\/span>`;
         }).join('');
-        const originalPrice = item.price !== finalPrice ? `<span style="text-decoration:line-through;color:#555;font-size:0.8em">${item.price}g<\/span> ` : '';
 
         panel.innerHTML += `
             <div class="shop-item" aria-label="${item.name}, ${item.desc}, costs ${finalPrice} gold">
@@ -5823,7 +5839,7 @@ function renderShopTab(category) {
                     <div class="shop-item-tags">${tagHTML}<span class="shop-tag">${item.stat}<\/span><\/div>
                 <\/div>
                 <div class="shop-item-buy">
-                    <div class="shop-item-price ${canAfford ? '' : 'cant-afford'}">${originalPrice}${finalPrice}g<\/div>
+                    <div class="shop-item-price ${canAfford ? '' : 'cant-afford'}">${formatShopPriceHTML(item.price)}<\/div>
                     <button class="buy-btn" ${canAfford ? '' : 'disabled'} onclick="buyItem('${item.id}')" aria-label="Buy ${item.name} for ${finalPrice} gold">Buy<\/button>
                 <\/div>
             <\/div>`;
@@ -5854,25 +5870,14 @@ function buyItem(itemId) {
 
     character.gold -= finalPrice;
 
-    // Add to inventory
-    const invItem = {
-        id: item.id,
-        name: item.name,
-        icon: item.icon,
-        desc: item.desc,
-        tags: item.tags,
-        stat: item.stat,
-        slot: item.slot,
-        stackable: item.stackable || false,
-        quantity: 1
-    };
-
-    // Stack consumables
+    // Stack consumables; gear gets a unique id so duplicates can fill multiple slots
     const existing = character.inventory.find(i => i.id === item.id && i.stackable);
     if (existing) {
         existing.quantity++;
+    } else if (item.stackable) {
+        character.inventory.push({ ...item, _uid: generateUid(), quantity: 1 });
     } else {
-        character.inventory.push(invItem);
+        character.inventory.push({ ...item, _uid: generateUid(), quantity: 1 });
     }
 
     saveGame();
@@ -6452,6 +6457,9 @@ function loadCharacterFromSlot(slot) {
         if (character.ironholdVisited === undefined) character.ironholdVisited = false;
         if (character.sunportVisited === undefined) character.sunportVisited = false;
         if (!character.journal) character.journal = [];
+        if (!character.stats) character.stats = { str:5, int:5, dex:5, res:5, per:5, cha:5 };
+        if (character.stats.per === undefined) character.stats.per = 5;
+        if (character.stats.cha === undefined) character.stats.cha = 5;
         // Migrate legacy inventory items to have uids
         if (character.inventory) {
             character.inventory.forEach(item => {
@@ -6801,7 +6809,7 @@ function openWolfhavenShop() {
     if (!character) return;
     document.getElementById('wolfhaven-shop-gold').textContent = character.gold;
     const quote = AELINDRA_SHOP_QUOTES[Math.floor(Math.random() * AELINDRA_SHOP_QUOTES.length)];
-    document.getElementById('aelindra-shop-quote').textContent = quote;
+    document.getElementById('aelindra-shop-quote').textContent = formatShopkeeperQuote(quote);
     switchWolfhavenTab('weapons');
     goToScreen('wolfhaven-shop');
     announce("Aelindra's Grove Sanctum. Tabs: Weapons, Gear, Supplies, Sell.");
@@ -6834,9 +6842,8 @@ function renderWolfhavenTab(tab) {
     panel.innerHTML = '';
 
     items.forEach(item => {
-        const inInv = !item.stackable && character.inventory.some(i => i.id === item.id);
-        const isEquipped = !item.stackable && isItemEquipped(item.id);
-        const canAfford = character.gold >= item.price;
+        const finalPrice = getDiscountedPrice(item.price);
+        const canAfford = character.gold >= finalPrice;
         const tagHTML = (item.tags || []).map(t => {
             const cls = t === 'Heavy' ? 'type-heavy' : t === 'Medium' ? 'type-medium' : t === 'Light' ? 'type-light' : '';
             return `<span class="shop-tag ${cls}">${t}<\/span>`;
@@ -6844,7 +6851,7 @@ function renderWolfhavenTab(tab) {
 
         const div = document.createElement('div');
         div.className = 'shop-item';
-        div.setAttribute('aria-label', `${item.name}. ${item.desc}. ${item.price} gold.`);
+        div.setAttribute('aria-label', `${item.name}. ${item.desc}. ${finalPrice} gold.`);
         div.innerHTML = `
             <span class="shop-item-icon" aria-hidden="true">${item.icon}<\/span>
             <div class="shop-item-info">
@@ -6853,11 +6860,8 @@ function renderWolfhavenTab(tab) {
                 <div class="shop-item-tags">${tagHTML}${item.stat ? `<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}<\/span>` : ''}${item.dmg ? `<span class="shop-tag" style="color:#e07070;border-color:#5a2a2a">DMG ${item.dmg[0]}-${item.dmg[1]}<\/span>` : ''}<\/div>
             <\/div>
             <div class="shop-item-buy">
-                ${(inInv || isEquipped) && !item.stackable
-                    ? `<div class="shop-item-price" style="color:var(--green)">✓ Owned<\/div>`
-                    : `<div class="shop-item-price ${canAfford?'':'cant-afford'}">${item.price}g<\/div>
-                       <button class="buy-btn" ${canAfford?'':'disabled'} onclick="buyWolfhavenItem('${item.id}')" aria-label="Buy ${item.name} for ${item.price} gold">Buy<\/button>`
-                }
+                <div class="shop-item-price ${canAfford?'':'cant-afford'}">${formatShopPriceHTML(item.price)}<\/div>
+                <button class="buy-btn" ${canAfford?'':'disabled'} onclick="buyWolfhavenItem('${item.id}')" aria-label="Buy ${item.name} for ${finalPrice} gold">Buy<\/button>
             <\/div>
         `;
         panel.appendChild(div);
@@ -7672,7 +7676,7 @@ function openSunportShop() {
     if (!character) return;
     document.getElementById('sunport-shop-gold').textContent = character.gold;
     const quote = MAREN_SHOP_QUOTES[Math.floor(Math.random() * MAREN_SHOP_QUOTES.length)];
-    document.getElementById('maren-shop-quote').textContent = quote;
+    document.getElementById('maren-shop-quote').textContent = formatShopkeeperQuote(quote);
     switchSunportTab('weapons');
     goToScreen('sunport-shop');
     announce("Maren's Dockside Market. Tabs: Weapons, Accessories, Supplies, Sell.");
@@ -7705,14 +7709,13 @@ function renderSunportTab(tab) {
     panel.innerHTML = '';
 
     items.forEach(item => {
-        const owned = !item.stackable && isItemEquipped(item.id);
-        const inInv = !item.stackable && character.inventory.some(i => i.id === item.id);
-        const canAfford = character.gold >= item.price;
+        const finalPrice = getDiscountedPrice(item.price);
+        const canAfford = character.gold >= finalPrice;
         const tagHTML = (item.tags || []).map(t => `<span class="shop-tag">${t}<\/span>`).join('');
 
         const div = document.createElement('div');
         div.className = 'shop-item';
-        div.setAttribute('aria-label', `${item.name}. ${item.desc}. ${item.price} gold.`);
+        div.setAttribute('aria-label', `${item.name}. ${item.desc}. ${finalPrice} gold.`);
         div.innerHTML = `
             <span class="shop-item-icon" aria-hidden="true">${item.icon}<\/span>
             <div class="shop-item-info">
@@ -7721,11 +7724,8 @@ function renderSunportTab(tab) {
                 <div class="shop-item-tags">${tagHTML}${item.stat ? `<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}<\/span>` : ''}${item.dmg ? `<span class="shop-tag" style="color:#e07070;border-color:#5a2a2a">DMG ${item.dmg[0]}-${item.dmg[1]}<\/span>` : ''}<\/div>
             <\/div>
             <div class="shop-item-buy">
-                ${(owned || inInv) && !item.stackable
-                    ? `<div class="shop-item-price" style="color:var(--green)">✓ Owned<\/div>`
-                    : `<div class="shop-item-price ${canAfford?'':'cant-afford'}">${item.price}g<\/div>
-                       <button class="buy-btn" ${canAfford?'':'disabled'} onclick="buySunportItem('${item.id}')" aria-label="Buy ${item.name} for ${item.price} gold">Buy<\/button>`
-                }
+                <div class="shop-item-price ${canAfford?'':'cant-afford'}">${formatShopPriceHTML(item.price)}<\/div>
+                <button class="buy-btn" ${canAfford?'':'disabled'} onclick="buySunportItem('${item.id}')" aria-label="Buy ${item.name} for ${finalPrice} gold">Buy<\/button>
             <\/div>
         `;
         panel.appendChild(div);
