@@ -1832,6 +1832,142 @@
     </button>
 </div>
 
+<!-- -- IRONWOOD -- -->
+<div id="screen-ironwood" class="screen" role="main" aria-label="Ironwood">
+    <p class="screen-header">Welcome to</p>
+    <h2 class="screen-title">Ironwood</h2>
+
+    <div class="shopkeeper-banner" aria-label="Captain Thaelen's greeting">
+        <span class="shopkeeper-icon" aria-hidden="true">🌲</span>
+        <div>
+            <div class="shopkeeper-name">Captain Thaelen</div>
+            <div class="shopkeeper-quote" id="ironwood-town-quote">"Ironwood stands. So do we."</div>
+        </div>
+    </div>
+
+    <div class="town-vitals" aria-label="Your vitals">
+        <div class="vital-pill" aria-label="Hit points"><span aria-hidden="true">❤</span><span id="ironwood-hp">100</span></div>
+        <div class="vital-pill" aria-label="Magic points"><span aria-hidden="true">💙</span><span id="ironwood-mp">50</span></div>
+        <div class="vital-pill" aria-label="Gold"><span aria-hidden="true">💰</span><span id="ironwood-gold">200</span></div>
+    </div>
+
+    <div class="town-menu" role="group" aria-label="Ironwood locations">
+        <button class="menu-btn" onclick="openIronwoodShop()" aria-label="Visit the Ironwood Armory">
+            <span class="btn-icon" aria-hidden="true">⚔</span>
+            <span class="btn-label">Ironwood Armory</span>
+            <span class="btn-sub">Thaelen's wares</span>
+        </button>
+        <button class="menu-btn" onclick="openTownDungeonSelect('ironwood')" aria-label="Choose a dungeon near Ironwood">
+            <span class="btn-icon" aria-hidden="true">🏚</span>
+            <span class="btn-label">Dungeons</span>
+            <span class="btn-sub" id="ironwood-dungeon-sub">Blighted groves below</span>
+        </button>
+        <button class="menu-btn" onclick="travelTo('town')" aria-label="Return to Greatwolf City">
+            <span class="btn-icon" aria-hidden="true">🏰</span>
+            <span class="btn-label">Return Home</span>
+            <span class="btn-sub">Back to Greatwolf City</span>
+        </button>
+    </div>
+</div>
+
+<!-- -- IRONWOOD SHOP -- -->
+<div id="screen-ironwood-shop" class="screen" role="main" aria-label="Ironwood Armory">
+    <p class="screen-header">Welcome to</p>
+    <h2 class="screen-title">Ironwood Armory</h2>
+
+    <div class="shopkeeper-banner">
+        <span class="shopkeeper-icon" aria-hidden="true">🌲</span>
+        <div>
+            <div class="shopkeeper-name">Captain Thaelen</div>
+            <div class="shopkeeper-quote" id="ironwood-shop-quote">"Blade, bow, or spell — pick your path."</div>
+        </div>
+    </div>
+
+    <div class="shop-gold-bar" aria-live="polite">
+        <span aria-hidden="true">💰</span> Your Gold: <span id="ironwood-shop-gold">200</span>
+    </div>
+
+    <div class="shop-tabs" role="tablist" aria-label="Shop categories">
+        <button class="shop-tab active" id="iwoodtab-weapons" role="tab" aria-selected="true" onclick="switchIronwoodTab('weapons')">⚔ Weapons</button>
+        <button class="shop-tab" id="iwoodtab-armor" role="tab" aria-selected="false" onclick="switchIronwoodTab('armor')">🧥 Gear</button>
+        <button class="shop-tab" id="iwoodtab-sell" role="tab" aria-selected="false" onclick="switchIronwoodTab('sell')">💰 Sell</button>
+    </div>
+
+    <div class="shop-panel active" id="ironwood-weapons" role="tabpanel"></div>
+    <div class="shop-panel" id="ironwood-armor" role="tabpanel"></div>
+    <div class="shop-panel" id="ironwood-sell" role="tabpanel"></div>
+
+    <button class="leave-shop-btn" onclick="goToScreen('ironwood')" aria-label="Leave the armory">Leave Armory</button>
+</div>
+
+<!-- -- WINDMANE (Centaur Village) -- -->
+<div id="screen-windmane" class="screen" role="main" aria-label="Windmane">
+    <p class="screen-header">Welcome to</p>
+    <h2 class="screen-title">Windmane</h2>
+
+    <div class="shopkeeper-banner" aria-label="Chieftess Kethra's greeting">
+        <span class="shopkeeper-icon" aria-hidden="true">🏇</span>
+        <div>
+            <div class="shopkeeper-name">Chieftess Kethra</div>
+            <div class="shopkeeper-quote" id="windmane-town-quote">"The steppe is wide. So is our welcome."</div>
+        </div>
+    </div>
+
+    <div class="town-vitals" aria-label="Your vitals">
+        <div class="vital-pill" aria-label="Hit points"><span aria-hidden="true">❤</span><span id="windmane-hp">100</span></div>
+        <div class="vital-pill" aria-label="Magic points"><span aria-hidden="true">💙</span><span id="windmane-mp">50</span></div>
+        <div class="vital-pill" aria-label="Gold"><span aria-hidden="true">💰</span><span id="windmane-gold">200</span></div>
+    </div>
+
+    <div class="town-menu" role="group" aria-label="Windmane locations">
+        <button class="menu-btn" onclick="openWindmaneShop()" aria-label="Visit the Steppe Trading Post">
+            <span class="btn-icon" aria-hidden="true">🏹</span>
+            <span class="btn-label">Trading Post</span>
+            <span class="btn-sub">Kethra's wares</span>
+        </button>
+        <button class="menu-btn" onclick="openTownDungeonSelect('windmane')" aria-label="Choose a dungeon near Windmane">
+            <span class="btn-icon" aria-hidden="true">🏚</span>
+            <span class="btn-label">Dungeons</span>
+            <span class="btn-sub" id="windmane-dungeon-sub">Open steppe and red canyons</span>
+        </button>
+        <button class="menu-btn" onclick="travelTo('town')" aria-label="Return to Greatwolf City">
+            <span class="btn-icon" aria-hidden="true">🏰</span>
+            <span class="btn-label">Return Home</span>
+            <span class="btn-sub">Back to Greatwolf City</span>
+        </button>
+    </div>
+</div>
+
+<!-- -- WINDMANE SHOP -- -->
+<div id="screen-windmane-shop" class="screen" role="main" aria-label="Steppe Trading Post">
+    <p class="screen-header">Welcome to</p>
+    <h2 class="screen-title">Steppe Trading Post</h2>
+
+    <div class="shopkeeper-banner">
+        <span class="shopkeeper-icon" aria-hidden="true">🏇</span>
+        <div>
+            <div class="shopkeeper-name">Chieftess Kethra</div>
+            <div class="shopkeeper-quote" id="windmane-shop-quote">"Light gear for those who run with the wind."</div>
+        </div>
+    </div>
+
+    <div class="shop-gold-bar" aria-live="polite">
+        <span aria-hidden="true">💰</span> Your Gold: <span id="windmane-shop-gold">200</span>
+    </div>
+
+    <div class="shop-tabs" role="tablist" aria-label="Shop categories">
+        <button class="shop-tab active" id="wmtab-weapons" role="tab" aria-selected="true" onclick="switchWindmaneTab('weapons')">⚔ Weapons</button>
+        <button class="shop-tab" id="wmtab-armor" role="tab" aria-selected="false" onclick="switchWindmaneTab('armor')">🧥 Gear</button>
+        <button class="shop-tab" id="wmtab-sell" role="tab" aria-selected="false" onclick="switchWindmaneTab('sell')">💰 Sell</button>
+    </div>
+
+    <div class="shop-panel active" id="windmane-weapons" role="tabpanel"></div>
+    <div class="shop-panel" id="windmane-armor" role="tabpanel"></div>
+    <div class="shop-panel" id="windmane-sell" role="tabpanel"></div>
+
+    <button class="leave-shop-btn" onclick="goToScreen('windmane')" aria-label="Leave the trading post">Leave Post</button>
+</div>
+
 <!-- -- FORGE -- -->
 <div id="screen-forge" class="screen" role="main" aria-label="The Forge">
     <p class="screen-header">Welcome to</p>
@@ -2353,6 +2489,40 @@
                     </div>
                 </div>
                 <div style="font-size:0.9em;color:var(--text-dim);line-height:1.6">A sacred settlement of druids and mages. Ancient wisdom, nature magic, and the shadow of the Ashwood beyond.</div>
+            </div>
+
+            <div style="background:var(--bg-card);border:1px solid #2a2a44;border-radius:12px;padding:16px;cursor:pointer;transition:all 0.15s"
+                 onclick="travelTo('ironwood')"
+                 onmouseenter="this.style.borderColor='#5a8a5a'"
+                 onmouseleave="this.style.borderColor='#2a2a44'"
+                 role="button" tabindex="0"
+                 onkeydown="if(event.key==='Enter')travelTo('ironwood')"
+                 aria-label="Travel to Ironwood, elven warrior settlement to the west">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                    <span style="font-size:2em" aria-hidden="true">🌲</span>
+                    <div>
+                        <div style="font-family:'Cinzel',serif;font-size:1em;font-weight:700;color:#5a8a5a">Ironwood</div>
+                        <div style="font-size:0.75em;color:var(--text-dim);font-style:italic">Elven warrior settlement — West</div>
+                    </div>
+                </div>
+                <div style="font-size:0.9em;color:var(--text-dim);line-height:1.6">A fortress of living ironwood where elven blades, rangers, and battle-mages stand watch against the blight below.</div>
+            </div>
+
+            <div style="background:var(--bg-card);border:1px solid #2a2a44;border-radius:12px;padding:16px;cursor:pointer;transition:all 0.15s"
+                 onclick="travelTo('windmane')"
+                 onmouseenter="this.style.borderColor='#c9a84c'"
+                 onmouseleave="this.style.borderColor='#2a2a44'"
+                 role="button" tabindex="0"
+                 onkeydown="if(event.key==='Enter')travelTo('windmane')"
+                 aria-label="Travel to Windmane, centaur village on the open steppe">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                    <span style="font-size:2em" aria-hidden="true">🏇</span>
+                    <div>
+                        <div style="font-family:'Cinzel',serif;font-size:1em;font-weight:700;color:#c9a84c">Windmane</div>
+                        <div style="font-size:0.75em;color:var(--text-dim);font-style:italic">Centaur village — South</div>
+                    </div>
+                </div>
+                <div style="font-size:0.9em;color:var(--text-dim);line-height:1.6">A centaur settlement on the open steppe. Swift hunters, open sky, and canyons that swallow the unwary.</div>
             </div>
 
         </div>
@@ -2979,10 +3149,10 @@ function goToScreen(id) {
         document.getElementById('bottomNav').classList.remove('visible');
     }
     // Track current town
-    if (['town','ironhold','sunport','wolfhaven'].includes(id)) currentTown = id;
+    if (['town','ironhold','sunport','wolfhaven','ironwood','windmane'].includes(id)) currentTown = id;
 
     // Music routing
-    if (['town','ironhold','sunport','wolfhaven','character','inventory','journal','training','settings'].includes(id)) {
+    if (['town','ironhold','sunport','wolfhaven','ironwood','windmane','character','inventory','journal','training','settings'].includes(id)) {
         playMusic('town');
     }
 }
@@ -3214,7 +3384,7 @@ function setActionsEnabled(enabled) {
     if (offhandBtn) offhandBtn.disabled = !enabled;
     document.getElementById('btn-defend').disabled = !enabled;
     document.getElementById('btn-retreat').disabled = !enabled;
-    const USABLE_IN_COMBAT = ['health_potion', 'mana_potion', 'smoke_bomb', 'iron_grenade', 'thrown_axe', 'throwing_star', 'brine_tonic', 'surge_draught', 'smoke_flare', 'salted_rations', 'nettle_poison', 'healing_herb', 'mana_bloom', 'thornpoison', 'bark_shield', 'fennyx_blessing'];
+    const USABLE_IN_COMBAT = ['health_potion', 'mana_potion', 'smoke_bomb', 'iron_grenade', 'thrown_axe', 'throwing_star', 'centaur_javelin', 'brine_tonic', 'surge_draught', 'smoke_flare', 'salted_rations', 'nettle_poison', 'healing_herb', 'mana_bloom', 'thornpoison', 'bark_shield', 'fennyx_blessing'];
     const hasItems = character && character.inventory.some(i => i.stackable && i.quantity > 0 && USABLE_IN_COMBAT.includes(i.id));
     document.getElementById('btn-items').disabled = !enabled || !hasItems;
     const hasSkills = character && (character.skills||[]).some(id => SKILLS_DATA.find(s=>s.id===id && !s.passive));
@@ -3227,7 +3397,7 @@ function openCombatItems() {
     if (!combat || combat.over) return;
     const list = document.getElementById('combat-items-list');
     // Only show items that have a combat use -- potions, grenades, smoke bombs
-    const USABLE_IN_COMBAT = ['health_potion', 'mana_potion', 'smoke_bomb', 'iron_grenade', 'thrown_axe', 'throwing_star', 'brine_tonic', 'surge_draught', 'smoke_flare', 'salted_rations', 'nettle_poison', 'healing_herb', 'mana_bloom', 'thornpoison', 'bark_shield', 'fennyx_blessing'];
+    const USABLE_IN_COMBAT = ['health_potion', 'mana_potion', 'smoke_bomb', 'iron_grenade', 'thrown_axe', 'throwing_star', 'centaur_javelin', 'brine_tonic', 'surge_draught', 'smoke_flare', 'salted_rations', 'nettle_poison', 'healing_herb', 'mana_bloom', 'thornpoison', 'bark_shield', 'fennyx_blessing'];
     const consumables = character.inventory.filter(i => i.stackable && i.quantity > 0 && USABLE_IN_COMBAT.includes(i.id));
 
     if (consumables.length === 0) {
@@ -3305,6 +3475,12 @@ function useCombatItem(itemId) {
         logMsg = `You fling a Throwing Star at the ${combat.enemy.name} for ${dmg} damage!`;
         announceMsg = `Throwing Star deals ${dmg} damage! Enemy has ${Math.max(0, combat.enemy.hp)} HP left.`;
         setEnemyBar(combat.enemy.hp, combat.enemy.maxHp);
+    } else if (itemId === 'centaur_javelin') {
+        const dmg = roll(character.level * 8, character.level * 12);
+        combat.enemy.hp -= dmg;
+        logMsg = `You hurl a Centaur Javelin at the ${combat.enemy.name} for ${dmg} damage!`;
+        announceMsg = `Centaur Javelin deals ${dmg} damage! Enemy has ${Math.max(0, combat.enemy.hp)} HP left.`;
+        setEnemyBar(combat.enemy.hp, combat.enemy.maxHp);
     } else if (itemId === 'brine_tonic') {
         const restore = Math.floor(character.maxHp * 0.5);
         combat.playerHp = Math.min(character.maxHp, combat.playerHp + restore);
@@ -3378,7 +3554,7 @@ function useCombatItem(itemId) {
     announce(announceMsg);
 
     // Check if damaging item killed enemy
-    if (['iron_grenade','thrown_axe','throwing_star','smoke_flare'].includes(itemId) && combat.enemy.hp <= 0) {
+    if (['iron_grenade','thrown_axe','throwing_star','centaur_javelin','smoke_flare'].includes(itemId) && combat.enemy.hp <= 0) {
         setTimeout(victory, 600);
         return;
     }
@@ -3868,6 +4044,12 @@ function returnToTown() {
     } else if (home === 'wolfhaven') {
         travelToWolfhaven();
         announce('You return to Wolfhaven.');
+    } else if (home === 'ironwood') {
+        travelToIronwood();
+        announce('You return to Ironwood.');
+    } else if (home === 'windmane') {
+        travelToWindmane();
+        announce('You return to Windmane.');
     } else {
         goToScreen('town');
         announce('You return to Greatwolf City.');
@@ -4255,7 +4437,7 @@ const BRUNDAR_RETURN = [
 
 function openTravelMenu() {
     document.getElementById('travel-overlay').classList.add('show');
-    announce('Travel menu. Three destinations available. Ironhold, Sunport, and Wolfhaven.');
+    announce('Travel menu. Destinations include Ironhold, Sunport, Wolfhaven, Ironwood, and Windmane.');
 }
 
 function travelTo(destination) {
@@ -4266,6 +4448,10 @@ function travelTo(destination) {
         travelToSunport();
     } else if (destination === 'wolfhaven') {
         travelToWolfhaven();
+    } else if (destination === 'ironwood') {
+        travelToIronwood();
+    } else if (destination === 'windmane') {
+        travelToWindmane();
     } else if (destination === 'town') {
         goToScreen('town');
         announce('You return to Greatwolf City.');
@@ -4391,6 +4577,8 @@ function updateTownDungeonSub(townId) {
         ironhold: 'ironhold-dungeon-sub',
         sunport: 'sunport-dungeon-sub',
         wolfhaven: 'wolfhaven-dungeon-sub',
+        ironwood: 'ironwood-dungeon-sub',
+        windmane: 'windmane-dungeon-sub',
     };
     const subEl = document.getElementById(subIds[townId]);
     const dungeonIds = TOWN_DUNGEONS[townId];
@@ -4797,7 +4985,7 @@ function useFromDetail() {
         resultMsg = 'Ready for your next retreat attempt!';
         // Flag for combat use -- will boost flee chance
         character.smokeBombReady = (character.smokeBombReady || 0) + 1;
-    } else if (item.id === 'iron_grenade' || item.id === 'thrown_axe' || item.id === 'throwing_star') {
+    } else if (item.id === 'iron_grenade' || item.id === 'thrown_axe' || item.id === 'throwing_star' || item.id === 'centaur_javelin') {
         resultMsg = 'Save this for combat! (Use from Items in battle)';
         closeDetail();
         return;
@@ -5575,6 +5763,18 @@ function getSellValue(item) {
             if (found) { basePrice = found.price; break; }
         }
     }
+    if (basePrice === 0 && typeof IRONWOOD_INVENTORY !== 'undefined') {
+        for (const cat of ['weapons','armor']) {
+            const found = (IRONWOOD_INVENTORY[cat] || []).find(s => s.id === item.id);
+            if (found) { basePrice = found.price; break; }
+        }
+    }
+    if (basePrice === 0 && typeof WINDMANE_INVENTORY !== 'undefined') {
+        for (const cat of ['weapons','armor']) {
+            const found = (WINDMANE_INVENTORY[cat] || []).find(s => s.id === item.id);
+            if (found) { basePrice = found.price; break; }
+        }
+    }
     if (basePrice === 0) {
         if (item.tags && item.tags.includes('Material')) return 5;
         if (item.stackable) return 8;
@@ -5809,6 +6009,10 @@ function findShopItem(shopId, itemId) {
         return [...WOLFHAVEN_INVENTORY.weapons, ...WOLFHAVEN_INVENTORY.armor, ...WOLFHAVEN_INVENTORY.consumables].find(i => i.id === itemId);
     } else if (shopId === 'sunport') {
         return [...SUNPORT_INVENTORY.weapons, ...SUNPORT_INVENTORY.accessories, ...SUNPORT_INVENTORY.consumables].find(i => i.id === itemId);
+    } else if (shopId === 'ironwood') {
+        return [...IRONWOOD_INVENTORY.weapons, ...IRONWOOD_INVENTORY.armor].find(i => i.id === itemId);
+    } else if (shopId === 'windmane') {
+        return [...WINDMANE_INVENTORY.weapons, ...WINDMANE_INVENTORY.armor].find(i => i.id === itemId);
     }
     return null;
 }
@@ -5944,6 +6148,8 @@ function refreshShopGoldDisplay(shopId) {
         ironhold: 'ironhold-shop-gold',
         wolfhaven: 'wolfhaven-shop-gold',
         sunport: 'sunport-shop-gold',
+        ironwood: 'ironwood-shop-gold',
+        windmane: 'windmane-shop-gold',
     };
     const el = document.getElementById(goldMap[shopId]);
     if (el) el.textContent = character.gold;
@@ -5962,6 +6168,12 @@ function refreshShopAfterBuy(shopId, itemId) {
         const tab = SUNPORT_INVENTORY.consumables.find(i => i.id === itemId) ? 'consumables'
             : SUNPORT_INVENTORY.accessories.find(i => i.id === itemId) ? 'accessories' : 'weapons';
         renderSunportTab(tab);
+    } else if (shopId === 'ironwood') {
+        const tab = IRONWOOD_INVENTORY.armor.find(i => i.id === itemId) ? 'armor' : 'weapons';
+        renderIronwoodTab(tab);
+    } else if (shopId === 'windmane') {
+        const tab = WINDMANE_INVENTORY.armor.find(i => i.id === itemId) ? 'armor' : 'weapons';
+        renderWindmaneTab(tab);
     }
 }
 
@@ -6622,11 +6834,124 @@ const DUNGEONS = {
             { id:'sea_glass',       icon:'🌊', name:'Sea Glass',          desc:'Smooth glass worn by the ocean. Used in coastal crafts.',         stat:'Material', slot:'item',   tags:['Material'],            stackable:true  },
         ],
     },
+    stoneback_mesas: {
+        id: 'stoneback_mesas',
+        name: 'The Stoneback Mesas',
+        icon: '🦕',
+        desc: 'Sun-scorched cliffs and red stone canyons where the world forgot what year it is. Something ancient still walks here.',
+        flavor: 'Ancient stone. Older teeth.',
+        color: '#b85c38',
+        enemies: [
+            { name:'Scree Lizard',       icon:'🦎', level:1, hp:26,  atk:7,  xp:14, gold:[3,8],   floors:[1,6]   },
+            { name:'Hatchling Raptor',   icon:'🦖', level:1, hp:22,  atk:9,  xp:15, gold:[2,7],   floors:[1,8]   },
+            { name:'Rock Crawler',       icon:'🪨', level:1, hp:30,  atk:6,  xp:13, gold:[3,9],   floors:[1,10]  },
+            { name:'Compy Swarm',        icon:'🦎', level:2, hp:40,  atk:12, xp:26, gold:[5,12],  floors:[4,18]  },
+            { name:'Ridge Raptor',       icon:'🦖', level:2, hp:52,  atk:11, xp:28, gold:[7,15],  floors:[5,22]  },
+            { name:'Pterosaur',          icon:'🦅', level:2, hp:45,  atk:13, xp:30, gold:[6,14],  floors:[6,24]  },
+            { name:'Plateback',          icon:'🛡',  level:3, hp:95,  atk:12, xp:48, gold:[12,24], floors:[8,28]  },
+            { name:'Thunder Lizard',     icon:'🦕', level:3, hp:88,  atk:15, xp:52, gold:[14,26], floors:[10,32] },
+            { name:'Fossil Golem',       icon:'🗿', level:4, hp:120, atk:16, xp:70, gold:[20,38], floors:[18,99] },
+            { name:'Alpha Raptor',       icon:'🦖', level:4, hp:130, atk:19, xp:78, gold:[24,44], floors:[22,99] },
+            { name:'Sky Hunter',         icon:'🦅', level:4, hp:115, atk:20, xp:75, gold:[22,40], floors:[25,99] },
+            { name:'Scaleback Titan',    icon:'🦕', level:5, hp:155, atk:23, xp:92, gold:[30,52], floors:[35,99] },
+        ],
+        bosses: {
+            10: { name:'Skree the Pack Queen', icon:'🦖', level:4, hp:215, atk:19, xp:158, gold:[44,74],   desc:'An alpha raptor who hunts the mesa ridgelines with her pack' },
+            20: { name:'Old Thunder',          icon:'🦕', level:5, hp:370, atk:25, xp:295, gold:[84,138],  desc:'An apex thunder lizard — the mesa trembles when it moves' },
+            30: { name:'The Broodmother',      icon:'🦕', level:6, hp:540, atk:30, xp:470, gold:[158,240], desc:'A colossal sauropod guarding her nest in the canyon depths' },
+            40: { name:'King Scaleback',       icon:'🛡',  level:7, hp:790, atk:37, xp:730, gold:[258,370], desc:'An armored titan whose plates turned aside blades for centuries' },
+        },
+        loot: [
+            { id:'fossil_bone_mace',    icon:'🔨', name:'Fossil Bone Mace',    desc:'A mace carved from fossilized bone. Heavy enough for Fenris himself.', stat:'STR +5', slot:'mainHand', tags:['Mace'], stackable:false, dmg:[14,21] },
+            { id:'raptor_claw_dagger',  icon:'🗡',  name:'Raptor Claw Dagger',  desc:'A serrated raptor claw on a leather grip. Swift and vicious.',       stat:'DEX +5', slot:'mainHand', tags:['Dagger'], stackable:false, dmg:[10,16] },
+            { id:'mesa_hunter_bow',     icon:'🏹', name:"Mesa Hunter's Bow",   desc:'Sinew-strung bone bow built for canyon hunts.',                        stat:'DEX +4', slot:'mainHand', tags:['Bow'], stackable:false, dmg:[11,17] },
+            { id:'thunderstone_staff',  icon:'🪄', name:'Thunderstone Staff',  desc:'Petrified wood struck by lightning. Still crackles with power.',       stat:'INT +5', slot:'mainHand', tags:['Staff'], stackable:false, dmg:[9,15] },
+            { id:'amber_focus',         icon:'🔮', name:'Amber Focus',         desc:'Amber with an insect trapped inside. Amplifies arcane sight.',         stat:'INT +4', slot:'offHand',  tags:['Focus','Off-Hand'], stackable:false },
+            { id:'plateback_pauldrons', icon:'🧣', name:'Plateback Pauldrons', desc:'Shoulder guards layered from armored dinosaur scutes.',                stat:'ARM +6', slot:'mantle',   tags:['Heavy','Mantle'], stackable:false, type:'heavy' },
+            { id:'scalehide_vest',      icon:'🥋', name:'Scalehide Vest',      desc:'Vest sewn from mesa lizard hide. Light, tough, and heat-resistant.',   stat:'DEX +3', slot:'chest',    tags:['Medium','Chest'], stackable:false, type:'medium' },
+            { id:'sunscorched_robes',   icon:'👘', name:'Sunscorched Robes',   desc:'Thin weave for brutal mesa heat. Channels focus over comfort.',          stat:'INT +3, MP +10', slot:'chest', tags:['Light','Chest'], stackable:false, type:'light' },
+            { id:'fossil_shard',        icon:'🦴', name:'Fossil Shard',        desc:'A shard of ancient fossil bone. Used in forging.',                     stat:'Material', slot:'item', tags:['Material'], stackable:true },
+        ],
+    },
+    ironwood_deep: {
+        id: 'ironwood_deep',
+        name: 'The Ironwood Deep',
+        icon: '🌲',
+        desc: 'Blighted groves beneath Ironwood where roots twist wrong and the forest remembers every wound.',
+        flavor: 'Living ironwood turned sour',
+        color: '#4a7a52',
+        enemies: [
+            { name:'Blight Wolf',        icon:'🐺', level:1, hp:28,  atk:7,  xp:14, gold:[3,8],   floors:[1,6]   },
+            { name:'Root Serpent',       icon:'🐍', level:1, hp:24,  atk:9,  xp:15, gold:[2,7],   floors:[1,8]   },
+            { name:'Thorn Stalker',      icon:'🌵', level:2, hp:48,  atk:10, xp:26, gold:[6,14],  floors:[4,18]  },
+            { name:'Ironwood Scout',     icon:'🏹', level:2, hp:50,  atk:11, xp:28, gold:[7,15],  floors:[5,22]  },
+            { name:'Blighted Stag',      icon:'🦌', level:2, hp:55,  atk:12, xp:30, gold:[6,13],  floors:[6,24]  },
+            { name:'Corrupted Dryad',    icon:'🧚', level:3, hp:70,  atk:13, xp:44, gold:[11,22], floors:[8,28]  },
+            { name:'Root Golem',         icon:'🌳', level:3, hp:90,  atk:14, xp:50, gold:[14,26], floors:[12,32] },
+            { name:'Shadow Archer',      icon:'🏹', level:3, hp:65,  atk:16, xp:48, gold:[12,24], floors:[14,30] },
+            { name:'Thornwall',          icon:'🌵', level:4, hp:115, atk:17, xp:68, gold:[20,38], floors:[20,99] },
+            { name:'Ironwood Warden',    icon:'⚔',  level:4, hp:125, atk:19, xp:76, gold:[24,42], floors:[25,99] },
+            { name:'Hollow Bladedancer', icon:'🗡',  level:4, hp:110, atk:20, xp:74, gold:[22,40], floors:[28,99] },
+            { name:'Blight Treant',      icon:'🌳', level:5, hp:150, atk:22, xp:90, gold:[30,52], floors:[35,99] },
+        ],
+        bosses: {
+            10: { name:'Warden Syla',           icon:'⚔',  level:4, hp:210, atk:18, xp:152, gold:[42,72],   desc:'An ironwood warden twisted by blight — still fighting, still proud' },
+            20: { name:'The Rootbound Horror',  icon:'🌳', level:5, hp:380, atk:24, xp:288, gold:[82,135],  desc:'A mass of roots and rage that broke through the deep grove floor' },
+            30: { name:'Hollow Commander Vael', icon:'🗡',  level:6, hp:530, atk:29, xp:465, gold:[155,235], desc:'Once Ironwood\'s finest bladedancer — now a hollow shell of skill and spite' },
+            40: { name:'The Heartwood Blight',  icon:'🌑', level:7, hp:770, atk:36, xp:710, gold:[252,365], desc:'The corruption at the grove\'s heart — not evil by choice, but spreading all the same' },
+        },
+        loot: [
+            { id:'ironwood_longblade',  icon:'⚔',  name:'Ironwood Longblade',  desc:'A straight elven war blade of living ironwood. Perfectly balanced.', stat:'STR +5', slot:'mainHand', tags:['Sword'], stackable:false, dmg:[13,19] },
+            { id:'ironwood_longbow',    icon:'🏹', name:'Ironwood Longbow',    desc:'A ranger\'s bow of ironwood and silver string. Deadly at range.',       stat:'DEX +5', slot:'mainHand', tags:['Bow'], stackable:false, dmg:[12,18] },
+            { id:'ironwood_staff',      icon:'🪄', name:'Ironwood Staff',      desc:'A battle-mage staff of hardened ironwood. Channels spell and strike.', stat:'INT +5', slot:'mainHand', tags:['Staff'], stackable:false, dmg:[9,15] },
+            { id:'leafweave_chest',     icon:'🥋', name:'Leafweave Chest',     desc:'Chest armor woven from ironwood leaves. Light but surprisingly tough.', stat:'DEX +3', slot:'chest', tags:['Medium','Chest'], stackable:false, type:'medium' },
+            { id:'warden_plate',        icon:'🧥', name:'Warden Plate',        desc:'Elven plate forged with ironwood ribs. Built for the line.',           stat:'ARM +7', slot:'chest', tags:['Heavy','Chest'], stackable:false, type:'heavy' },
+            { id:'root_ring',           icon:'💍', name:'Root Ring',           desc:'A ring braided from living ironwood roots.',                           stat:'INT +4', slot:'ring1', tags:['Ring'], stackable:false },
+            { id:'ironwood_bark',       icon:'🌳', name:'Ironwood Bark',       desc:'Bark from the deep groves. Dense and valuable.',                       stat:'Material', slot:'item', tags:['Material'], stackable:true },
+        ],
+    },
+    sunstone_steppe: {
+        id: 'sunstone_steppe',
+        name: 'The Sunstone Steppe',
+        icon: '🏜',
+        desc: 'Red canyons and wind-scoured grassland beyond Windmane. Harpies wheel overhead. Something big runs the flats.',
+        flavor: 'Open sky and sharp hooves',
+        color: '#c9a050',
+        enemies: [
+            { name:'Steppe Wolf',        icon:'🐺', level:1, hp:26,  atk:7,  xp:14, gold:[3,8],   floors:[1,6]   },
+            { name:'Centaur Outcast',    icon:'🏇', level:1, hp:32,  atk:8,  xp:15, gold:[4,10],  floors:[1,8]   },
+            { name:'Dust Viper',         icon:'🐍', level:1, hp:22,  atk:9,  xp:16, gold:[2,7],   floors:[1,10]  },
+            { name:'Harpy',              icon:'🦅', level:2, hp:45,  atk:12, xp:28, gold:[6,14],  floors:[4,20]  },
+            { name:'Ridge Lion',         icon:'🐆', level:2, hp:58,  atk:13, xp:30, gold:[8,16],  floors:[6,22]  },
+            { name:'Stampede Bison',     icon:'🐂', level:3, hp:85,  atk:14, xp:46, gold:[12,24], floors:[8,28]  },
+            { name:'Nomad Raider',       icon:'🏹', level:3, hp:72,  atk:15, xp:48, gold:[11,22], floors:[10,30] },
+            { name:'Cloud Serpent',      icon:'🐍', level:3, hp:68,  atk:16, xp:50, gold:[10,22], floors:[12,32] },
+            { name:'Steppe Drake',       icon:'🐉', level:4, hp:118, atk:18, xp:72, gold:[22,40], floors:[20,99] },
+            { name:'Centaur Champion',   icon:'🏇', level:4, hp:128, atk:20, xp:80, gold:[25,44], floors:[25,99] },
+            { name:'Sky Stalker',        icon:'🦅', level:4, hp:105, atk:19, xp:74, gold:[20,38], floors:[28,99] },
+            { name:'Thunder Bull',       icon:'🐂', level:5, hp:160, atk:24, xp:95, gold:[32,55], floors:[35,99] },
+        ],
+        bosses: {
+            10: { name:'Hoofwind the Swift',    icon:'🏇', level:4, hp:205, atk:18, xp:150, gold:[40,68],   desc:'A centaur champion who outran every challenger on the open flats' },
+            20: { name:'Matriarch of the Herd', icon:'🐂', level:5, hp:370, atk:24, xp:285, gold:[80,132],  desc:'A bison matriarch whose stampede reshaped the canyon mouth' },
+            30: { name:'The Sky Hunter',        icon:'🦅', level:6, hp:510, atk:29, xp:450, gold:[150,225], desc:'A monstrous harpy queen who nests in the red cliff faces' },
+            40: { name:'Thunder of the Plains', icon:'🐉', level:7, hp:760, atk:35, xp:700, gold:[248,360], desc:'A steppe drake that claims the canyon as its hunting ground' },
+        },
+        loot: [
+            { id:'steppe_lance',        icon:'🔱', name:'Steppe Lance',        desc:'A centaur-forged lance built for charging the open flats.',          stat:'DEX +5', slot:'mainHand', tags:['Spear'], stackable:false, dmg:[11,17] },
+            { id:'windchaser_bow',      icon:'🏹', name:'Windchaser Bow',      desc:'A composite bow strung for speed and distance on the steppe.',       stat:'DEX +5', slot:'mainHand', tags:['Bow'], stackable:false, dmg:[12,18] },
+            { id:'hoof_iron_greaves',   icon:'🦾', name:'Hoof-Iron Greaves',   desc:'Leg guards modeled after centaur iron-shod hooves.',                   stat:'STR +4', slot:'legs', tags:['Medium','Legs'], stackable:false, type:'medium' },
+            { id:'windrunner_vest',     icon:'🥋', name:'Windrunner Vest',     desc:'Light vest of steppe leather. Built for riders and runners.',          stat:'DEX +4', slot:'chest', tags:['Light','Chest'], stackable:false, type:'light' },
+            { id:'plains_ring',         icon:'💍', name:'Plains Ring',         desc:'A ring of braided grass-steel worn by centaur scouts.',               stat:'PER +3', slot:'ring1', tags:['Ring'], stackable:false },
+            { id:'centaur_javelin',     icon:'🔱', name:'Centaur Javelin',     desc:'A heavy throwing javelin. Same level-scaled damage as a grenade.',     stat:'DEX +3', slot:'item', tags:['Consumable'], stackable:true },
+            { id:'steppe_dust',         icon:'🏜', name:'Sunstone Dust',       desc:'Fine red dust from the canyons. Used in crafting.',                    stat:'Material', slot:'item', tags:['Material'], stackable:true },
+        ],
+    },
 };
 
 
 // Dungeons reachable from Greatwolf City dungeon select (teleport paths)
-const CITY_DUNGEONS = ['wolfspire', 'verdant', 'frostpeak', 'sunken_sands', 'emerald_canopy', 'red_wolf_swamp'];
+const CITY_DUNGEONS = ['wolfspire', 'verdant', 'frostpeak', 'sunken_sands', 'emerald_canopy', 'red_wolf_swamp', 'stoneback_mesas'];
 
 // Local dungeons per settlement — add new dungeon ids here as towns grow
 const TOWN_DUNGEONS = {
@@ -6634,12 +6959,16 @@ const TOWN_DUNGEONS = {
     ironhold: ['iron_depths'],
     sunport: ['sunken_mariner'],
     wolfhaven: ['ashwood'],
+    ironwood: ['ironwood_deep'],
+    windmane: ['sunstone_steppe'],
 };
 
 const DUNGEON_HOME_TOWN = {
     iron_depths: 'ironhold',
     sunken_mariner: 'sunport',
     ashwood: 'wolfhaven',
+    ironwood_deep: 'ironwood',
+    sunstone_steppe: 'windmane',
 };
 
 const TOWN_DISPLAY_NAMES = {
@@ -6647,6 +6976,8 @@ const TOWN_DISPLAY_NAMES = {
     ironhold: 'Ironhold',
     sunport: 'Sunport',
     wolfhaven: 'Wolfhaven',
+    ironwood: 'Ironwood',
+    windmane: 'Windmane',
 };
 
 function getHomeTownForDungeon(dungeonId) {
@@ -7100,6 +7431,68 @@ const AELINDRA_SHOP_QUOTES = [
     '"Fennyx blesses those who prepare wisely."',
 ];
 
+// -- IRONWOOD SHOP DATA -----------------------------------
+const IRONWOOD_INVENTORY = {
+    weapons: [
+        { id:'ironwood_blade',    icon:'⚔',  name:'Ironwood Blade',     desc:'A straight elven war sword. Favored by Ironwood captains.',          price:85,  tags:['Sword'],  stat:'STR +4', slot:'mainHand', dmg:[12,18] },
+        { id:'ironwood_greatbow', icon:'🏹', name:'Ironwood Greatbow',  desc:'A powerful bow of ironwood and silver string.',                        price:90,  tags:['Bow'],    stat:'DEX +4', slot:'mainHand', dmg:[13,19] },
+        { id:'battlewood_staff',  icon:'🪄', name:'Battlewood Staff',   desc:'A staff hardened for melee and spell alike.',                        price:80,  tags:['Staff'],  stat:'INT +4', slot:'mainHand', dmg:[8,13] },
+        { id:'warden_spear',      icon:'🔱', name:'Warden Spear',       desc:'An ironwood-hafted spear for elven wardens.',                        price:75,  tags:['Spear'],  stat:'STR +4', slot:'mainHand', dmg:[11,16] },
+    ],
+    armor: [
+        { id:'ironwood_mail',     icon:'🥋', name:'Ironwood Mail',      desc:'Mail woven with ironwood rings. Light for its protection.',            price:70,  tags:['Medium','Chest'], stat:'ARM +5', type:'medium', slot:'chest' },
+        { id:'ranger_leathers',   icon:'🥋', name:'Ranger Leathers',    desc:'Supple leathers favored by Ironwood scouts.',                          price:55,  tags:['Medium','Chest'], stat:'DEX +3', type:'medium', slot:'chest' },
+        { id:'spellward_circlet', icon:'👑', name:'Spellward Circlet',  desc:'A circlet that sharpens arcane focus.',                                price:45,  tags:['Light','Head'],   stat:'INT +3', type:'light',  slot:'head' },
+        { id:'ironwood_gauntlets',icon:'🧤', name:'Ironwood Gauntlets', desc:'Gauntlets reinforced with living ironwood plates.',                    price:50,  tags:['Medium','Hands'], stat:'ARM +3', type:'medium', slot:'hands' },
+        { id:'leafweave_mantle',  icon:'🧣', name:'Leafweave Mantle',   desc:'A mantle of woven ironwood leaves.',                                   price:40,  tags:['Light','Mantle'], stat:'MP +8',  type:'light',  slot:'mantle' },
+    ],
+};
+
+const THAELEN_TOWN_QUOTES = [
+    '"Ironwood stands. So do we."',
+    '"The blight below grows restless. Keep your blade sharp."',
+    '"Blade, bow, or spell — we do not ask which. Only that you stand."',
+    '"Greatwolf City sends many travelers. Few stay long enough to understand the Deep."',
+    '"Fennyx\'s light reaches even ironwood. We do not forget that."',
+];
+
+const THAELEN_SHOP_QUOTES = [
+    '"Blade, bow, or spell — pick your path."',
+    '"Every piece here saw the Deep or those who fight it."',
+    '"Ironwood does not craft for vanity. Only for survival."',
+    '"You look ready. Good. The grove below does not wait."',
+];
+
+// -- WINDMANE SHOP DATA -----------------------------------
+const WINDMANE_INVENTORY = {
+    weapons: [
+        { id:'steppe_spear_shop', icon:'🔱', name:'Steppe Spear',       desc:'A centaur-forged lance for open-ground fighting.',                     price:78,  tags:['Spear'],  stat:'DEX +4', slot:'mainHand', dmg:[11,16] },
+        { id:'windmane_bow',      icon:'🏹', name:'Windmane Bow',       desc:'A composite bow built for riders and runners alike.',                  price:82,  tags:['Bow'],    stat:'DEX +4', slot:'mainHand', dmg:[12,18] },
+        { id:'hoof_axe',          icon:'🪓', name:'Hoof Axe',           desc:'A compact axe balanced for centaur strength.',                         price:70,  tags:['Axe'],    stat:'STR +4', slot:'mainHand', dmg:[12,17] },
+    ],
+    armor: [
+        { id:'steppe_leathers',   icon:'🥋', name:'Steppe Leathers',    desc:'Light leather armor built for speed on the open flats.',               price:52,  tags:['Light','Chest'],  stat:'DEX +3', type:'light',  slot:'chest' },
+        { id:'hoofplate_greaves', icon:'🦾', name:'Hoofplate Greaves',  desc:'Leg guards modeled after centaur iron-shod hooves.',                   price:48,  tags:['Medium','Legs'],  stat:'STR +3', type:'medium', slot:'legs' },
+        { id:'windchaser_boots',  icon:'🥾', name:'Windchaser Boots',   desc:'Soft-soled boots that grip the steppe without noise.',                   price:38,  tags:['Light','Feet'],   stat:'DEX +2', type:'light',  slot:'feet' },
+        { id:'plains_mantle',     icon:'🧥', name:'Plains Mantle',      desc:'A mantle dyed the color of dry grass. Hard to spot at distance.',       price:42,  tags:['Light','Mantle'], stat:'PER +2', type:'light',  slot:'mantle' },
+    ],
+};
+
+const KETHRA_TOWN_QUOTES = [
+    '"The steppe is wide. So is our welcome."',
+    '"Run with the wind, not against it."',
+    '"The canyons swallow the careless. Do not be careless."',
+    '"Two legs or four — courage is courage."',
+    '"Greatwolf City is far. The sky here is closer."',
+];
+
+const KETHRA_SHOP_QUOTES = [
+    '"Light gear for those who run with the wind."',
+    '"We forge for speed, not ceremony."',
+    '"Take what you need. Leave gold. Leave pride at the gate."',
+    '"The Sunstone Steppe takes fools. Gear up accordingly."',
+];
+
 // -- WOLFHAVEN FUNCTIONS ----------------------------------
 function travelToWolfhaven() {
     if (!character) return;
@@ -7238,6 +7631,168 @@ function promptWolfhavenSell(invIndex) {
 
 function buyWolfhavenItem(itemId) {
     promptBuy('wolfhaven', itemId);
+}
+
+// -- IRONWOOD FUNCTIONS -----------------------------------
+function travelToIronwood() {
+    if (!character) return;
+    document.getElementById('ironwood-hp').textContent = character.hp + ' / ' + character.maxHp;
+    document.getElementById('ironwood-mp').textContent = character.mp + ' / ' + character.maxMp;
+    document.getElementById('ironwood-gold').textContent = character.gold;
+    updateTownDungeonSub('ironwood');
+    document.getElementById('ironwood-town-quote').textContent =
+        THAELEN_TOWN_QUOTES[Math.floor(Math.random() * THAELEN_TOWN_QUOTES.length)];
+    goToScreen('ironwood');
+    announce('Ironwood. Elven warrior settlement. Captain Thaelen greets you.');
+}
+
+function openIronwoodShop() {
+    if (!character) return;
+    document.getElementById('ironwood-shop-gold').textContent = character.gold;
+    document.getElementById('ironwood-shop-quote').textContent =
+        formatShopkeeperQuote(THAELEN_SHOP_QUOTES[Math.floor(Math.random() * THAELEN_SHOP_QUOTES.length)]);
+    switchIronwoodTab('weapons');
+    goToScreen('ironwood-shop');
+    announce("Ironwood Armory. Tabs: Weapons, Gear, Sell.");
+}
+
+function switchIronwoodTab(tab) {
+    ['weapons','armor','sell'].forEach(t => {
+        const btn = document.getElementById('iwoodtab-' + t);
+        const panel = document.getElementById('ironwood-' + t);
+        if (btn) { btn.classList.remove('active'); btn.setAttribute('aria-selected','false'); }
+        if (panel) panel.classList.remove('active');
+    });
+    const activeBtn = document.getElementById('iwoodtab-' + tab);
+    const activePanel = document.getElementById('ironwood-' + tab);
+    if (activeBtn) { activeBtn.classList.add('active'); activeBtn.setAttribute('aria-selected','true'); }
+    if (activePanel) activePanel.classList.add('active');
+    renderIronwoodTab(tab);
+}
+
+function renderIronwoodTab(tab) {
+    const panel = document.getElementById('ironwood-' + tab);
+    if (!panel) return;
+    if (tab === 'sell') { renderIronwoodSellTab(); return; }
+    renderTownShopItems(panel, IRONWOOD_INVENTORY[tab] || [], 'buyIronwoodItem');
+}
+
+function renderIronwoodSellTab() {
+    renderTownSellTab('ironwood-sell', 'Ironwood', renderIronwoodTab);
+}
+
+function buyIronwoodItem(itemId) {
+    promptBuy('ironwood', itemId);
+}
+
+// -- WINDMANE FUNCTIONS -----------------------------------
+function travelToWindmane() {
+    if (!character) return;
+    document.getElementById('windmane-hp').textContent = character.hp + ' / ' + character.maxHp;
+    document.getElementById('windmane-mp').textContent = character.mp + ' / ' + character.maxMp;
+    document.getElementById('windmane-gold').textContent = character.gold;
+    updateTownDungeonSub('windmane');
+    document.getElementById('windmane-town-quote').textContent =
+        KETHRA_TOWN_QUOTES[Math.floor(Math.random() * KETHRA_TOWN_QUOTES.length)];
+    goToScreen('windmane');
+    announce('Windmane. Centaur village on the open steppe. Chieftess Kethra greets you.');
+}
+
+function openWindmaneShop() {
+    if (!character) return;
+    document.getElementById('windmane-shop-gold').textContent = character.gold;
+    document.getElementById('windmane-shop-quote').textContent =
+        formatShopkeeperQuote(KETHRA_SHOP_QUOTES[Math.floor(Math.random() * KETHRA_SHOP_QUOTES.length)]);
+    switchWindmaneTab('weapons');
+    goToScreen('windmane-shop');
+    announce("Steppe Trading Post. Tabs: Weapons, Gear, Sell.");
+}
+
+function switchWindmaneTab(tab) {
+    ['weapons','armor','sell'].forEach(t => {
+        const btn = document.getElementById('wmtab-' + t);
+        const panel = document.getElementById('windmane-' + t);
+        if (btn) { btn.classList.remove('active'); btn.setAttribute('aria-selected','false'); }
+        if (panel) panel.classList.remove('active');
+    });
+    const activeBtn = document.getElementById('wmtab-' + tab);
+    const activePanel = document.getElementById('windmane-' + tab);
+    if (activeBtn) { activeBtn.classList.add('active'); activeBtn.setAttribute('aria-selected','true'); }
+    if (activePanel) activePanel.classList.add('active');
+    renderWindmaneTab(tab);
+}
+
+function renderWindmaneTab(tab) {
+    const panel = document.getElementById('windmane-' + tab);
+    if (!panel) return;
+    if (tab === 'sell') { renderWindmaneSellTab(); return; }
+    renderTownShopItems(panel, WINDMANE_INVENTORY[tab] || [], 'buyWindmaneItem');
+}
+
+function renderWindmaneSellTab() {
+    renderTownSellTab('windmane-sell', 'Windmane', renderWindmaneTab);
+}
+
+function buyWindmaneItem(itemId) {
+    promptBuy('windmane', itemId);
+}
+
+function renderTownShopItems(panel, items, buyFnName) {
+    panel.innerHTML = '';
+    items.forEach(item => {
+        const finalPrice = getDiscountedPrice(item.price);
+        const canAfford = character.gold >= finalPrice;
+        const tagHTML = (item.tags || []).map(t => {
+            const cls = t === 'Heavy' ? 'type-heavy' : t === 'Medium' ? 'type-medium' : t === 'Light' ? 'type-light' : '';
+            return `<span class="shop-tag ${cls}">${t}<\/span>`;
+        }).join('');
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.setAttribute('aria-label', `${item.name}. ${item.desc}. ${finalPrice} gold.`);
+        div.innerHTML = `
+            <span class="shop-item-icon" aria-hidden="true">${item.icon}<\/span>
+            <div class="shop-item-info">
+                <div class="shop-item-name">${item.name}<\/div>
+                <div class="shop-item-desc">${item.desc}<\/div>
+                <div class="shop-item-tags">${tagHTML}${item.stat ? `<span class="shop-tag" style="color:#c9a84c;border-color:#5a4a1a">${item.stat}<\/span>` : ''}${item.dmg ? `<span class="shop-tag" style="color:#e07070;border-color:#5a2a2a">DMG ${item.dmg[0]}-${item.dmg[1]}<\/span>` : ''}<\/div>
+            <\/div>
+            <div class="shop-item-buy">
+                <div class="shop-item-price ${canAfford?'':'cant-afford'}">${formatShopPriceHTML(item.price)}<\/div>
+                <button class="buy-btn" ${canAfford?'':'disabled'} onclick="${buyFnName}('${item.id}')" aria-label="Buy ${item.name} for ${finalPrice} gold">Buy<\/button>
+            <\/div>
+        `;
+        panel.appendChild(div);
+    });
+}
+
+function renderTownSellTab(panelId, townName, refreshFn) {
+    const panel = document.getElementById(panelId);
+    const sellable = character.inventory.filter((i, idx) => !isItemEquipped(i.id, idx));
+    if (sellable.length === 0) {
+        panel.innerHTML = `<div class="inv-empty" style="padding:30px 0">Nothing to sell. Explore near ${townName} and bring back what you find.<\/div>`;
+        return;
+    }
+    panel.innerHTML = '';
+    sellable.forEach(item => {
+        const value = getSellValue(item);
+        const qty = item.stackable && item.quantity > 1 ? ` (x${item.quantity})` : '';
+        const totalVal = item.stackable ? value * item.quantity : value;
+        const realIndex = character.inventory.indexOf(item);
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.innerHTML = `
+            <span class="shop-item-icon" aria-hidden="true">${item.icon}<\/span>
+            <div class="shop-item-info">
+                <div class="shop-item-name">${item.name}${qty}<\/div>
+                <div class="shop-item-desc">${item.desc || ''}<\/div>
+            <\/div>
+            <div class="shop-item-buy">
+                <div class="shop-item-price">${totalVal}g<\/div>
+                <button class="buy-btn" onclick="promptSell(${realIndex})" aria-label="Sell ${item.name} for ${totalVal} gold">Sell<\/button>
+            <\/div>
+        `;
+        panel.appendChild(div);
+    });
 }
 
 // -- ASHWOOD DUNGEON --------------------------------------
@@ -7495,7 +8050,7 @@ function renderForgeList() {
         const nextTier = FORGE_TIERS[currentTier];
         const maxed = currentTier >= 10;
 
-    const FORGE_EXCLUDE = ['health_potion','mana_potion','brine_tonic','surge_draught','salted_rations','healing_herb','mana_bloom','fennyx_blessing','smoke_bomb','iron_grenade','thrown_axe','throwing_star','smoke_flare','nettle_poison','thornpoison','bark_shield'];
+    const FORGE_EXCLUDE = ['health_potion','mana_potion','brine_tonic','surge_draught','salted_rations','healing_herb','mana_bloom','fennyx_blessing','smoke_bomb','iron_grenade','thrown_axe','throwing_star','centaur_javelin','smoke_flare','nettle_poison','thornpoison','bark_shield'];
 
     // Count sacrificeable items (unequipped, non-relic, not the item itself, not potions/consumables)
     const sacrificeable = character.inventory.filter((i, ix) =>
@@ -7559,7 +8114,7 @@ function forgeItem(invIndex) {
         return;
     }
 
-    const FORGE_EXCLUDE = ['health_potion','mana_potion','brine_tonic','surge_draught','salted_rations','healing_herb','mana_bloom','fennyx_blessing','smoke_bomb','iron_grenade','thrown_axe','throwing_star','smoke_flare','nettle_poison','thornpoison','bark_shield'];
+    const FORGE_EXCLUDE = ['health_potion','mana_potion','brine_tonic','surge_draught','salted_rations','healing_herb','mana_bloom','fennyx_blessing','smoke_bomb','iron_grenade','thrown_axe','throwing_star','centaur_javelin','smoke_flare','nettle_poison','thornpoison','bark_shield'];
 
     character.gold -= tier.goldCost;
 
